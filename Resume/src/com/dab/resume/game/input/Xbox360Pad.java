@@ -11,7 +11,7 @@
  *      for input conditions.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.input;
+package com.dab.resume.game.input;
 
 import com.badlogic.gdx.controllers.PovDirection;
 

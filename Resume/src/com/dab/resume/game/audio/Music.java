@@ -10,7 +10,7 @@
  *      Handles loading, initialization, and playing of background music for the game
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.audio;
+package com.dab.resume.game.audio;
 
 import com.dab.resume.assets.Assets;
 

@@ -10,12 +10,12 @@
  *      Load, initializes, and plays the Player's sound effects
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform.player;
+package com.dab.resume.game.lifeform.player;
 
  import com.badlogic.gdx.audio.Sound;
 import com.dab.resume.assets.Assets;
- import com.dab.resume.screens.game.audio.SoundFX;
- import com.dab.resume.screens.game.lifeform.LifeformSoundFX;
+ import com.dab.resume.game.audio.SoundFX;
+ import com.dab.resume.game.lifeform.LifeformSoundFX;
 
  import java.util.Random;
 

@@ -10,7 +10,7 @@
  *
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.collision;
+package com.dab.resume.game.collision;
 
 import com.badlogic.gdx.math.Rectangle;
 

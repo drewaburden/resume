@@ -10,7 +10,7 @@
  *      This defines event types related to movement
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 public enum MovementEvent {
 	MOVE, JUMP, LANDED, DONE_HURTING

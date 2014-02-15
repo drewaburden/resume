@@ -10,7 +10,7 @@
  *
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game;
+package com.dab.resume.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,13 +18,13 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.TerminalGame;
-import com.dab.resume.screens.game.hud.HUD;
-import com.dab.resume.screens.game.input.GamePadInput;
-import com.dab.resume.screens.game.input.InputBridge;
-import com.dab.resume.screens.game.input.KeyboardInput;
-import com.dab.resume.screens.game.scene.Scene;
-import com.dab.resume.screens.game.lifeform.player.Player;
-import com.dab.resume.screens.game.audio.Music;
+import com.dab.resume.game.hud.HUD;
+import com.dab.resume.game.input.GamePadInput;
+import com.dab.resume.game.input.InputBridge;
+import com.dab.resume.game.input.KeyboardInput;
+import com.dab.resume.game.scene.Scene;
+import com.dab.resume.game.lifeform.player.Player;
+import com.dab.resume.game.audio.Music;
 
 public class GameScreen implements Screen {
 	private OrthographicCamera camera;

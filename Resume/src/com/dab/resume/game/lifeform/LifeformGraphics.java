@@ -10,7 +10,7 @@
  *      Handles changing and drawing of animations for any Lifeform
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

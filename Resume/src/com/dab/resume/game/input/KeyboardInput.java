@@ -10,11 +10,10 @@
  *      Handles input from the keyboard
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.input;
+package com.dab.resume.game.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.dab.resume.screens.game.scene.Scene;
 
 import static com.badlogic.gdx.Input.Keys.*;
 

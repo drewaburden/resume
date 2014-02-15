@@ -10,12 +10,12 @@
  *
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.input;
+package com.dab.resume.game.input;
 
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
-import com.dab.resume.screens.game.hud.Dialog;
+import com.dab.resume.game.hud.Dialog;
 
 public class InputBridge extends Observable {
 	public void debugOptionsPressed() {

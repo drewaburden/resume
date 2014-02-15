@@ -10,10 +10,10 @@
  *      Serves an animation based on the type of Lifeform and the type of animation requested
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
-import com.dab.resume.screens.game.lifeform.enemies.mage.MageAnimationFactory;
-import com.dab.resume.screens.game.lifeform.player.PlayerAnimationFactory;
+import com.dab.resume.game.lifeform.enemies.mage.MageAnimationFactory;
+import com.dab.resume.game.lifeform.player.PlayerAnimationFactory;
 
 public class AnimationFactory {
 	public static enum AnimationType {

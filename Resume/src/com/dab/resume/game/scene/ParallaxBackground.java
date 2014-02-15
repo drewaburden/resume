@@ -10,7 +10,7 @@
  *      Handles drawing, compositing, and translation of the parallax for a Scene
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.scene;
+package com.dab.resume.game.scene;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

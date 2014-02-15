@@ -10,7 +10,7 @@
  *      Defines possible states for a Lifeform
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 public enum State {
 	IDLE, MOVING, HIT, ATTACKING, DEAD, OTHER

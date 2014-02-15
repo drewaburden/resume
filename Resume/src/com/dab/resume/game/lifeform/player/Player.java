@@ -10,20 +10,20 @@
  *      Defines the Player's game avatar and his or her graphics, sounds, and movement constituents.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform.player;
+package com.dab.resume.game.lifeform.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
-import com.dab.resume.screens.game.collision.BoundingBox;
-import com.dab.resume.screens.game.input.InputBridge;
-import com.dab.resume.screens.game.input.InputEvent;
-import com.dab.resume.screens.game.lifeform.*;
+import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.input.InputBridge;
+import com.dab.resume.game.input.InputEvent;
+import com.dab.resume.game.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
-import static com.dab.resume.screens.game.lifeform.AnimationFactory.AnimationType.ATTACK;
-import static com.dab.resume.screens.game.lifeform.AnimationFactory.AnimationType.IDLE;
+import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.ATTACK;
+import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.IDLE;
 
 public class Player extends Lifeform implements Observer {
 	private final PlayerAnimationFactory playerAnimationFactory = new PlayerAnimationFactory();

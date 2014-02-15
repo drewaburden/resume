@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.DebugFlags;
-import com.dab.resume.screens.game.GameScreen;
+import com.dab.resume.game.GameScreen;
 
 import java.io.File;
 import java.util.HashMap;

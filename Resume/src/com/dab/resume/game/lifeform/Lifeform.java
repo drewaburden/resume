@@ -10,13 +10,13 @@
  *      Defines an abstract Lifeform and its constituents
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
-import com.dab.resume.screens.game.collision.BoundingBox;
+import com.dab.resume.game.collision.BoundingBox;
 
-import static com.dab.resume.screens.game.lifeform.AnimationFactory.AnimationType.*;
+import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.*;
 
 public abstract class Lifeform {
 	public static enum LifeformType {

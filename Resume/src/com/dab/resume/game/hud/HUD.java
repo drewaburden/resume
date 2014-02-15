@@ -10,7 +10,7 @@
  *      Handles loading, initialization, and drawing of Sprites related to the heads up display
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.hud;
+package com.dab.resume.game.hud;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;

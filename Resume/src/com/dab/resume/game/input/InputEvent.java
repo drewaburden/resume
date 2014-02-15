@@ -10,7 +10,7 @@
  *
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.input;
+package com.dab.resume.game.input;
 
 public enum InputEvent {
 	PRESS_DEBUG_OPTIONS, PRESS_MOVE_RIGHT, PRESS_MOVE_LEFT, PRESS_ATTACK, PRESS_JUMP,

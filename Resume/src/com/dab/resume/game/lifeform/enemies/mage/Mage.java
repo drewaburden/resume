@@ -10,17 +10,17 @@
  *      Defines the Mage enemy and it's graphics, sounds, movement, and state machine constituents.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform.enemies.mage;
+package com.dab.resume.game.lifeform.enemies.mage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
-import com.dab.resume.screens.game.collision.BoundingBox;
-import com.dab.resume.screens.game.lifeform.Lifeform;
-import com.dab.resume.screens.game.lifeform.LifeformGraphics;
-import com.dab.resume.screens.game.lifeform.Direction;
+import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.lifeform.Lifeform;
+import com.dab.resume.game.lifeform.LifeformGraphics;
+import com.dab.resume.game.lifeform.Direction;
 
-import static com.dab.resume.screens.game.lifeform.AnimationFactory.AnimationType.IDLE;
+import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.IDLE;
 
 public class Mage extends Lifeform {
 	private final MageAnimationFactory mageAnimationFactory = new MageAnimationFactory();

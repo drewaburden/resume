@@ -11,7 +11,7 @@
  *      create a variably sized dialog with variable text.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.hud;
+package com.dab.resume.game.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

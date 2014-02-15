@@ -10,13 +10,11 @@
  *      Handles the drawing and tiling for the floor in a Scene
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.scene;
+package com.dab.resume.game.scene;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TilingFloor extends Sprite {
 	private Sprite mainTile, continuationTile;

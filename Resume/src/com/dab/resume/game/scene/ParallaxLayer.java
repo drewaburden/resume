@@ -11,7 +11,7 @@
  *      parallax compositing.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.scene;
+package com.dab.resume.game.scene;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

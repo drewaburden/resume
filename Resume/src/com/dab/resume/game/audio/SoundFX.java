@@ -10,7 +10,7 @@
  *      Handles loading, initialization, and playing of non-specific sound effects for the game
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.audio;
+package com.dab.resume.game.audio;
 
 public class SoundFX {
 	public static float VOLUME_MODIFIER = 0.25f;

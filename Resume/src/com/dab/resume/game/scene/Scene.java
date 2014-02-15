@@ -10,7 +10,7 @@
  *      Needs refactoring. Will update description later.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.scene;
+package com.dab.resume.game.scene;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,13 +22,12 @@ import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
-import com.dab.resume.screens.game.collision.BoundingBox;
-import com.dab.resume.screens.game.hud.Dialog;
-import com.dab.resume.screens.game.input.InputBridge;
-import com.dab.resume.screens.game.input.InputEvent;
-import com.dab.resume.screens.game.lifeform.Direction;
-import com.dab.resume.screens.game.lifeform.enemies.mage.Mage;
-import com.dab.resume.screens.game.lifeform.player.Player;
+import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.hud.Dialog;
+import com.dab.resume.game.input.InputEvent;
+import com.dab.resume.game.lifeform.Direction;
+import com.dab.resume.game.lifeform.enemies.mage.Mage;
+import com.dab.resume.game.lifeform.player.Player;
 
 public class Scene implements Observer {
 	// The ultimate boundaries of the scene where the player cannot walk beyond

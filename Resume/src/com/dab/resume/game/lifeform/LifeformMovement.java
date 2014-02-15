@@ -11,10 +11,10 @@
  *      Upon certain events, the class will notify observers.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 import com.dab.resume.events.Observable;
-import com.dab.resume.screens.game.scene.World;
+import com.dab.resume.game.scene.World;
 
 public class LifeformMovement extends Observable {
 	public float jumpTimeLimit = 0.5f; // How long the lifeform holding the jump button will affect the height of the jump

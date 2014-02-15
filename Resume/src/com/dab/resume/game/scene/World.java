@@ -10,7 +10,7 @@
  *      Defines constants for the game world
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.scene;
+package com.dab.resume.game.scene;
 
 public class World {
 	public static final float FLOOR = -75.0f;

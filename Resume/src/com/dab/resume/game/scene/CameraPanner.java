@@ -12,14 +12,14 @@
  *      locations to pre-defined bounding boxes.
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.scene;
+package com.dab.resume.game.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.debug.Log;
-import com.dab.resume.screens.game.collision.BoundingBox;
-import com.dab.resume.screens.game.lifeform.player.Player;
+import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.lifeform.player.Player;
 
 public class CameraPanner {
 	private static float PAN_TRIGGER_LEFT = 0.0f - TerminalGame.VIRTUAL_WIDTH * 0.05f -  72.0f/2.0f;

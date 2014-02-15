@@ -10,7 +10,7 @@
  *      Handles input from a game pad (Tested with a PS3 controller emulating an XBox360 controller)
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.input;
+package com.dab.resume.game.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
@@ -18,8 +18,6 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
-import com.dab.resume.screens.game.lifeform.Direction;
-import com.dab.resume.screens.game.scene.Scene;
 
 public class GamePadInput implements ControllerListener {
 	private InputBridge inputBridge;

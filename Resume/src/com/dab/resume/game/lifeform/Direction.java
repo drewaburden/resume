@@ -10,7 +10,7 @@
  *      Defines the possible directions that an entity can be facing
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 public enum Direction {
 	LEFT (false),

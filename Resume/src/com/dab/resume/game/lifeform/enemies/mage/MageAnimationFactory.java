@@ -10,15 +10,15 @@
  *      Loads, initializes, and serves Mage Animations
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform.enemies.mage;
+package com.dab.resume.game.lifeform.enemies.mage;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.assets.Assets;
-import com.dab.resume.screens.game.lifeform.Animation;
-import com.dab.resume.screens.game.lifeform.Direction;
+import com.dab.resume.game.lifeform.Animation;
+import com.dab.resume.game.lifeform.Direction;
 
-import static com.dab.resume.screens.game.lifeform.AnimationFactory.AnimationType;
+import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType;
 
 public class MageAnimationFactory {
 	private final float ANIM_RATE = 0.15f;

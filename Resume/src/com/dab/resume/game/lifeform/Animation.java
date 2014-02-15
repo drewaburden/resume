@@ -11,10 +11,9 @@
  *      based on it's Direction
  ********************************************************************************************************/
 
-package com.dab.resume.screens.game.lifeform;
+package com.dab.resume.game.lifeform;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.dab.resume.screens.game.lifeform.Direction;
 
 public class Animation extends com.badlogic.gdx.graphics.g2d.Animation {
 	Direction facing = Direction.RIGHT;

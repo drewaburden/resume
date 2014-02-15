@@ -18,13 +18,13 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.TerminalGame;
+import com.dab.resume.game.audio.Music;
 import com.dab.resume.game.hud.HUD;
 import com.dab.resume.game.input.GamePadInput;
 import com.dab.resume.game.input.InputBridge;
 import com.dab.resume.game.input.KeyboardInput;
-import com.dab.resume.game.scene.Scene;
 import com.dab.resume.game.lifeform.player.Player;
-import com.dab.resume.game.audio.Music;
+import com.dab.resume.game.scene.Scene;
 
 public class GameScreen implements Screen {
 	private OrthographicCamera camera;

@@ -16,9 +16,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
 import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.lifeform.Direction;
 import com.dab.resume.game.lifeform.Lifeform;
 import com.dab.resume.game.lifeform.LifeformGraphics;
-import com.dab.resume.game.lifeform.Direction;
 
 import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.IDLE;
 

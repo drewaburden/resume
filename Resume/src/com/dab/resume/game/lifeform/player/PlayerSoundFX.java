@@ -12,12 +12,12 @@
 
 package com.dab.resume.game.lifeform.player;
 
- import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Sound;
 import com.dab.resume.assets.Assets;
- import com.dab.resume.game.audio.SoundFX;
- import com.dab.resume.game.lifeform.LifeformSoundFX;
+import com.dab.resume.game.audio.SoundFX;
+import com.dab.resume.game.lifeform.LifeformSoundFX;
 
- import java.util.Random;
+import java.util.Random;
 
 public class PlayerSoundFX extends LifeformSoundFX {
 	Sound[] sword_swing;

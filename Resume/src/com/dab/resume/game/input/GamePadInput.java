@@ -3,7 +3,7 @@
  * File:        GamePadInput.java
  * Authors:     Drew Burden
  *
- * Copyright © 2013 Drew Burden
+ * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:

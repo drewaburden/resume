@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines an extension of the Rectangle class to be used specifically for collision detection
  ********************************************************************************************************/
 
 package com.dab.resume.game.collision;

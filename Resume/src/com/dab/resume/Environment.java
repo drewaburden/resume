@@ -7,7 +7,8 @@
  * All rights reserved.
  *
  * Description:
- *      Handles drawing of the environmental assets and any post processing
+ *      Handles drawing of the environmental assets not directly related to gameplay
+ *      and any post processing effects
  ********************************************************************************************************/
 
 package com.dab.resume;

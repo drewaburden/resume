@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Receives interpreted input from any of the valid sources and then handles them accordingly
  ********************************************************************************************************/
 
 package com.dab.resume.game.input;

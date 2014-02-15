@@ -8,7 +8,7 @@
  *
  * Description:
  *      Extension of the LibGDX Animation class that adds helper methods to flip the Animation
- *      based on it's Direction
+ *      based on its Direction
  ********************************************************************************************************/
 
 package com.dab.resume.game.lifeform;

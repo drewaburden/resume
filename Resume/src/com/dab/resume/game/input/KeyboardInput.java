@@ -3,11 +3,11 @@
  * File:        KeyboardInput.java
  * Authors:     Drew Burden
  *
- * Copyright © 2013 Drew Burden
+ * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:
- *      Handles input from the keyboard
+ *      Handles input from the keyboard (and mouse if needed)
  ********************************************************************************************************/
 
 package com.dab.resume.game.input;

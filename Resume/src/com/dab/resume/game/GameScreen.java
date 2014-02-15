@@ -3,11 +3,12 @@
  * File:        GameScreen.java
  * Authors:     Drew Burden
  *
- * Copyright © 2013 Drew Burden
+ * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:
- *
+ *      Creates, loads, and initializes assets and any instances of classes we need for the game
+ *      to run. This class also kind of acts as the MVC controller.
  ********************************************************************************************************/
 
 package com.dab.resume.game;
@@ -118,14 +119,9 @@ public class GameScreen implements Screen {
 	}
 
 	@Override public void resize(int width, int height) {}
-
 	@Override public void show() {}
-
 	@Override public void hide() {}
-
 	@Override public void pause() {}
-
 	@Override public void resume() {}
-
 	@Override public void dispose() {}
 }

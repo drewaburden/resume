@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines possible input actions
  ********************************************************************************************************/
 
 package com.dab.resume.game.input;

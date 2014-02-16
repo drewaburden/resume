@@ -16,6 +16,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
 import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.collision.CollisionEvent;
 import com.dab.resume.game.lifeform.Direction;
 import com.dab.resume.game.lifeform.Lifeform;
 import com.dab.resume.game.lifeform.LifeformGraphics;
@@ -34,7 +35,7 @@ public class Mage extends Lifeform {
 		hurtDelay = 0.5f;
 		direction = Direction.LEFT;
 		lifeformMovement.setPosX(125.0f);
-		boundingBox = new BoundingBox(lifeformMovement.getPosX()+16.0f, lifeformMovement.getPosY(), 24.0f, 50.0f);
+		boundingBox = new BoundingBox(lifeformMovement.getPosX()+16.0f, lifeformMovement.getPosY(), 24.0f, 50.0f, CollisionEvent.ENEMY);
 		healthMax = 2;
 		healthCurrent = healthMax;
 		animationFactory.setMageAnimationFactory(mageAnimationFactory);

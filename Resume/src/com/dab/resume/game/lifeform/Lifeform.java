@@ -15,6 +15,7 @@ package com.dab.resume.game.lifeform;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
 import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.collision.CollisionEvent;
 
 import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.*;
 
@@ -29,18 +30,16 @@ public abstract class Lifeform {
 	protected LifeformGraphics lifeformGraphics;
 	protected LifeformSoundFX lifeformSoundFX;
 	protected LifeformMovement lifeformMovement;
+	protected BoundingBox boundingBox;
 
 	protected float jumpTimeLimit = 0.5f; // How long the user holding the jump button will affect the height of the jump
-	protected float stepDelay = 0.324324f; // Time between step sounds (~185 bpm)
 	protected float attackDelay = 0.0f; // Time the user must wait in between attacks
 	protected float hurtDelay = 1.5f; // Time that must pass before getting hurt again
 
 	protected Direction direction = Direction.RIGHT;
 	protected State state = State.IDLE;
-	protected float deltaStepTime = stepDelay; // Time since last step
 	protected float deltaAttackTime = attackDelay; // Time since last attack
 	protected float deltaHurtTime = hurtDelay; // Time since last hurt
-	protected BoundingBox boundingBox;
 
 	protected int healthMax = 3, healthCurrent = healthMax;
 	protected int manaMax = 10, mana = manaMax;
@@ -50,7 +49,7 @@ public abstract class Lifeform {
 		this.lifeformType = lifeformType;
 		animationFactory = new AnimationFactory();
 		lifeformMovement = new LifeformMovement();
-		boundingBox = new BoundingBox(lifeformMovement.getPosX()+26.0f, lifeformMovement.getPosY(), 20.0f, 56.0f);
+		boundingBox = new BoundingBox(0.0f, 0.0f, 0.0f, 0.0f, CollisionEvent.UNDEF);
 	}
 
 	public abstract void initAssets();
@@ -61,21 +60,21 @@ public abstract class Lifeform {
 	public void updateMovement(float delta) {
 		float originalX = lifeformMovement.getPosX(), originalY = lifeformMovement.getPosY();
 		lifeformMovement.updateMovement(delta);
-		boundingBox.translate(lifeformMovement.getPosX() - originalX, lifeformMovement.getPosY() - originalY);
+		getBoundingBox().translate(lifeformMovement.getPosX() - originalX, lifeformMovement.getPosY() - originalY);
 	}
 	public void translate(float offsetX, float offsetY) {
 		this.setPosX(this.getPosX() + offsetX);
 		this.setPosY(this.getPosY() + offsetY);
 	}
 	public void setPosX(float newPosX) {
-		float boundingBoxOffset = boundingBox.getLeft() - lifeformMovement.getPosX();
+		float boundingBoxOffset = getBoundingBox().getLeft() - lifeformMovement.getPosX();
 		lifeformMovement.setPosX(newPosX);
-		boundingBox.setX(boundingBoxOffset + newPosX);
+		getBoundingBox().setX(boundingBoxOffset + newPosX);
 	}
 	public void setPosY(float newPosY) {
-		float boundingBoxOffset = lifeformMovement.getPosY() - boundingBox.getBottom();
+		float boundingBoxOffset = lifeformMovement.getPosY() - getBoundingBox().getBottom();
 		lifeformMovement.setPosY(newPosY);
-		boundingBox.setY(boundingBoxOffset + newPosY);
+		getBoundingBox().setY(boundingBoxOffset + newPosY);
 	}
 	public float getPosX() { return lifeformMovement.getPosX(); }
 	public float getPosY() { return lifeformMovement.getPosY(); }
@@ -141,8 +140,6 @@ public abstract class Lifeform {
 		state = State.DEAD;
 		lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, DEATH));
 		lifeformGraphics.stopFlashing();
-		//lifeformMovement.stopXForce();
-		//lifeformMovement.stopYForce();
 		healthCurrent = 0;
 	}
 

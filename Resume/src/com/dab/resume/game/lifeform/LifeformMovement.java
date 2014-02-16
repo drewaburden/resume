@@ -23,7 +23,9 @@ public class LifeformMovement extends Observable {
 	public float jumpAccelerationY = 400.0f, jumpInitialVelocityY = 850.0f;
 	public float moveAccelerationX = 450.0f, moveDecelerationX = 500.0f, moveMaxSpeedX = 150.0f;
 	public Direction direction = Direction.RIGHT;
+	public float stepDelay = 0.324324f; // Time between step sounds (~185 bpm)
 
+	protected float deltaStepTime; // Time since last step
 	private boolean y_movement = false, x_movement = false;
 	private boolean y_force = false, x_force = false;
 	private float accelerationY;
@@ -46,6 +48,14 @@ public class LifeformMovement extends Observable {
 	 ************/
 	private void updateXMovement(final float delta) {
 		if (x_movement) {
+			if (isOnGround()) {
+				deltaStepTime += delta;
+				if (deltaStepTime >= stepDelay) {
+					stepped();
+					deltaStepTime = 0.0f;
+				}
+			}
+
 			applyAccelerationX(delta);
 			applyDecelerationX(delta);
 			if (isStopped()) {
@@ -56,6 +66,7 @@ public class LifeformMovement extends Observable {
 		}
 	}
 	public void move(Direction direction) {
+		deltaStepTime += 0.0f;
 		accelerationX = moveAccelerationX;
 		decelerationX = moveDecelerationX;
 		maxSpeedX = moveMaxSpeedX;
@@ -179,6 +190,7 @@ public class LifeformMovement extends Observable {
 	}
 	public void jump() {
 		if (!y_movement) {
+			deltaStepTime += 0.0f;
 			accelerationY = jumpAccelerationY;
 			velocityY = jumpInitialVelocityY;
 			elapAirTime = 0.0f;
@@ -189,4 +201,5 @@ public class LifeformMovement extends Observable {
 	public boolean isOnGround() { return (posY == World.FLOOR && !y_force); }
 	private void landed() { notifyObservers(MovementEvent.LANDED); }
 	private void finishedHurtBounce() { notifyObservers(MovementEvent.DONE_HURTING); }
+	private void stepped() { notifyObservers(MovementEvent.STEPPED); }
 }

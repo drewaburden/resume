@@ -15,7 +15,12 @@ package com.dab.resume.game.collision;
 import com.badlogic.gdx.math.Rectangle;
 
 public class BoundingBox extends Rectangle {
-	public BoundingBox(float x, float y, float width, float height) { super(x, y, width, height); }
+	CollisionEvent type;
+
+	public BoundingBox(float x, float y, float width, float height, CollisionEvent type) {
+		super(x, y, width, height);
+		this.type = type;
+	}
 
 	public float getRight() { return this.getX() + this.getWidth(); }
 	public float getLeft() { return this.getX(); }
@@ -25,4 +30,6 @@ public class BoundingBox extends Rectangle {
 	public void translate(float offsetX, float offsetY) {
 		this.setPosition(this.getX() + offsetX, this.getY() + offsetY);
 	}
+
+	public CollisionEvent getCollisionType() { return type; }
 }

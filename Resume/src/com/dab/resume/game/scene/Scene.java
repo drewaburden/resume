@@ -23,17 +23,20 @@ import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.collision.CollisionEvent;
 import com.dab.resume.game.hud.Dialog;
 import com.dab.resume.game.input.InputEvent;
 import com.dab.resume.game.lifeform.Direction;
 import com.dab.resume.game.lifeform.enemies.mage.Mage;
 import com.dab.resume.game.lifeform.player.Player;
 
+import static com.dab.resume.game.collision.CollisionEvent.BLOCKING;
+
 public class Scene implements Observer {
 	// The ultimate boundaries of the scene where the player cannot walk beyond
-	private BoundingBox playerBounds = new BoundingBox(-200.0f, -1000.0f, 2000.0f, 2000.0f);
+	private BoundingBox playerBounds = new BoundingBox(-200.0f, -1000.0f, 2000.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
-	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 1675.0f, 2000.0f);
+	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 1675.0f, 2000.0f, BLOCKING);
 
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;

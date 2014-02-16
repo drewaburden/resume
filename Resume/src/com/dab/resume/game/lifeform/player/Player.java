@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.game.collision.BoundingBox;
+import com.dab.resume.game.collision.CollisionEvent;
 import com.dab.resume.game.input.InputBridge;
 import com.dab.resume.game.input.InputEvent;
 import com.dab.resume.game.lifeform.*;
@@ -33,6 +34,7 @@ public class Player extends Lifeform implements Observer {
 		super(LifeformType.PLAYER);
 		animationFactory.setPlayerAnimationFactory(playerAnimationFactory);
 		lifeformMovement.registerObserver(this);
+		boundingBox = new BoundingBox(lifeformMovement.getPosX()+26.0f, lifeformMovement.getPosY(), 20.0f, 56.0f, CollisionEvent.PLAYER);
 	}
 
 	public void initAssets() {
@@ -63,7 +65,8 @@ public class Player extends Lifeform implements Observer {
 	}
 
 	public BoundingBox getAttackBoundingBox() {
-		BoundingBox collAttack = new BoundingBox(lifeformMovement.getPosX(), lifeformMovement.getPosY()+40.0f-16.0f, 16.0f, 16.0f);
+		BoundingBox collAttack = new BoundingBox(lifeformMovement.getPosX(), lifeformMovement.getPosY()+40.0f-16.0f,
+				16.0f, 16.0f, CollisionEvent.ATTACK);
 		if (direction == Direction.RIGHT) {
 			collAttack.setX(lifeformMovement.getPosX() + 72.0f - collAttack.width);
 		}
@@ -77,63 +80,6 @@ public class Player extends Lifeform implements Observer {
 
 		updateMovement(delta);
 
-		/*if (y_movement) {
-			if (y_force) {
-				elapJumpTime += delta;
-				if (elapJumpTime >= jumpTimeLimit) {
-					elapJumpTime = 0.0f;
-					y_force = false;
-				}
-				velocityY += jumpAcceleration * delta;
-			}
-
-			this.translate(0.0f, velocityY * delta); // Apply force
-			velocityY -= World.GRAVITY * delta; // Apply deceleration
-
-			this.setPosY(Math.max(posY - (World.GRAVITY * delta), World.FLOOR)); // Apply gravity
-			if (posY == World.FLOOR && !y_force) {
-				y_movement = false;
-				y_force = false;
-				lifeformSoundFX.playJumpLandSound();
-				recheckInput();
-			}
-		}
-		if (x_movement) {
-			// Step sound
-			deltaStepTime += delta;
-			if (!y_movement && deltaStepTime >= stepDelay && !isAttacking()) {
-				lifeformSoundFX.playStepSound();
-				// We set this to zero instead of subtracting STEP_TIME, because we don't want to
-				// end up playing a ton of step sounds overlapped if there's a framerate drop.
-				deltaStepTime = 0.0f;
-			}
-
-			// Acceleration
-			if (x_force) {
-				if (direction == Direction.RIGHT) {
-					velocityX = Math.min(velocityX + moveAcceleration * delta, maxSpeedX);
-				}
-				else {
-					velocityX = Math.max(velocityX - moveAcceleration * delta, -maxSpeedX);
-				}
-			}
-			// Deceleration. Make the player slide very slightly when he/she stops
-			else if (!y_movement && !x_force) {
-				if (direction == Direction.RIGHT) {
-					velocityX = Math.max(velocityX - decelerationX * delta, 0.0f);
-				}
-				else {
-					velocityX = Math.min(velocityX + decelerationX * delta, 0.0f);
-				}
-			}
-
-			if (velocityX == 0.0f) {
-				x_movement = false;
-				x_force = false;
-				recheckInput();
-			}
-			this.translate(velocityX * delta, 0.0f);
-		}*/
 		if (isAttacking()) {
 			if (lifeformGraphics.isCurrentAnimationDone()) {
 				stopAllActions();
@@ -168,6 +114,7 @@ public class Player extends Lifeform implements Observer {
 			Log.log();
 			MovementEvent event = (MovementEvent) data;
 			switch (event) {
+				case STEPPED: lifeformSoundFX.playStepSound(); break;
 				case LANDED: lifeformSoundFX.playJumpLandSound(); recheckInput(); break;
 				case DONE_HURTING: if (isAlive()) recheckInput();
 				default: assert(false);
@@ -183,6 +130,9 @@ public class Player extends Lifeform implements Observer {
 				case RELEASE_JUMP: stopYForce(); break;
 				case PRESS_ATTACK: attack(); break;
 			}
+		}
+		else if (data instanceof com.dab.resume.game.collision.CollisionEvent) {
+
 		}
 	}
 }

@@ -21,8 +21,11 @@ import com.dab.resume.collision.CollisionEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.Lifeform;
 import com.dab.resume.lifeform.LifeformGraphics;
+import com.dab.resume.lifeform.State;
 
+import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
 import static com.dab.resume.GameState.State.PLAYING;
+import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_LIGHTNING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
 
 public class Mage extends Lifeform {
@@ -49,6 +52,16 @@ public class Mage extends Lifeform {
 		lifeformGraphics = new LifeformGraphics(animationFactory.getAnimation(this.lifeformType, IDLE));
 	}
 
+	public void attack() {
+		if (canAttack()) {
+			Log.log();
+			state = State.ATTACKING;
+			deltaAttackTime = 0.0f;
+			lifeformGraphics.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL);
+			//lifeformSoundFX.playLightning();
+		}
+	}
+
 	public void draw(SpriteBatch spriteBatch) {
 		if (GameState.getGameState() == PLAYING) {
 			final float delta = Gdx.graphics.getDeltaTime();
@@ -56,7 +69,7 @@ public class Mage extends Lifeform {
 
 			if (deltaHurtTime >= 6.0f) {
 				deltaHurtTime = 0.0f;
-				move(Direction.LEFT);
+				attack();
 			}
 
 			updateMovement(delta);

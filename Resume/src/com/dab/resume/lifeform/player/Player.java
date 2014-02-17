@@ -25,7 +25,7 @@ import com.dab.resume.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
 import static com.dab.resume.GameState.State.PLAYING;
-import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK;
+import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_SWORD;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
 
 public class Player extends Lifeform implements Observer {
@@ -61,7 +61,7 @@ public class Player extends Lifeform implements Observer {
 			Log.log();
 			state = State.ATTACKING;
 			deltaAttackTime = 0.0f;
-			lifeformGraphics.playAnimation(playerAnimationFactory.getAnimation(ATTACK), NORMAL);
+			lifeformGraphics.playAnimation(playerAnimationFactory.getAnimation(ATTACK_SWORD), NORMAL);
 			lifeformSoundFX.playSwordSwing();
 		}
 	}

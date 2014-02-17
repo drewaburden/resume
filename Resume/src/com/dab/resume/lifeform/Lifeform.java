@@ -17,11 +17,12 @@ import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
+import com.dab.resume.events.Observable;
 
 import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.*;
 
-public abstract class Lifeform {
+public abstract class Lifeform extends Observable {
 	public static enum LifeformType {
 		PLAYER, MAGE
 	}
@@ -125,7 +126,7 @@ public abstract class Lifeform {
 		}
 	}
 	public void hurt(int damage, Direction damagedSide) {
-		if (canChangeStates() && deltaHurtTime >= hurtDelay) {
+		if (isAlive() && deltaHurtTime >= hurtDelay) {
 			Log.log();
 			deltaHurtTime = 0.0f;
 			healthCurrent -= damage;
@@ -142,7 +143,7 @@ public abstract class Lifeform {
 	public void die() {
 		Log.log();
 		state = State.DEAD;
-		lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, DEATH));
+		lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, DEATH), Animation.NORMAL);
 		lifeformGraphics.stopFlashing();
 		healthCurrent = 0;
 	}

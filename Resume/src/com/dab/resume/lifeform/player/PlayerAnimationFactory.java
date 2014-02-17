@@ -74,7 +74,7 @@ public class PlayerAnimationFactory {
 			case MOVE: return animMove;
 			case JUMP: return animIdle;
 			case BLOCK: return animIdle;
-			case ATTACK: return animAttack;
+			case ATTACK_SWORD: return animAttack;
 			case DEATH: return animIdle;
 			default: return animIdle;
 		}

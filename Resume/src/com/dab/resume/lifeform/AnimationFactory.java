@@ -17,7 +17,7 @@ import com.dab.resume.lifeform.player.PlayerAnimationFactory;
 
 public class AnimationFactory {
 	public static enum AnimationType {
-		IDLE, MOVE, JUMP, BLOCK, HURT, ATTACK, FIREBALL, DEATH
+		IDLE, MOVE, JUMP, BLOCK, HURT, ATTACK_SWORD, ATTACK_LIGHTNING, FIREBALL, DEATH
 	}
 
 	PlayerAnimationFactory playerAnimationFactory = new PlayerAnimationFactory();

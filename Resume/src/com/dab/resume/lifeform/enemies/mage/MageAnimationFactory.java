@@ -15,14 +15,14 @@ package com.dab.resume.lifeform.enemies.mage;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.assets.Assets;
-import com.dab.resume.lifeform.Animation;
+import com.dab.resume.lifeform.LifeformAnimation;
 import com.dab.resume.lifeform.Direction;
 
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType;
 
 public class MageAnimationFactory {
 	private final float ANIM_RATE = 0.15f;
-	private Animation animIdle, animMove, animAttack_lightning, animDeath;
+	private LifeformAnimation animIdle, animMove, animAttack_lightning, animDeath;
 
 	public MageAnimationFactory() {
 		Assets.getInstance().load("game/chars/mage-idle.png", Texture.class);
@@ -42,7 +42,7 @@ public class MageAnimationFactory {
 				index++;
 			}
 		}
-		animIdle = new Animation(ANIM_RATE*1.25f, frames, Direction.LEFT);
+		animIdle = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
 
 		texture = Assets.getInstance().get("game/chars/mage-move.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -55,7 +55,7 @@ public class MageAnimationFactory {
 				index++;
 			}
 		}
-		animMove = new Animation(ANIM_RATE*1.25f, frames, Direction.LEFT);
+		animMove = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
 
 		texture = Assets.getInstance().get("game/chars/mage-attack-lightning.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -68,7 +68,7 @@ public class MageAnimationFactory {
 				index++;
 			}
 		}
-		animAttack_lightning = new Animation(ANIM_RATE*1.0f, frames, Direction.LEFT);
+		animAttack_lightning = new LifeformAnimation(ANIM_RATE*1.0f, frames, Direction.LEFT);
 
 		texture = Assets.getInstance().get("game/chars/mage-death.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -81,10 +81,10 @@ public class MageAnimationFactory {
 				index++;
 			}
 		}
-		animDeath = new Animation(ANIM_RATE*1.0f, frames, Direction.LEFT);
+		animDeath = new LifeformAnimation(ANIM_RATE*1.0f, frames, Direction.LEFT);
 	}
 
-	public Animation getAnimation(AnimationType animation) {
+	public LifeformAnimation getAnimation(AnimationType animation) {
 		switch (animation) {
 			case IDLE: return animIdle;
 			case MOVE: return animMove;

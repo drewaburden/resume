@@ -1,6 +1,6 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        Animation.java
+ * File:        LifeformAnimation.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
@@ -15,10 +15,10 @@ package com.dab.resume.lifeform;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Animation extends com.badlogic.gdx.graphics.g2d.Animation {
+public class LifeformAnimation extends com.badlogic.gdx.graphics.g2d.Animation {
 	Direction facing = Direction.RIGHT;
 
-	public Animation(float frameDuration, TextureRegion[] keyFrames, Direction facing) {
+	public LifeformAnimation(float frameDuration, TextureRegion[] keyFrames, Direction facing) {
 		super(frameDuration, keyFrames);
 
 		this.facing = facing;

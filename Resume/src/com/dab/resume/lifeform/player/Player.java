@@ -28,32 +28,34 @@ import static com.dab.resume.GameState.State.GAMEOVER;
 import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_SWORD;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
+import static com.dab.resume.lifeform.SoundFactory.*;
 
 public class Player extends Lifeform implements Observer {
 	private final PlayerAnimationFactory playerAnimationFactory = new PlayerAnimationFactory();
-	private final PlayerSoundFX lifeformSoundFX = new PlayerSoundFX();
+	private final PlayerSoundFactory playerSoundFactory = new PlayerSoundFactory();
 
 	public Player() {
 		super(LifeformType.PLAYER);
-		animationFactory.setPlayerAnimationFactory(playerAnimationFactory);
 		lifeformMovement.registerObserver(this);
 		boundingBox = new BoundingBox(lifeformMovement.getPosX()+26.0f, lifeformMovement.getPosY(), 20.0f, 56.0f, CollisionEvent.PLAYER);
+		animationFactory.setPlayerAnimationFactory(playerAnimationFactory);
+		soundFactory.setPlayerSoundFactory(playerSoundFactory);
 	}
 
 	public void initAssets() {
 		Log.log();
 		playerAnimationFactory.initAssets();
-		lifeformGraphics = new LifeformGraphics(animationFactory.getAnimation(this.lifeformType, IDLE));
-		lifeformSoundFX.initAssets();
+		playerSoundFactory.initAssets();
+		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, IDLE));
 	}
 	public void jump() {
 		if (canChangeStates() && lifeformMovement.isOnGround()) {
 			Log.log();
 			lifeformMovement.jump();
 			if (!isAttacking()) {
-				lifeformGraphics.playAnimation(playerAnimationFactory.getAnimation(IDLE));
+				animationManager.playAnimation(playerAnimationFactory.getAnimation(IDLE));
 			}
-			lifeformSoundFX.playJumpSound();
+			soundManager.playSound(playerSoundFactory.getSound(SoundType.JUMP));
 			state = State.MOVING;
 		}
 	}
@@ -62,8 +64,8 @@ public class Player extends Lifeform implements Observer {
 			Log.log();
 			state = State.ATTACKING;
 			deltaAttackTime = 0.0f;
-			lifeformGraphics.playAnimation(playerAnimationFactory.getAnimation(ATTACK_SWORD), NORMAL);
-			lifeformSoundFX.playSwordSwing();
+			animationManager.playAnimation(playerAnimationFactory.getAnimation(ATTACK_SWORD), NORMAL);
+			soundManager.playSound(playerSoundFactory.getSound(SoundType.ATTACK_SWORD));
 		}
 	}
 
@@ -91,7 +93,7 @@ public class Player extends Lifeform implements Observer {
 			updateMovement(delta);
 
 			if (isAttacking()) {
-				if (lifeformGraphics.isCurrentAnimationDone()) {
+				if (animationManager.isCurrentAnimationDone()) {
 					stopAllActions();
 					recheckInput();
 				}
@@ -106,7 +108,7 @@ public class Player extends Lifeform implements Observer {
 		}
 
 		// Draw the lifeform's animation
-		lifeformGraphics.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
+		animationManager.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
 	}
 
 	public void recheckInput() {
@@ -125,9 +127,16 @@ public class Player extends Lifeform implements Observer {
 			Log.log();
 			MovementEvent event = (MovementEvent) data;
 			switch (event) {
-				case STEPPED: lifeformSoundFX.playStepSound(); break;
-				case LANDED: lifeformSoundFX.playJumpLandSound(); recheckInput(); break;
-				case DONE_HURTING: if (isAlive()) recheckInput();
+				case STEPPED: soundManager.playSound(playerSoundFactory.getSound(SoundType.MOVE)); break;
+				case LANDED:
+					soundManager.playSound(playerSoundFactory.getSound(SoundType.LANDED));
+					recheckInput();
+					break;
+				case DONE_HURTING:
+					if (isAlive()) {
+						recheckInput();
+					}
+					break;
 				default: assert(false);
 			}
 		}

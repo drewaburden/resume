@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *      Loads, initializes, and serves Mage Animations
+ *      Loads, initializes, and serves Player Animations
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform.player;
@@ -15,14 +15,14 @@ package com.dab.resume.lifeform.player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.assets.Assets;
-import com.dab.resume.lifeform.Animation;
+import com.dab.resume.lifeform.LifeformAnimation;
 import com.dab.resume.lifeform.Direction;
 
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType;
 
 public class PlayerAnimationFactory {
 	private final float ANIM_RATE = 0.15f;
-	private Animation animIdle, animMove, animAttack;
+	private LifeformAnimation animIdle, animMove, animAttack;
 
 	public PlayerAnimationFactory() {
 		Assets.getInstance().load("game/chars/player-idle.png", Texture.class);
@@ -41,7 +41,7 @@ public class PlayerAnimationFactory {
 				index++;
 			}
 		}
-		animIdle = new Animation(ANIM_RATE, frames, Direction.RIGHT);
+		animIdle = new LifeformAnimation(ANIM_RATE, frames, Direction.RIGHT);
 		texture = Assets.getInstance().get("game/chars/player-move.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		tmp = TextureRegion.split(texture, texture.getWidth() / 12, texture.getHeight());
@@ -53,7 +53,7 @@ public class PlayerAnimationFactory {
 				index++;
 			}
 		}
-		animMove = new Animation(ANIM_RATE, frames, Direction.RIGHT);
+		animMove = new LifeformAnimation(ANIM_RATE, frames, Direction.RIGHT);
 		texture = Assets.getInstance().get("game/chars/player-attack.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		tmp = TextureRegion.split(texture, texture.getWidth() / 5, texture.getHeight());
@@ -65,10 +65,10 @@ public class PlayerAnimationFactory {
 				index++;
 			}
 		}
-		animAttack = new Animation(ANIM_RATE*0.4f, frames, Direction.RIGHT);
+		animAttack = new LifeformAnimation(ANIM_RATE*0.4f, frames, Direction.RIGHT);
 	}
 
-	public Animation getAnimation(AnimationType animation) {
+	public LifeformAnimation getAnimation(AnimationType animation) {
 		switch (animation) {
 			case IDLE: return animIdle;
 			case MOVE: return animMove;

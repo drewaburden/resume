@@ -23,7 +23,7 @@ public class AnimationFactory {
 	PlayerAnimationFactory playerAnimationFactory = new PlayerAnimationFactory();
 	MageAnimationFactory mageAnimationFactory = new MageAnimationFactory();
 
-	public Animation getAnimation(Lifeform.LifeformType type, AnimationType animation) {
+	public LifeformAnimation getAnimation(Lifeform.LifeformType type, AnimationType animation) {
 		switch (type) {
 			case PLAYER: return playerAnimationFactory.getAnimation(animation);
 			case MAGE: return mageAnimationFactory.getAnimation(animation);

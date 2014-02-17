@@ -1,6 +1,6 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        LifeformGraphics.java
+ * File:        LifeformAnimationManager.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
@@ -19,9 +19,9 @@ import com.dab.resume.GameState;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.LOOP;
 
-public class LifeformGraphics {
+public class LifeformAnimationManager {
 	protected float animTime = 0.0f; // How long an animation has been playing. Determines which frame to display.
-	protected Animation animCurrent;
+	protected LifeformAnimation animCurrent;
 
 	protected boolean isFlashing = false;
 	public float flashDelay = 0.1f; // Time between hurt flashes
@@ -32,15 +32,15 @@ public class LifeformGraphics {
 
 	private TextureRegion currentFrame;
 
-	public LifeformGraphics(Animation animInit) {
+	public LifeformAnimationManager(LifeformAnimation animInit) {
 		animCurrent = animInit;
 		playAnimation(animCurrent);
 	}
 
-	public void playAnimation(Animation animation) { playAnimation(animation, getCurrentFacing(), LOOP); }
-	public void playAnimation(Animation animation, Direction direction) { playAnimation(animation, direction, LOOP); }
-	public void playAnimation(Animation animation, final int playMode) { playAnimation(animation, getCurrentFacing(), playMode); }
-	public void playAnimation(Animation animation, Direction direction, final int playMode) {
+	public void playAnimation(LifeformAnimation animation) { playAnimation(animation, getCurrentFacing(), LOOP); }
+	public void playAnimation(LifeformAnimation animation, Direction direction) { playAnimation(animation, direction, LOOP); }
+	public void playAnimation(LifeformAnimation animation, final int playMode) { playAnimation(animation, getCurrentFacing(), playMode); }
+	public void playAnimation(LifeformAnimation animation, Direction direction, final int playMode) {
 		animTime = 0.0f;
 		// Make sure the animation is facing the correct direction
 		if (animation.getDirection() != direction) animation.flipHorizontal();

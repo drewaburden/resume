@@ -20,7 +20,8 @@ import com.dab.resume.collision.CollisionEvent;
 import com.dab.resume.events.Observable;
 
 import static com.dab.resume.GameState.State.PLAYING;
-import static com.dab.resume.lifeform.AnimationFactory.AnimationType.*;
+import static com.dab.resume.lifeform.AnimationFactory.*;
+import static com.dab.resume.lifeform.SoundFactory.*;
 
 public abstract class Lifeform extends Observable {
 	public static enum LifeformType {
@@ -29,9 +30,10 @@ public abstract class Lifeform extends Observable {
 
 	protected LifeformType lifeformType;
 	protected AnimationFactory animationFactory;
+	protected SoundFactory soundFactory;
 
-	protected LifeformGraphics lifeformGraphics;
-	protected LifeformSoundFX lifeformSoundFX;
+	protected LifeformAnimationManager animationManager;
+	protected LifeformSoundManager soundManager;
 	protected LifeformMovement lifeformMovement;
 	protected BoundingBox boundingBox;
 
@@ -51,6 +53,8 @@ public abstract class Lifeform extends Observable {
 	public Lifeform(LifeformType lifeformType) {
 		this.lifeformType = lifeformType;
 		animationFactory = new AnimationFactory();
+		soundManager = new LifeformSoundManager();
+		soundFactory = new SoundFactory();
 		lifeformMovement = new LifeformMovement();
 		boundingBox = new BoundingBox(0.0f, 0.0f, 0.0f, 0.0f, CollisionEvent.UNDEF);
 	}
@@ -90,7 +94,7 @@ public abstract class Lifeform extends Observable {
 			Log.log();
 			if (lifeformMovement.isOnGround()) {
 				this.direction = direction;
-				lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, MOVE), direction);
+				animationManager.playAnimation(animationFactory.getAnimation(lifeformType, AnimationType.MOVE), direction);
 			}
 			state = State.MOVING;
 			lifeformMovement.move(direction);
@@ -122,7 +126,7 @@ public abstract class Lifeform extends Observable {
 		if (canChangeStates()) {
 			Log.log();
 			state = State.IDLE;
-			lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, IDLE));
+			animationManager.playAnimation(animationFactory.getAnimation(lifeformType, AnimationType.IDLE));
 		}
 	}
 	public void hurt(int damage, Direction damagedSide) {
@@ -130,21 +134,22 @@ public abstract class Lifeform extends Observable {
 			Log.log();
 			deltaHurtTime = 0.0f;
 			healthCurrent -= damage;
-			lifeformGraphics.startFlashing();
+			animationManager.startFlashing();
 			lifeformMovement.hurtBounce(damagedSide.invert());
 			if (healthCurrent <= 0) {
 				die();
 			}
 			else {
-				//lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, HURT));
+				//animationManager.playAnimation(animationFactory.getAnimation(lifeformType, HURT));
 			}
 		}
 	}
 	public void die() {
 		Log.log();
 		state = State.DEAD;
-		lifeformGraphics.playAnimation(animationFactory.getAnimation(lifeformType, DEATH), Animation.NORMAL);
-		lifeformGraphics.stopFlashing();
+		animationManager.playAnimation(animationFactory.getAnimation(lifeformType, AnimationType.DEATH), LifeformAnimation.NORMAL);
+		animationManager.stopFlashing();
+		soundManager.playSound(soundFactory.getSound(lifeformType, SoundType.DEATH));
 		healthCurrent = 0;
 	}
 

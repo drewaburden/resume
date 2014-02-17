@@ -1,6 +1,6 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        LifeformSoundFX.java
+ * File:        LifeformSoundManager.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
@@ -12,5 +12,12 @@
 
 package com.dab.resume.lifeform;
 
-public abstract class LifeformSoundFX {
+import com.dab.resume.audio.SoundFX;
+
+public class LifeformSoundManager {
+
+	public void playSound(LifeformSound sound) {
+		long id = sound.stream.play();
+		sound.stream.setVolume(id, SoundFX.VOLUME_MODIFIER * sound.volume);
+	}
 }

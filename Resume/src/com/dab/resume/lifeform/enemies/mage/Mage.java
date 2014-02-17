@@ -18,10 +18,7 @@ import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
-import com.dab.resume.lifeform.Direction;
-import com.dab.resume.lifeform.Lifeform;
-import com.dab.resume.lifeform.LifeformGraphics;
-import com.dab.resume.lifeform.State;
+import com.dab.resume.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
 import static com.dab.resume.GameState.State.PLAYING;
@@ -30,6 +27,7 @@ import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
 
 public class Mage extends Lifeform {
 	private final MageAnimationFactory mageAnimationFactory = new MageAnimationFactory();
+	private final MageSoundFactory mageSoundFactory = new MageSoundFactory();
 
 	public Mage() {
 		super(LifeformType.MAGE);
@@ -44,12 +42,14 @@ public class Mage extends Lifeform {
 		healthMax = 2;
 		healthCurrent = healthMax;
 		animationFactory.setMageAnimationFactory(mageAnimationFactory);
+		soundFactory.setMageSoundFactory(mageSoundFactory);
 	}
 
 	public void initAssets() {
 		Log.log();
 		mageAnimationFactory.initAssets();
-		lifeformGraphics = new LifeformGraphics(animationFactory.getAnimation(this.lifeformType, IDLE));
+		mageSoundFactory.initAssets();
+		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, IDLE));
 	}
 
 	public void attack() {
@@ -57,8 +57,8 @@ public class Mage extends Lifeform {
 			Log.log();
 			state = State.ATTACKING;
 			deltaAttackTime = 0.0f;
-			lifeformGraphics.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL);
-			//lifeformSoundFX.playLightning();
+			animationManager.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL);
+			//soundManager.playLightning();
 		}
 	}
 
@@ -74,7 +74,7 @@ public class Mage extends Lifeform {
 
 			updateMovement(delta);
 
-			if (isAttacking() && lifeformGraphics.isCurrentAnimationDone()) {
+			if (isAttacking() && animationManager.isCurrentAnimationDone()) {
 				stopAllActions();
 			}
 			else {
@@ -83,6 +83,6 @@ public class Mage extends Lifeform {
 		}
 
 		// Draw the lifeform's animation
-		lifeformGraphics.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
+		animationManager.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
 	}
 }

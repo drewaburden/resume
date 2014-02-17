@@ -1,25 +1,25 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        PlayerSoundFX.java
+ * File:        PlayerSoundFactory.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:
- *      Load, initializes, and plays the Player's sound effects
+ *      Loads, initializes, and serves Player Sounds
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform.player;
 
 import com.badlogic.gdx.audio.Sound;
 import com.dab.resume.assets.Assets;
-import com.dab.resume.audio.SoundFX;
-import com.dab.resume.lifeform.LifeformSoundFX;
+import com.dab.resume.lifeform.LifeformSound;
+import com.dab.resume.lifeform.SoundFactory;
 
 import java.util.Random;
 
-public class PlayerSoundFX extends LifeformSoundFX {
+public class PlayerSoundFactory {
 	Sound[] sword_swing;
 	Sound[] step;
 	Sound jump;
@@ -29,7 +29,7 @@ public class PlayerSoundFX extends LifeformSoundFX {
 	int lastStepSound = -1;
 	int lastJumpLandSound = -1;
 
-	public PlayerSoundFX() {
+	public PlayerSoundFactory() {
 		Assets.getInstance().load("game/sounds/sword-swing0.ogg", Sound.class);
 		Assets.getInstance().load("game/sounds/sword-swing1.ogg", Sound.class);
 		Assets.getInstance().load("game/sounds/sword-swing2.ogg", Sound.class);
@@ -44,14 +44,7 @@ public class PlayerSoundFX extends LifeformSoundFX {
 		Assets.getInstance().load("game/sounds/step5.ogg", Sound.class);
 		Assets.getInstance().load("game/sounds/step6.ogg", Sound.class);
 		Assets.getInstance().load("game/sounds/step7.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step8.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step9.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step10.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step11.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step12.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step13.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/step14.ogg", Sound.class);
-		step = new Sound[15];
+		step = new Sound[8];
 
 		Assets.getInstance().load("game/sounds/jump0.ogg", Sound.class);
 		Assets.getInstance().load("game/sounds/jump-land0.ogg", Sound.class);
@@ -72,50 +65,49 @@ public class PlayerSoundFX extends LifeformSoundFX {
 		step[5] = Assets.getInstance().get("game/sounds/step5.ogg");
 		step[6] = Assets.getInstance().get("game/sounds/step6.ogg");
 		step[7] = Assets.getInstance().get("game/sounds/step7.ogg");
-		step[8] = Assets.getInstance().get("game/sounds/step8.ogg");
-		step[9] = Assets.getInstance().get("game/sounds/step9.ogg");
-		step[10] = Assets.getInstance().get("game/sounds/step10.ogg");
-		step[11] = Assets.getInstance().get("game/sounds/step11.ogg");
-		step[12] = Assets.getInstance().get("game/sounds/step12.ogg");
-		step[13] = Assets.getInstance().get("game/sounds/step13.ogg");
-		step[14] = Assets.getInstance().get("game/sounds/step14.ogg");
 
 		jump = Assets.getInstance().get("game/sounds/jump0.ogg");
 		jump_land[0] = Assets.getInstance().get("game/sounds/jump-land0.ogg");
 		jump_land[1] = Assets.getInstance().get("game/sounds/jump-land1.ogg");
 	}
 
-	public void playSwordSwing() {
+	public LifeformSound getSound(SoundFactory.SoundType sound) {
+		switch (sound) {
+			case ATTACK_SWORD: return getSwordSwingSound();
+			case MOVE: return getStepSound();
+			case JUMP: return getJumpSound();
+			case LANDED: return getJumpLandSound();
+			default: throw new IllegalArgumentException("That sound does not exist");
+		}
+	}
+
+	public LifeformSound getSwordSwingSound() {
 		int soundIndex = new Random().nextInt(3);
 		while (soundIndex == lastSwordSwingSound) {
 			soundIndex = new Random().nextInt(3);
 		}
-		long id = sword_swing[soundIndex].play();
-		sword_swing[soundIndex].setVolume(id, SoundFX.VOLUME_MODIFIER);
 		lastSwordSwingSound = soundIndex;
+		return new LifeformSound(sword_swing[soundIndex], 1.0f);
 	}
 
-	public void playStepSound() {
+	public LifeformSound getStepSound() {
 		int soundIndex = new Random().nextInt(8);
 		while (soundIndex == lastStepSound) {
 			soundIndex = new Random().nextInt(8);
 		}
-		long id = step[soundIndex].play();
-		step[soundIndex].setVolume(id, SoundFX.VOLUME_MODIFIER);
 		lastStepSound = soundIndex;
+		return new LifeformSound(step[soundIndex], 0.8f);
 	}
 
-	public void playJumpSound() {
-		long id = jump.play();
-		jump.setVolume(id, SoundFX.VOLUME_MODIFIER * 0.5f);
+	public LifeformSound getJumpSound() {
+		return new LifeformSound(jump, 0.5f);
 	}
-	public void playJumpLandSound() {
+	public LifeformSound getJumpLandSound() {
 		int soundIndex = new Random().nextInt(2);
 		while (soundIndex == lastJumpLandSound) {
 			soundIndex = new Random().nextInt(2);
 		}
-		long id = jump_land[soundIndex].play();
-		jump_land[soundIndex].setVolume(id, SoundFX.VOLUME_MODIFIER * 0.5f);
 		lastJumpLandSound = soundIndex;
+		return new LifeformSound(jump_land[soundIndex], 0.5f);
 	}
 }

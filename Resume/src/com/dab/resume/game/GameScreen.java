@@ -17,7 +17,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.GameState;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.game.audio.Music;
 import com.dab.resume.game.hud.HUD;
@@ -31,10 +33,12 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	private OrthographicCamera staticCamera;
 	private SpriteBatch spriteBatch;
+	private PauseOverlay pauseOverlay;
 
 	private InputBridge inputBridge;
 	private KeyboardInput keyboardInput;
 	private GamePadInput gamePadInput;
+	private BitmapFont commonFont;
 	private Scene scene;
 
 	private Music gameMusic;
@@ -45,6 +49,12 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		staticCamera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		spriteBatch = new SpriteBatch();
+
+		/**************
+		 * Load commonly used font
+		 **************/
+		commonFont = new BitmapFont(Gdx.files.internal("fonts/fixedsys.fnt"));
+		commonFont.setScale(1.0f);
 
 		/**************
 		 * Load general textures and player
@@ -68,6 +78,9 @@ public class GameScreen implements Screen {
 		inputBridge = new InputBridge();
 		keyboardInput = new KeyboardInput(inputBridge); // Mouse, keyboard, touch input
 		gamePadInput = new GamePadInput(inputBridge); // Controller input
+
+		// Pause overlay
+		pauseOverlay = new PauseOverlay(commonFont);
 	}
 
 	// Initialization
@@ -111,9 +124,15 @@ public class GameScreen implements Screen {
 		 * Static assets
 		 *************/
 		spriteBatch.setProjectionMatrix(staticCamera.combined);
-		// HUD
-		gameHud.setFilledHearts(player.getHealth());
-		gameHud.draw(spriteBatch);
+
+		if (GameState.getGameState() == GameState.State.PAUSED) {
+			pauseOverlay.draw(spriteBatch);
+		}
+		else {
+			// HUD
+			gameHud.setFilledHearts(player.getHealth());
+			gameHud.draw(spriteBatch);
+		}
 
 		spriteBatch.end();
 	}
@@ -121,7 +140,9 @@ public class GameScreen implements Screen {
 	@Override public void resize(int width, int height) {}
 	@Override public void show() {}
 	@Override public void hide() {}
-	@Override public void pause() {}
+	@Override public void pause() {
+		GameState.setGameState(GameState.State.PAUSED);
+	}
 	@Override public void resume() {}
 	@Override public void dispose() {}
 }

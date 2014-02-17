@@ -15,6 +15,7 @@ package com.dab.resume.game.lifeform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.dab.resume.GameState;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.LOOP;
 
@@ -28,6 +29,8 @@ public class LifeformGraphics {
 	public float flashOnTime = 0.1f; // Time for the flash to stay rendered
 	protected float elapFlashTime = 0.0f; // Elapsed time of the hurt flash
 	public float totalTimeToFlash = 1.5f; // Total time to hurt flash
+
+	private TextureRegion currentFrame;
 
 	public LifeformGraphics(Animation animInit) {
 		animCurrent = animInit;
@@ -55,27 +58,30 @@ public class LifeformGraphics {
 	}
 
 	public void draw(SpriteBatch spriteBatch, float posX, float posY) {
-		float delta = Gdx.graphics.getDeltaTime();
+		if (GameState.getGameState() == GameState.State.PLAYING) {
+			float delta = Gdx.graphics.getDeltaTime();
 
-		animTime += delta;
+			animTime += delta;
 
-		TextureRegion currentFrame = animCurrent.getKeyFrame(animTime);
-		if (isFlashing) {
-			elapFlashTime += delta;
-			deltaFlashTime += delta;
-			if (deltaFlashTime >= flashDelay) {
-				spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.5f);
-				if (deltaFlashTime >= flashDelay+flashOnTime) {
-					deltaFlashTime = 0.0f;
+			currentFrame = animCurrent.getKeyFrame(animTime);
+			if (isFlashing) {
+				elapFlashTime += delta;
+				deltaFlashTime += delta;
+				if (deltaFlashTime >= flashDelay) {
+					spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.5f);
+					if (deltaFlashTime >= flashDelay+flashOnTime) {
+						deltaFlashTime = 0.0f;
+						spriteBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+					}
+				}
+				if (elapFlashTime >= totalTimeToFlash) {
+					stopFlashing();
 					spriteBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 				}
 			}
-			if (elapFlashTime >= totalTimeToFlash) {
-				stopFlashing();
-				spriteBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			}
 		}
 
+		// Draw the frame
 		spriteBatch.draw(currentFrame, posX, posY);
 		spriteBatch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}

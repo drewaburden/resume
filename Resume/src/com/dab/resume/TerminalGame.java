@@ -88,7 +88,7 @@ public class TerminalGame extends Game {
 
 	@Override
 	public void render() {
-		if (assetsLoaded) {
+		if (GameState.getGameState() != GameState.State.LOADING) {
 			/*********
 			 * Asset monitoring
 			 *********/
@@ -130,7 +130,7 @@ public class TerminalGame extends Game {
 							}
 						}
 					}
-					if (!assetsLoaded) {
+					if (GameState.getGameState() == GameState.State.LOADING) {
 						return;
 					}
 				}
@@ -147,7 +147,7 @@ public class TerminalGame extends Game {
 			}
 			// If the assets have finally loaded, initialize the assets, and eventually start rendering.
 			else {
-				assetsLoaded = true;
+				GameState.setGameState(GameState.State.PLAYING);
 				initialize();
 			}
 		}

@@ -14,6 +14,7 @@ package com.dab.resume.game.lifeform.enemies.mage;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
 import com.dab.resume.game.collision.BoundingBox;
 import com.dab.resume.game.collision.CollisionEvent;
@@ -21,6 +22,7 @@ import com.dab.resume.game.lifeform.Direction;
 import com.dab.resume.game.lifeform.Lifeform;
 import com.dab.resume.game.lifeform.LifeformGraphics;
 
+import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.IDLE;
 
 public class Mage extends Lifeform {
@@ -48,21 +50,23 @@ public class Mage extends Lifeform {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		final float delta = Gdx.graphics.getDeltaTime();
-		deltaHurtTime += delta;
+		if (GameState.getGameState() == PLAYING) {
+			final float delta = Gdx.graphics.getDeltaTime();
+			deltaHurtTime += delta;
 
-		if (deltaHurtTime >= 6.0f) {
-			deltaHurtTime = 0.0f;
-			move(Direction.LEFT);
-		}
+			if (deltaHurtTime >= 6.0f) {
+				deltaHurtTime = 0.0f;
+				move(Direction.LEFT);
+			}
 
-		updateMovement(delta);
+			updateMovement(delta);
 
-		if (isAttacking() && lifeformGraphics.isCurrentAnimationDone()) {
-			stopAllActions();
-		}
-		else {
-			deltaAttackTime += delta;
+			if (isAttacking() && lifeformGraphics.isCurrentAnimationDone()) {
+				stopAllActions();
+			}
+			else {
+				deltaAttackTime += delta;
+			}
 		}
 
 		// Draw the lifeform's animation

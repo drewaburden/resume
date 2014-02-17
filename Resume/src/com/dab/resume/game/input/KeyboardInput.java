@@ -57,7 +57,7 @@ public class KeyboardInput implements InputProcessor {
 			inputBridge.jumpPressed();
 		}
 		else if (keycode == ESCAPE) {
-			Gdx.app.exit();
+			inputBridge.pauseButtonPressed();
 		}
 		else if (keycode == GRAVE) {
 			inputBridge.debugOptionsPressed();

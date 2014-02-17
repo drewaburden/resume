@@ -42,7 +42,7 @@ public class GamePadInput implements ControllerListener {
 		 * TEMPORARY/DEBUG
 		 *********************/
 		else if (buttonCode == Xbox360Pad.BUTTON_START) {
-			Gdx.app.exit();
+			inputBridge.pauseButtonPressed();
 		}
 		else if (buttonCode == Xbox360Pad.BUTTON_BACK) {
 			inputBridge.debugOptionsPressed();

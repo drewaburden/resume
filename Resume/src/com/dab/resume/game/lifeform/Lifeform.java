@@ -13,10 +13,12 @@
 package com.dab.resume.game.lifeform;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
 import com.dab.resume.game.collision.BoundingBox;
 import com.dab.resume.game.collision.CollisionEvent;
 
+import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.*;
 
 public abstract class Lifeform {
@@ -58,9 +60,11 @@ public abstract class Lifeform {
 	 * Movement
 	 ***********/
 	public void updateMovement(float delta) {
-		float originalX = lifeformMovement.getPosX(), originalY = lifeformMovement.getPosY();
-		lifeformMovement.updateMovement(delta);
-		getBoundingBox().translate(lifeformMovement.getPosX() - originalX, lifeformMovement.getPosY() - originalY);
+		if (GameState.getGameState() == PLAYING) {
+			float originalX = lifeformMovement.getPosX(), originalY = lifeformMovement.getPosY();
+			lifeformMovement.updateMovement(delta);
+			getBoundingBox().translate(lifeformMovement.getPosX() - originalX, lifeformMovement.getPosY() - originalY);
+		}
 	}
 	public void translate(float offsetX, float offsetY) {
 		this.setPosX(this.getPosX() + offsetX);

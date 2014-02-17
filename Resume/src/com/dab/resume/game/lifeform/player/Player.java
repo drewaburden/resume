@@ -14,6 +14,7 @@ package com.dab.resume.game.lifeform.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.game.collision.BoundingBox;
@@ -23,6 +24,7 @@ import com.dab.resume.game.input.InputEvent;
 import com.dab.resume.game.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
+import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.ATTACK;
 import static com.dab.resume.game.lifeform.AnimationFactory.AnimationType.IDLE;
 
@@ -75,23 +77,25 @@ public class Player extends Lifeform implements Observer {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		final float delta = Gdx.graphics.getDeltaTime();
-		deltaHurtTime += delta;
+		if (GameState.getGameState() == PLAYING) {
+			final float delta = Gdx.graphics.getDeltaTime();
+			deltaHurtTime += delta;
 
-		updateMovement(delta);
+			updateMovement(delta);
 
-		if (isAttacking()) {
-			if (lifeformGraphics.isCurrentAnimationDone()) {
-				stopAllActions();
-				recheckInput();
+			if (isAttacking()) {
+				if (lifeformGraphics.isCurrentAnimationDone()) {
+					stopAllActions();
+					recheckInput();
+				}
+				else {
+					// If the player is running on the ground and attacking, slow them down a lot (but not completely)
+					lifeformMovement.attackSlowDown(delta);
+				}
 			}
 			else {
-				// If the player is running on the ground and attacking, slow them down a lot (but not completely)
-				lifeformMovement.attackSlowDown(delta);
+				deltaAttackTime += delta;
 			}
-		}
-		else {
-			deltaAttackTime += delta;
 		}
 
 		// Draw the lifeform's animation

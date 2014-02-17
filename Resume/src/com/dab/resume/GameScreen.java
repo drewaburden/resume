@@ -32,6 +32,7 @@ public class GameScreen implements Screen {
 	private OrthographicCamera staticCamera;
 	private SpriteBatch spriteBatch;
 	private PauseOverlay pauseOverlay;
+	private GameoverOverlay gameoverOverlay;
 
 	private InputBridge inputBridge;
 	private KeyboardInput keyboardInput;
@@ -77,8 +78,11 @@ public class GameScreen implements Screen {
 		keyboardInput = new KeyboardInput(inputBridge); // Mouse, keyboard, touch input
 		gamePadInput = new GamePadInput(inputBridge); // Controller input
 
-		// Pause overlay
+		/**************
+		 * Gameover overlay
+		 **************/
 		pauseOverlay = new PauseOverlay(commonFont);
+		gameoverOverlay = new GameoverOverlay(commonFont);
 	}
 
 	// Initialization
@@ -125,6 +129,9 @@ public class GameScreen implements Screen {
 
 		if (GameState.getGameState() == GameState.State.PAUSED) {
 			pauseOverlay.draw(spriteBatch);
+		}
+		else if (GameState.getGameState() == GameState.State.GAMEOVER) {
+			gameoverOverlay.draw(spriteBatch);
 		}
 		else {
 			// HUD

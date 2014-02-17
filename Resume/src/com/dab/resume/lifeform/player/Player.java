@@ -24,6 +24,7 @@ import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
+import static com.dab.resume.GameState.State.GAMEOVER;
 import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_SWORD;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
@@ -74,6 +75,12 @@ public class Player extends Lifeform implements Observer {
 		}
 
 		return collAttack;
+	}
+
+	@Override
+	public void die() {
+		super.die();
+		GameState.setGameState(GAMEOVER);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {

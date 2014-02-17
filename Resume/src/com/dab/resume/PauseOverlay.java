@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Handles drawing the overlay of the game screen when the GameState is set to paused
  ********************************************************************************************************/
 
 package com.dab.resume;
@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.dab.resume.TerminalGame;
 
 public class PauseOverlay {
 	private BitmapFont font;

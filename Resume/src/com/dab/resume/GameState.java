@@ -7,7 +7,8 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines and handles overall states of the game that affect the flow
+ *      of the game.
  ********************************************************************************************************/
 
 package com.dab.resume;

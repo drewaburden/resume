@@ -38,11 +38,10 @@ public class TerminalGame extends Game {
 
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
-	private boolean assetsLoaded = false;
-
 	private Environment environment;
-
 	private GameScreen gameScreen;
+
+	private boolean windowHasFocus = true;
 
 	@Override
 	public void create() {
@@ -62,8 +61,6 @@ public class TerminalGame extends Game {
 		 * Load game
 		 ***************/
 		gameScreen = new GameScreen();
-
-		this.setScreen(gameScreen);
 	}
 
 	// Initialization
@@ -82,6 +79,7 @@ public class TerminalGame extends Game {
 		/**************
 		 * Begin first render
 		 ***************/
+		this.setScreen(gameScreen);
 		renderAssets();
 	}
 
@@ -116,7 +114,7 @@ public class TerminalGame extends Game {
 								// feature but it's not really worth the time.
 								Assets.getInstance().unload(filename);
 								Assets.getInstance().load(filename, asset_type);
-								assetsLoaded = false;
+								GameState.setGameState(GameState.State.LOADING);
 							}
 							else {
 								asset_modification_times.remove(filename);
@@ -146,7 +144,12 @@ public class TerminalGame extends Game {
 			}
 			// If the assets have finally loaded, initialize the assets, and eventually start rendering.
 			else {
-				GameState.setGameState(GameState.State.PLAYING);
+				if (windowHasFocus) {
+					GameState.setGameState(GameState.State.PLAYING);
+				}
+				else {
+					GameState.setGameState(GameState.State.PAUSED);
+				}
 				initialize();
 			}
 		}
@@ -174,5 +177,17 @@ public class TerminalGame extends Game {
 		environment.drawColorGrade(spriteBatch);
 
 		spriteBatch.end();
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+		windowHasFocus = false;
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		windowHasFocus = true;
 	}
 }

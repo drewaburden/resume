@@ -18,7 +18,8 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.hud.Dialog;
 
-import static com.dab.resume.GameState.State.*;
+import static com.dab.resume.GameState.State.PAUSED;
+import static com.dab.resume.GameState.State.PLAYING;
 
 public class InputBridge extends Observable {
 	public void debugOptionsPressed() {

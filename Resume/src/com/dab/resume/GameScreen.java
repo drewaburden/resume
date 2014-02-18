@@ -146,7 +146,10 @@ public class GameScreen implements Screen {
 	@Override public void show() {}
 	@Override public void hide() {}
 	@Override public void pause() {
-		GameState.setGameState(GameState.State.PAUSED);
+		// Pause if the window loses focus. But only if we aren't loading assets. Loading trumps everything.
+		if (GameState.getGameState() != GameState.State.LOADING) {
+			GameState.setGameState(GameState.State.PAUSED);
+		}
 	}
 	@Override public void resume() {}
 	@Override public void dispose() {}

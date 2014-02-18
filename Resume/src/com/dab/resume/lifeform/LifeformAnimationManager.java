@@ -46,6 +46,7 @@ public class LifeformAnimationManager {
 		if (animation.getDirection() != direction) animation.flipHorizontal();
 		animCurrent = animation;
 		animCurrent.setPlayMode(playMode);
+		currentFrame = animCurrent.getKeyFrame(animTime);
 	}
 	public boolean isCurrentAnimationDone() { return animCurrent.isAnimationFinished(animTime); }
 	public Direction getCurrentFacing() { return animCurrent.getDirection(); }

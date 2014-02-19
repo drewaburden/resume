@@ -35,9 +35,9 @@ import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
 public class Scene implements Observer {
 	// The ultimate boundaries of the scene where the player cannot walk beyond
-	private BoundingBox playerBounds = new BoundingBox(-200.0f, -1000.0f, 2500.0f, 2000.0f, BLOCKING);
+	private BoundingBox playerBounds = new BoundingBox(-200.0f, -1000.0f, 3000.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
-	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2175.0f, 2000.0f, BLOCKING);
+	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2675.0f, 2000.0f, BLOCKING);
 
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
@@ -61,9 +61,11 @@ public class Scene implements Observer {
 		Assets.getInstance().load("game/environments/scene1-backgrass.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-backgrass2.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-fog.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-trees-distant.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-tree1.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-tree2.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-trunk1.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-trunk2.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-forest-fog.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-mountain-back.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-mountain-mid.png", Texture.class);
@@ -109,6 +111,12 @@ public class Scene implements Observer {
 		/***************
 		 * Trees
 		 ***************/
+		texture = Assets.getInstance().get("game/environments/scene1-trees-distant.png");
+		sprite = new Sprite(texture);
+		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 575.0f, camera.position.y - sprite.getHeight()/2.0f + -8.0f);
+		layer = new ParallaxLayer(-4.75f);
+		layer.addSprite(sprite);
+		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-tree1.png");
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 650.0f, camera.position.y - sprite.getHeight()/2.0f + 25.0f);
@@ -133,6 +141,24 @@ public class Scene implements Observer {
 		layer = new ParallaxLayer(-3.0f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
+		texture = Assets.getInstance().get("game/environments/scene1-trunk2.png");
+		sprite = new Sprite(texture);
+		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 800.0f, camera.position.y - sprite.getHeight()/2.0f + 60.0f);
+		layer = new ParallaxLayer(-2.75f);
+		layer.addSprite(sprite);
+		background.addLayer(layer);
+		texture = Assets.getInstance().get("game/environments/scene1-tree1.png");
+		sprite = new Sprite(texture);
+		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 550.0f, camera.position.y - sprite.getHeight()/2.0f + 50.0f);
+		layer = new ParallaxLayer(-2.5f);
+		layer.addSprite(sprite);
+		background.addLayer(layer);
+		texture = Assets.getInstance().get("game/environments/scene1-trunk1.png");
+		sprite = new Sprite(texture);
+		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 1000.0f, camera.position.y - sprite.getHeight()/2.0f + 75.0f);
+		layer = new ParallaxLayer(-2.5f);
+		layer.addSprite(sprite);
+		background.addLayer(layer);
 
 		texture = Assets.getInstance().get("game/environments/scene1-forest-fog.png");
 		sprite = new Sprite(texture);
@@ -151,6 +177,12 @@ public class Scene implements Observer {
 		layer.addSprite(back_grass2);
 		background.addLayer(layer);
 
+		texture = Assets.getInstance().get("game/environments/scene1-trunk2.png");
+		sprite = new Sprite(texture);
+		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 700.0f, camera.position.y - sprite.getHeight()/2.0f + 110.0f);
+		layer = new ParallaxLayer(-2.5f);
+		layer.addSprite(sprite);
+		background.addLayer(layer);
 
 		texture = Assets.getInstance().get("game/environments/scene1-trunk1.png");
 		sprite = new Sprite(texture);
@@ -185,6 +217,8 @@ public class Scene implements Observer {
 		 * Foreground camera
 		 ************/
 		spriteBatch.setProjectionMatrix(camera.combined);
+		// Rain
+		rain.draw(spriteBatch);
 		// Foreground floor
 		floor.draw(spriteBatch);
 		// Enemies
@@ -204,7 +238,6 @@ public class Scene implements Observer {
 
 		rain.translate(lastTranslateAmount, 0.0f);
 		rain.updateSound(Gdx.graphics.getDeltaTime());
-		rain.draw(spriteBatch);
 
 		// Debug
 		renderCollisionDebug(spriteBatch);

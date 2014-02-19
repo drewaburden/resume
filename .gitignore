@@ -48,3 +48,6 @@ out/
 
 #Reaper
 *.reapeaks
+
+#Libraries
+*.jar

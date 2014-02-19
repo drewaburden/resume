@@ -21,6 +21,7 @@ import com.dab.resume.collision.CollisionEvent;
 import com.dab.resume.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
+import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_LIGHTNING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
@@ -63,7 +64,7 @@ public class Mage extends Lifeform {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		if (GameState.getGameState() == PLAYING) {
+		if (GameState.getGameState() != PAUSED) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 

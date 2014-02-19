@@ -139,7 +139,7 @@ public class Dialog {
 		/**************
 		 * Font
 		 **************/
-		font = new BitmapFont(Gdx.files.internal("fonts/fixedsys.fnt"));
+		font = new BitmapFont(Gdx.files.internal("fonts/font.fnt"));
 		font.setScale(1.0f);
 	}
 

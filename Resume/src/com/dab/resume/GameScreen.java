@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
 		/**************
 		 * Load commonly used font
 		 **************/
-		commonFont = new BitmapFont(Gdx.files.internal("fonts/fixedsys.fnt"));
+		commonFont = new BitmapFont(Gdx.files.internal("fonts/font.fnt"));
 		commonFont.setScale(1.0f);
 
 		/**************

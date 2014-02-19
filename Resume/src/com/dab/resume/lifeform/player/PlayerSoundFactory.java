@@ -77,6 +77,7 @@ public class PlayerSoundFactory {
 			case MOVE: return getStepSound();
 			case JUMP: return getJumpSound();
 			case LANDED: return getJumpLandSound();
+			case DEATH: return getStepSound(); // TEMPORARY
 			default: throw new IllegalArgumentException("That sound does not exist");
 		}
 	}

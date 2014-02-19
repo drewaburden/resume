@@ -59,7 +59,7 @@ public class LifeformAnimationManager {
 	}
 
 	public void draw(SpriteBatch spriteBatch, float posX, float posY) {
-		if (GameState.getGameState() == GameState.State.PLAYING) {
+		if (GameState.getGameState() != GameState.State.PAUSED) {
 			float delta = Gdx.graphics.getDeltaTime();
 
 			animTime += delta;

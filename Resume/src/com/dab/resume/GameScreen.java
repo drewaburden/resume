@@ -79,7 +79,7 @@ public class GameScreen implements Screen {
 		gamePadInput = new GamePadInput(inputBridge); // Controller input
 
 		/**************
-		 * Gameover overlay
+		 * Overlays
 		 **************/
 		pauseOverlay = new PauseOverlay(commonFont);
 		gameoverOverlay = new GameoverOverlay(commonFont);
@@ -110,6 +110,12 @@ public class GameScreen implements Screen {
 		Controllers.addListener(gamePadInput);
 		inputBridge.registerObserver(player);
 		inputBridge.registerObserver(scene);
+
+		/**************
+		 * Overlays
+		 **************/
+		pauseOverlay.initAssets();
+		gameoverOverlay.initAssets();
 	}
 
 	@Override

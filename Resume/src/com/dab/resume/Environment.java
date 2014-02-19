@@ -30,7 +30,7 @@ public class Environment {
 		TextureLoader.TextureParameter texparams = new TextureLoader.TextureParameter();
 		texparams.genMipMaps = true;
 		Assets.getInstance().load("scene/environment.png", Texture.class, texparams);
-		Assets.getInstance().load("scene/colorgrade.png", Texture.class, texparams);
+		Assets.getInstance().load("colors/colorgrade.png", Texture.class, texparams);
 		Assets.getInstance().load("monitor/glare.png", Texture.class, texparams);
 		Assets.getInstance().load("monitor/glow.png", Texture.class, texparams);
 	}
@@ -40,7 +40,7 @@ public class Environment {
 		Texture texture = Assets.getInstance().get("scene/environment.png");
 		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
 		environment = new Sprite(texture);
-		texture = Assets.getInstance().get("scene/colorgrade.png");
+		texture = Assets.getInstance().get("colors/colorgrade.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		colorgrade = new Sprite(texture);
 		texture = Assets.getInstance().get("monitor/glare.png");

@@ -12,6 +12,7 @@
 
 package com.dab.resume.scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,6 +29,7 @@ import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
 import com.dab.resume.lifeform.player.Player;
+import com.dab.resume.scene.scene1.Rain;
 
 import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
@@ -44,6 +46,7 @@ public class Scene implements Observer {
 	private TilingFloor floor, back_grass, back_grass2;
 	private ParallaxBackground background;
 	private Dialog dialog1;
+	private Rain rain;
 
 	public Scene(OrthographicCamera camera, Player player) {
 		this.camera = camera;
@@ -53,6 +56,7 @@ public class Scene implements Observer {
 		mage = new Mage();
 		float dialogWidth = 250.0f, dialogHeight = 176.0f;
 		dialog1 = new Dialog(0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
+		rain = new Rain();
 		Assets.getInstance().load("game/environments/scene1-floor.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-backgrass.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-backgrass2.png", Texture.class);
@@ -165,6 +169,8 @@ public class Scene implements Observer {
 		texture = Assets.getInstance().get("game/environments/scene1-floor.png");
 		floor = new TilingFloor(texture);
 		floor.setPosition(camera.position.x - floor.getTileWidth()/2.0f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
+
+		rain.initAssets();
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
@@ -195,6 +201,10 @@ public class Scene implements Observer {
 		back_grass.update();
 		back_grass2.update();
 		floor.update();
+
+		rain.translate(lastTranslateAmount, 0.0f);
+		rain.updateSound(Gdx.graphics.getDeltaTime());
+		rain.draw(spriteBatch);
 
 		// Debug
 		renderCollisionDebug(spriteBatch);

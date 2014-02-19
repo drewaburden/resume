@@ -17,7 +17,6 @@ import com.dab.resume.audio.SoundFX;
 public class LifeformSoundManager {
 
 	public void playSound(LifeformSound sound) {
-		long id = sound.stream.play();
-		sound.stream.setVolume(id, SoundFX.VOLUME_MODIFIER * sound.volume);
+		sound.stream.play(SoundFX.VOLUME_MODIFIER * sound.volume);
 	}
 }

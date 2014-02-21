@@ -44,9 +44,9 @@ public class GameoverOverlay {
 
 		// Text
 		font.setColor(0.15f, 0.85f, 0.4f, 1.0f);
-		String pauseText = "GAME OVER";
-		BitmapFont.TextBounds textBounds = font.getBounds(pauseText);
-		font.draw(spriteBatch, pauseText, 0.0f - textBounds.width/2.0f,
+		String gameoverText = "GAME OVER";
+		BitmapFont.TextBounds textBounds = font.getBounds(gameoverText);
+		font.draw(spriteBatch, gameoverText, 0.0f - textBounds.width/2.0f,
 				0.0f + textBounds.height/2.0f + 30.0f);
 	}
 }

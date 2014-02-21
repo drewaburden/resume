@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GLCommon;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.DebugFlags;
@@ -38,6 +39,7 @@ public class TerminalGame extends Game {
 
 	private OrthographicCamera camera;
 	private SpriteBatch spriteBatch;
+	private BitmapFont commonFont;
 	private Environment environment;
 	private GameScreen gameScreen;
 
@@ -50,6 +52,13 @@ public class TerminalGame extends Game {
 		camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
 		spriteBatch = new SpriteBatch();
+
+		/**************
+		 * Load commonly used font
+		 **************/
+		commonFont = new BitmapFont(Gdx.files.internal("fonts/font.fnt"));
+		commonFont.setScale(1.0f);
+		Assets.getInstance().finishLoading();
 
 		/**************
 		 * Load textures
@@ -141,6 +150,16 @@ public class TerminalGame extends Game {
 			// If the assets aren't loaded yet, don't start rendering assets yet.
 			if (Assets.getInstance().getProgress() < 1) {
 				Assets.getInstance().update();
+				
+				// Display loading text
+				spriteBatch.begin();
+				spriteBatch.setProjectionMatrix(camera.combined);
+				commonFont.setColor(0.15f, 0.85f, 0.4f, 1.0f);
+				String loadingText = "LOADING";
+				BitmapFont.TextBounds textBounds = commonFont.getBounds(loadingText);
+				commonFont.draw(spriteBatch, loadingText, 0.0f - textBounds.width/2.0f,
+						0.0f + textBounds.height/2.0f + 30.0f);
+				spriteBatch.end();
 			}
 			// If the assets have finally loaded, initialize the assets, and eventually start rendering.
 			else {

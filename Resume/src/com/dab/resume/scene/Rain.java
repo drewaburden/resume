@@ -10,7 +10,7 @@
  *      Handles graphics and sounds of Scene1's rain
  ********************************************************************************************************/
 
-package com.dab.resume.scene.scene1;
+package com.dab.resume.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -21,9 +21,9 @@ import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 
 public class Rain {
-	private Sound rain;
+	private Sound rainSound;
 	private long rainPlayingId; // After the sound starts, we can modify its volume using the id assigned to this.
-	private final float rainTargetVolume = 0.75f, fadeInTime = 4.0f;
+	private float rainTargetVolume = 0.75f, fadeInTime = 4.0f;
 	private float deltaVolumeChange = 0.0f; // Time passed since we started fading in the volume
 	private boolean paused = false;
 
@@ -36,18 +36,27 @@ public class Rain {
 	private final float rainVelocityX_back = -125.0f, rainVelocityY_back = -125.0f;
 	private final float rainVelocityX_fore = -200.0f, rainVelocityY_fore = -200.0f;
 
-	public Rain() {
+	private boolean playerInside;
+
+	public Rain() { this(false); }
+	public Rain(boolean playerInside) {
 		Assets.getInstance().load("game/environments/scene1-rain-background.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-rain-foreground.png", Texture.class);
 		Assets.getInstance().load("game/sounds/rain-loop.ogg", Sound.class);
+		this.playerInside = playerInside;
 	}
 
 	public void initAssets() {
 		rainBackground = Assets.getInstance().get("game/environments/scene1-rain-background.png");
 		rainForeground = Assets.getInstance().get("game/environments/scene1-rain-foreground.png");
 
-		rain = Assets.getInstance().get("game/sounds/rain-loop.ogg");
-		rainPlayingId = rain.loop(0.0f);
+		rainSound = Assets.getInstance().get("game/sounds/rain-loop.ogg");
+		rainPlayingId = rainSound.loop(0.0f);
+		if (playerInside) {
+			rainSound.setPitch(rainPlayingId, 0.5f);
+			rainTargetVolume = 0.65f;
+			fadeInTime = 2.5f;
+		}
 	}
 
 	public void translate(float amountX, float amountY) {
@@ -60,11 +69,11 @@ public class Rain {
 		 * Fade in sound and handle pausing
          ****************************/
 		if (!paused && GameState.getGameState() == GameState.State.PAUSED) {
-			rain.pause(rainPlayingId);
+			rainSound.pause(rainPlayingId);
 			paused = true;
 		}
 		else if (paused && GameState.getGameState() != GameState.State.PAUSED) {
-			rain.resume(rainPlayingId);
+			rainSound.resume(rainPlayingId);
 			paused = false;
 		}
 
@@ -72,7 +81,7 @@ public class Rain {
 		if (!paused && deltaVolumeChange < fadeInTime) {
 			// Calculate percentage of total volume to set based upon the time-passed/overall-time ratio.
 			deltaVolumeChange += delta;
-			rain.setVolume(rainPlayingId, rainTargetVolume * deltaVolumeChange / fadeInTime);
+			rainSound.setVolume(rainPlayingId, rainTargetVolume * deltaVolumeChange / fadeInTime);
 		}
 	}
 

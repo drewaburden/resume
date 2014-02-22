@@ -191,6 +191,7 @@ public class TerminalGame extends Game {
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		// Environment
+		if (!DebugFlags.DEV_SHOW_BOUNDINGBOXES)
 		environment.drawBackground(spriteBatch);
 		// Color grading
 		environment.drawColorGrade(spriteBatch);

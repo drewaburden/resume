@@ -10,7 +10,7 @@
  *      Needs refactoring. Will update description later.
  ********************************************************************************************************/
 
-package com.dab.resume.scene;
+package com.dab.resume.scene.scene1;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,7 +30,7 @@ import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
 import com.dab.resume.lifeform.player.Player;
-import com.dab.resume.scene.scene1.Rain;
+import com.dab.resume.scene.*;
 
 import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
@@ -173,8 +173,8 @@ public class Scene implements Observer {
 		 * Grass
 		 ***************/
 		texture = Assets.getInstance().get("game/environments/scene1-backgrass2.png");
-		back_grass2 = new TilingFloor(texture);
-		back_grass2.setPosition(camera.position.x - back_grass2.getTileWidth()/2.0f, camera.position.y - back_grass2.getTileHeight()/2.0f - 42.0f);
+		back_grass2 = new TilingFloor(texture, 3);
+		back_grass2.setPosition(camera.position.x - back_grass2.getTileWidth()*2.5f, camera.position.y - back_grass2.getTileHeight()/2.0f - 42.0f);
 		layer = new ParallaxLayer(-2.25f);
 		layer.addSprite(back_grass2);
 		background.addLayer(layer);
@@ -195,14 +195,14 @@ public class Scene implements Observer {
 
 
 		texture = Assets.getInstance().get("game/environments/scene1-backgrass.png");
-		back_grass = new TilingFloor(texture);
-		back_grass.setPosition(camera.position.x - back_grass.getTileWidth()/2.0f, camera.position.y - back_grass.getTileHeight()/2.0f - 34.0f);
+		back_grass = new TilingFloor(texture, 3);
+		back_grass.setPosition(camera.position.x - back_grass.getTileWidth()*2.5f, camera.position.y - back_grass.getTileHeight()/2.0f - 34.0f);
 		layer = new ParallaxLayer(-1.5f);
 		layer.addSprite(back_grass);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-floor.png");
-		floor = new TilingFloor(texture);
-		floor.setPosition(camera.position.x - floor.getTileWidth()/2.0f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
+		floor = new TilingFloor(texture, 3);
+		floor.setPosition(camera.position.x - floor.getTileWidth()*2.55f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
 
 		rain.initAssets();
 	}

@@ -25,7 +25,8 @@ import com.dab.resume.input.GamePadInput;
 import com.dab.resume.input.InputBridge;
 import com.dab.resume.input.KeyboardInput;
 import com.dab.resume.lifeform.player.Player;
-import com.dab.resume.scene.Scene;
+import com.dab.resume.scene.scene1.Scene;
+import com.dab.resume.scene.scene2.Scene2;
 
 public class GameScreen implements Screen {
 	private OrthographicCamera camera;
@@ -39,6 +40,7 @@ public class GameScreen implements Screen {
 	private GamePadInput gamePadInput;
 	private BitmapFont commonFont;
 	private Scene scene;
+	private Scene2 scene2;
 
 	private Music gameMusic;
 	private HUD gameHud;
@@ -64,7 +66,8 @@ public class GameScreen implements Screen {
 		/**************
 		 * Load scene assets
 		 **************/
-		scene = new Scene(camera, player);//, gameBackground);
+		scene = new Scene(camera, player);
+		scene2 = new Scene2(camera, player);
 
 		/**************
 		 * Load general audio
@@ -92,6 +95,7 @@ public class GameScreen implements Screen {
 		 ***************/
 		// Scene
 		scene.initAssets();
+		scene2.initAssets();
 		// HUD
 		gameHud.initAssets();
 		// Characters
@@ -109,7 +113,7 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(keyboardInput);
 		Controllers.addListener(gamePadInput);
 		inputBridge.registerObserver(player);
-		inputBridge.registerObserver(scene);
+		inputBridge.registerObserver(scene2);
 
 		/**************
 		 * Overlays
@@ -126,7 +130,8 @@ public class GameScreen implements Screen {
 		 ************/
 		spriteBatch.setProjectionMatrix(camera.combined);
 		// Scene
-		scene.draw(spriteBatch);
+		//scene.draw(spriteBatch);
+		scene2.draw(spriteBatch);
 
 		/*************
 		 * Static assets

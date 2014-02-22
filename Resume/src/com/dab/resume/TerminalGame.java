@@ -150,7 +150,7 @@ public class TerminalGame extends Game {
 			// If the assets aren't loaded yet, don't start rendering assets yet.
 			if (Assets.getInstance().getProgress() < 1) {
 				Assets.getInstance().update();
-				
+
 				// Display loading text
 				spriteBatch.begin();
 				spriteBatch.setProjectionMatrix(camera.combined);

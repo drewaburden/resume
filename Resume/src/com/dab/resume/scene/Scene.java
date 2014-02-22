@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
@@ -103,7 +104,8 @@ public class Scene implements Observer {
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-fog.png");
 		Sprite fog = new Sprite(texture);
-		fog.setPosition(camera.position.x - fog.getWidth()/2.0f, camera.position.y - fog.getHeight()/2.0f - 15.0f);
+		fog.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, camera.position.y - fog.getHeight()/2.0f - 15.0f);
+		fog.setSize(TerminalGame.VIRTUAL_WIDTH, fog.getHeight());
 		layer = new ParallaxLayer(0.0f);
 		layer.addSprite(fog);
 		background.addLayer(layer);

@@ -65,7 +65,7 @@ public class Scene2 implements Observer {
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		mage = new Mage();
 		float dialogWidth = 250.0f, dialogHeight = 176.0f;
-		dialog1 = new Dialog(0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
+		//dialog1 = new Dialog(0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
 		rain = new Rain(true);
 		wall = new LinkedList<Sprite>();
 		candles = new LinkedList<Candle>();

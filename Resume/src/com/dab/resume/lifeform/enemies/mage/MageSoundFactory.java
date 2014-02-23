@@ -30,6 +30,7 @@ public class MageSoundFactory {
 
 	public LifeformSound getSound(SoundFactory.SoundType sound) {
 		switch (sound) {
+			case HURT: return getDeathSound(); // TEMPORARY
 			case DEATH: return getDeathSound();
 			default: throw new IllegalArgumentException("That sound does not exist");
 		}

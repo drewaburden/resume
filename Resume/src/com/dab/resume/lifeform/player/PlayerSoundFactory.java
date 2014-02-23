@@ -24,6 +24,7 @@ public class PlayerSoundFactory {
 	Sound[] step;
 	Sound jump;
 	Sound[] jump_land;
+	Sound hurt;
 
 	int lastSwordSwingSound = -1;
 	int lastStepSound = -1;
@@ -50,6 +51,8 @@ public class PlayerSoundFactory {
 		Assets.getInstance().load("game/sounds/jump-land0.ogg", Sound.class);
 		Assets.getInstance().load("game/sounds/jump-land1.ogg", Sound.class);
 		jump_land = new Sound[2];
+
+		Assets.getInstance().load("game/sounds/player-hurt.ogg", Sound.class);
 	}
 
 	public void initAssets() {
@@ -69,6 +72,8 @@ public class PlayerSoundFactory {
 		jump = Assets.getInstance().get("game/sounds/jump0.ogg");
 		jump_land[0] = Assets.getInstance().get("game/sounds/jump-land0.ogg");
 		jump_land[1] = Assets.getInstance().get("game/sounds/jump-land1.ogg");
+
+		hurt = Assets.getInstance().get("game/sounds/player-hurt.ogg");
 	}
 
 	public LifeformSound getSound(SoundFactory.SoundType sound) {
@@ -77,6 +82,7 @@ public class PlayerSoundFactory {
 			case MOVE: return getStepSound();
 			case JUMP: return getJumpSound();
 			case LANDED: return getJumpLandSound();
+			case HURT: return getHurtSound();
 			case DEATH: return getStepSound(); // TEMPORARY
 			default: throw new IllegalArgumentException("That sound does not exist");
 		}
@@ -110,5 +116,9 @@ public class PlayerSoundFactory {
 		}
 		lastJumpLandSound = soundIndex;
 		return new LifeformSound(jump_land[soundIndex], 0.5f);
+	}
+
+	public LifeformSound getHurtSound() {
+		return new LifeformSound(hurt, 0.5f);
 	}
 }

@@ -55,8 +55,10 @@ public class Scene implements Observer {
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		mage = new Mage();
-		float dialogWidth = 250.0f, dialogHeight = 176.0f;
-		dialog1 = new Dialog(0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
+		float dialogWidth = 250.0f, dialogHeight = 145.0f;
+		dialog1 = new Dialog("Dying Man", "Please... You must defeat the foe that lies ahead of you. " +
+				"You're our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f,
+				dialogWidth, dialogHeight);
 		rain = new Rain();
 		Assets.getInstance().load("game/environments/scene1-floor.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-backgrass.png", Texture.class);
@@ -313,12 +315,17 @@ public class Scene implements Observer {
 	@Override
 	public void eventTriggered(Object data) {
 		if (data instanceof InputEvent) {
-			if ((InputEvent) data == InputEvent.PRESS_DEBUG_OPTIONS) {
+			if (data == InputEvent.PRESS_DEBUG_OPTIONS) {
 				if (!dialog1.isShowing()) {
 					dialog1.show();
 				}
 				else {
 					dialog1.hide();
+				}
+			}
+			else if (data == InputEvent.PRESS_ACCEPT) {
+				if (dialog1.isShowing()) {
+					dialog1.accept();
 				}
 			}
 		}

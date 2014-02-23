@@ -14,24 +14,32 @@
 package com.dab.resume.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
+import com.dab.resume.audio.SoundFX;
 
 public class Dialog {
 	public static int NUM_DIALOGS_SHOWING = 0;
+	private final float ANIM_RATE = 0.15f;
+	private float animTime = 0.0f; // How long an animation has been playing. Determines which frame to display.
 
 	private float posX, posY, width, height;
 	private Sprite background, deco_top, deco_bottom;
 	private Sprite edgeLeft, edgeTop, edgeRight, edgeBottom;
 	private Sprite cornerTopLeft, cornerTopRight, cornerBottomRight, cornerBottomLeft;
+	private Animation advanceArrow;
+	private Sound displayCharacterSound, acceptSound, skipSound;
+	private final float characterDelay = 0.05f; // Time between displaying a character
+	private final float sentenceDelay = 0.5f; // Time to wait between sentences
+	private float deltaCharacterDisplay = 0.0f; // Time since last character was displayed.
 	private BitmapFont font;
-	private String text, displayText;
+	private String text, speaker, displayText;
 	private boolean showing = false;
 
-	public Dialog(float posX, float posY, float width, float height) {
+	public Dialog(String speaker, String text, float posX, float posY, float width, float height) {
 		if (width < 150.0f || height < 100.0f) {
 			throw new IllegalArgumentException("Dialog width and height must be greater than 200.0f and 64.0f respectively.");
 		}
@@ -46,8 +54,20 @@ public class Dialog {
 		Assets.getInstance().load("game/hud/dialog/deco_bottom.png", Texture.class);
 		Assets.getInstance().load("game/hud/dialog/deco_top.png", Texture.class);
 		Assets.getInstance().load("game/hud/dialog/edge.png", Texture.class);
+		Assets.getInstance().load("game/hud/dialog/advance-arrow.png", Texture.class);
+		Assets.getInstance().load("game/sounds/dialog-display-character.ogg", Sound.class);
+		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
+		Assets.getInstance().load("game/sounds/dialog-skip.ogg", Sound.class);
 
-		displayText = "dfjskdjfklsdjfjd;lskjfk;ljdsfgkljsdf;lgkjksldfjgkl;jsdfg;lkjsdklfgjlksdfjgl;ksdjfg;lkjdsf;gkjs;lkdfjgl;ksdjfg;lkjsdfglk\n\ndfjgjfdsgkhsdfkjghjskdflhgljksfhjlkghlkj";
+		// Set text
+		this.speaker = speaker.toUpperCase();
+		this.displayText = "";
+		this.text = "";
+		if (speaker != "") {
+			this.displayText = speaker.toUpperCase() + ":\n\n";
+			this.text = displayText;
+		}
+		this.text += text.toUpperCase();
 	}
 
 	public void initAssets() {
@@ -137,10 +157,34 @@ public class Dialog {
 		deco_bottom.setPosition(posX + width/2.0f - deco_bottom.getWidth()/2.0f, posY + edgeBottom.getWidth()); // Edgebottom's width because it's relative to the texture, not the sprite, and the sprite has been rotated 90 degrees.
 
 		/**************
+		 * Advance arrow animation
+		 **************/
+		texture = Assets.getInstance().get("game/hud/dialog/advance-arrow.png");
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
+		TextureRegion[] frames = new TextureRegion[4];
+		int index = 0;
+		for (TextureRegion[] rows : tmp) {
+			for (TextureRegion cols : rows) {
+				frames[index] = cols;
+				index++;
+			}
+		}
+		advanceArrow = new Animation(ANIM_RATE, frames);
+		advanceArrow.setPlayMode(Animation.LOOP_PINGPONG);
+
+		/**************
 		 * Font
 		 **************/
 		font = new BitmapFont(Gdx.files.internal("fonts/font.fnt"));
 		font.setScale(1.0f);
+
+		/**************
+		 * Sounds
+		 **************/
+		displayCharacterSound = Assets.getInstance().get("game/sounds/dialog-display-character.ogg");
+		acceptSound = Assets.getInstance().get("game/sounds/dialog-accept.ogg");
+		skipSound = Assets.getInstance().get("game/sounds/dialog-skip.ogg");
 	}
 
 	public void show() {
@@ -150,8 +194,24 @@ public class Dialog {
 	public void hide() {
 		NUM_DIALOGS_SHOWING = Math.max(0, NUM_DIALOGS_SHOWING-1);
 		showing = false;
+		displayText = speaker + ":\n\n";
+		deltaCharacterDisplay = 0.0f;
 	}
 	public boolean isShowing() { return showing; }
+
+	public void accept() {
+		// If we displayed all the characters, the dialog should close
+		if (displayText.length() == text.length()) {
+			hide();
+			acceptSound.play(SoundFX.VOLUME_MODIFIER);
+		}
+		// Otherwise advance the text to the end
+		else {
+			displayText = text;
+			displayCharacterSound.stop();
+			skipSound.play(SoundFX.VOLUME_MODIFIER);
+		}
+	}
 
 	public void draw(SpriteBatch spriteBatch) {
 		if (showing) {
@@ -169,6 +229,37 @@ public class Dialog {
 
 			deco_top.draw(spriteBatch);
 			deco_bottom.draw(spriteBatch);
+
+			// If the game isn't paused and we haven't displayed all of the text yet
+			if (GameState.getGameState() != GameState.State.PAUSED
+					&& displayText.length() != text.length()) {
+				deltaCharacterDisplay += Gdx.graphics.getDeltaTime();
+
+				// If we've waited long enough between characters
+				if (deltaCharacterDisplay >= characterDelay) {
+					deltaCharacterDisplay -= characterDelay;
+
+					char nextChar = text.charAt(displayText.length());
+					displayText += nextChar;
+
+					// Only play a sound if the character wasn't whitespace.
+					if (font.containsCharacter(nextChar) && nextChar != '\n' && nextChar != ' ') {
+						displayCharacterSound.stop();
+						displayCharacterSound.play(SoundFX.VOLUME_MODIFIER);
+					}
+
+					// If the character was a period, start waiting before the next sentence.
+					if (nextChar == '.') {
+						deltaCharacterDisplay -= sentenceDelay;
+					}
+				}
+			}
+			// Draw the advance arrow when we've displayed all the text
+			else {
+				animTime += Gdx.graphics.getDeltaTime();
+				TextureRegion currentFrame = advanceArrow.getKeyFrame(animTime);
+				spriteBatch.draw(currentFrame, posX+width-30.0f, posY+20.0f);
+			}
 
 			font.setColor(0.15f, 0.85f, 0.4f, 1.0f);
 			font.drawWrapped(spriteBatch, displayText, posX + edgeLeft.getWidth()*2.0f,

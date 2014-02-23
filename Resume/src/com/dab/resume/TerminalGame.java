@@ -163,13 +163,14 @@ public class TerminalGame extends Game {
 			}
 			// If the assets have finally loaded, initialize the assets, and eventually start rendering.
 			else {
+				initialize();
 				if (windowHasFocus) {
 					GameState.setGameState(GameState.State.PLAYING);
 				}
 				else {
 					GameState.setGameState(GameState.State.PAUSED);
+					gameScreen.pause();
 				}
-				initialize();
 			}
 		}
 	}

@@ -12,22 +12,24 @@
 
 package com.dab.resume;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dab.resume.assets.Assets;
+import com.dab.resume.audio.SoundFX;
 
 public class PauseOverlay {
 	private BitmapFont font;
 	private Sprite overlay;
+	private Sound pauseSound;
+	private boolean showing = false;
 
 	public PauseOverlay(BitmapFont font) {
 		this. font = font;
 		Assets.getInstance().load("colors/overlay.png", Texture.class);
+		Assets.getInstance().load("game/sounds/pause.ogg", Sound.class);
 	}
 
 	public void initAssets() {
@@ -36,17 +38,32 @@ public class PauseOverlay {
 		overlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
 		overlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		overlay.setAlpha(0.25f);
+
+		pauseSound = Assets.getInstance().get("game/sounds/pause.ogg");
+	}
+
+	public void show() {
+		showing = true;
+		pauseSound.stop();
+		pauseSound.play(SoundFX.VOLUME_MODIFIER*0.75f);
+	}
+	public void hide() {
+		showing = false;
+		pauseSound.stop();
+		pauseSound.play(SoundFX.VOLUME_MODIFIER*0.75f);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		// Overlay
-		overlay.draw(spriteBatch);
+		if (showing) {
+			// Overlay
+			overlay.draw(spriteBatch);
 
-		// Text
-		font.setColor(0.15f, 0.85f, 0.4f, 1.0f);
-		String pauseText = "PAUSED";
-		BitmapFont.TextBounds textBounds = font.getBounds(pauseText);
-		font.draw(spriteBatch, pauseText, 0.0f - textBounds.width/2.0f,
-				0.0f + textBounds.height/2.0f + 30.0f);
+			// Text
+			font.setColor(0.15f, 0.85f, 0.4f, 1.0f);
+			String pauseText = "PAUSED";
+			BitmapFont.TextBounds textBounds = font.getBounds(pauseText);
+			font.draw(spriteBatch, pauseText, 0.0f - textBounds.width / 2.0f,
+					0.0f + textBounds.height / 2.0f + 30.0f);
+		}
 	}
 }

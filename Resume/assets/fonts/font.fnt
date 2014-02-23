@@ -41,7 +41,8 @@ char id=55   x=192     y=0     width=5     height=7     xoffset=0     yoffset=8 
 char id=56   x=198     y=0     width=5     height=7     xoffset=0     yoffset=8    xadvance=6     page=0  chnl=0 
 char id=57   x=204     y=0     width=5     height=7     xoffset=0     yoffset=8    xadvance=6     page=0  chnl=0 
 char id=48   x=210     y=0     width=5     height=7     xoffset=0     yoffset=8    xadvance=6     page=0  chnl=0 
-char id=46   x=216     y=0     width=1     height=7     xoffset=0     yoffset=8    xadvance=2     page=0  chnl=0 
+char id=46   x=216     y=0     width=1     height=7     xoffset=1     yoffset=8    xadvance=4     page=0  chnl=0 
 char id=33   x=218     y=0     width=1     height=7     xoffset=0     yoffset=8    xadvance=2     page=0  chnl=0 
 char id=44   x=220     y=0     width=2     height=7     xoffset=0     yoffset=8    xadvance=3     page=0  chnl=0 
 char id=39   x=223     y=0     width=2     height=7     xoffset=0     yoffset=8    xadvance=2     page=0  chnl=0 
+char id=58   x=225     y=0     width=1     height=7     xoffset=1     yoffset=8    xadvance=4     page=0  chnl=0 

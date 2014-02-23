@@ -18,7 +18,6 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.hud.Dialog;
 
-import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.GameState.State.PLAYING;
 
 public class InputBridge extends Observable {
@@ -28,15 +27,11 @@ public class InputBridge extends Observable {
 		notifyObservers(InputEvent.PRESS_DEBUG_OPTIONS);
 	}
 	public void pauseButtonPressed() {
+		notifyObservers(InputEvent.PRESS_PAUSE);
 		if (GameState.getGameState() == PLAYING) {
-			GameState.setGameState(PAUSED);
-		}
-		else if (GameState.getGameState() == PAUSED) {
-			GameState.setGameState(PLAYING);
 			if (isMovementRightPressed()) movementRightPressed();
 			else if (isMovementLeftPressed()) movementLeftPressed();
 			else movementReleased();
-
 		}
 	}
 	public void movementRightPressed() {
@@ -75,6 +70,7 @@ public class InputBridge extends Observable {
 
 	public void acceptPressed() {
 		// Accept button pressed
+		notifyObservers(InputEvent.PRESS_ACCEPT);
 	}
 
 	public static boolean isMovementRightPressed() { return KeyboardInput.isMovementRightPressed() || GamePadInput.isMovementRightPressed(); }

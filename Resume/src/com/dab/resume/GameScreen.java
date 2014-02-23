@@ -20,15 +20,20 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.audio.Music;
+import com.dab.resume.events.Observer;
 import com.dab.resume.hud.HUD;
 import com.dab.resume.input.GamePadInput;
 import com.dab.resume.input.InputBridge;
+import com.dab.resume.input.InputEvent;
 import com.dab.resume.input.KeyboardInput;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.scene1.Scene;
 import com.dab.resume.scene.scene2.Scene2;
 
-public class GameScreen implements Screen {
+import static com.dab.resume.GameState.State.PAUSED;
+import static com.dab.resume.GameState.State.PLAYING;
+
+public class GameScreen implements Screen, Observer {
 	private OrthographicCamera camera;
 	private OrthographicCamera staticCamera;
 	private SpriteBatch spriteBatch;
@@ -112,8 +117,9 @@ public class GameScreen implements Screen {
 		 **************/
 		Gdx.input.setInputProcessor(keyboardInput);
 		Controllers.addListener(gamePadInput);
+		inputBridge.registerObserver(this);
 		inputBridge.registerObserver(player);
-		inputBridge.registerObserver(scene2);
+		inputBridge.registerObserver(scene);
 
 		/**************
 		 * Overlays
@@ -130,18 +136,16 @@ public class GameScreen implements Screen {
 		 ************/
 		spriteBatch.setProjectionMatrix(camera.combined);
 		// Scene
-		//scene.draw(spriteBatch);
-		scene2.draw(spriteBatch);
+		scene.draw(spriteBatch);
+		//scene2.draw(spriteBatch);
 
 		/*************
 		 * Static assets
 		 *************/
 		spriteBatch.setProjectionMatrix(staticCamera.combined);
-
-		if (GameState.getGameState() == GameState.State.PAUSED) {
-			pauseOverlay.draw(spriteBatch);
-		}
-		else if (GameState.getGameState() == GameState.State.GAMEOVER) {
+		// Overlays
+		pauseOverlay.draw(spriteBatch);
+		if (GameState.getGameState() == GameState.State.GAMEOVER) {
 			gameoverOverlay.draw(spriteBatch);
 		}
 		else {
@@ -160,8 +164,28 @@ public class GameScreen implements Screen {
 		// Pause if the window loses focus. But only if we aren't loading assets. Loading trumps everything.
 		if (GameState.getGameState() != GameState.State.LOADING) {
 			GameState.setGameState(GameState.State.PAUSED);
+			pauseOverlay.show();
 		}
 	}
 	@Override public void resume() {}
 	@Override public void dispose() {}
+
+	@Override
+	public void eventTriggered(Object data) {
+		if (data instanceof InputEvent) {
+			switch ((InputEvent) data) {
+				// If the user pressed pause, either pause or resume and handle the pause overlay accordingly.
+				case PRESS_PAUSE:
+					if (GameState.getGameState() == PLAYING) {
+						GameState.setGameState(PAUSED);
+						pauseOverlay.show();
+					}
+					else if (GameState.getGameState() == PAUSED) {
+						GameState.setGameState(PLAYING);
+						pauseOverlay.hide();
+					}
+					break;
+			}
+		}
+	}
 }

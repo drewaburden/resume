@@ -13,12 +13,19 @@
 package com.dab.resume.lifeform.enemies.mage;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.GameState;
+import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
 import com.dab.resume.lifeform.*;
+import com.dab.resume.lifeform.enemies.mage.attacks.AttackType;
+import com.dab.resume.lifeform.enemies.mage.attacks.Lightning;
+import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
 import static com.dab.resume.GameState.State.PAUSED;
@@ -29,6 +36,7 @@ import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
 public class Mage extends Lifeform {
 	private final MageAnimationFactory mageAnimationFactory = new MageAnimationFactory();
 	private final MageSoundFactory mageSoundFactory = new MageSoundFactory();
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	public Mage() {
 		super(LifeformType.MAGE);
@@ -44,6 +52,9 @@ public class Mage extends Lifeform {
 		healthCurrent = healthMax;
 		animationFactory.setMageAnimationFactory(mageAnimationFactory);
 		soundFactory.setMageSoundFactory(mageSoundFactory);
+
+		// Load assets for attacks
+		Assets.getInstance().load("game/chars/mage-lightning.png", Texture.class);
 	}
 
 	public void initAssets() {
@@ -53,20 +64,38 @@ public class Mage extends Lifeform {
 		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, IDLE));
 	}
 
-	public void attack() {
+	public void attack(AttackType type) {
 		if (canAttack()) {
 			Log.log();
 			state = State.ATTACKING;
 			deltaAttackTime = 0.0f;
-			animationManager.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL);
-			//soundManager.playLightning();
+			switch (type) {
+				case LIGHTNING: attack_lightning(); break;
+				//case FIREBALL: attack_fireball(); break;
+				//case SWORDS: attack_swords(); break;
+			}
 		}
+	}
+	private void attack_lightning() {
+		animationManager.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL);
+		//soundManager.playLightning();
+		projectiles.add(new Lightning(getPosX()+4.0f, getPosY()+10.0f));
+	}
+	public ArrayList<Projectile> getActiveProjectiles() { return projectiles; }
+	public void destroyProjectile(Projectile projectile) {
+		projectile.dispose();
+		projectiles.remove(projectile);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
 		if (GameState.getGameState() != PAUSED) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
+
+			if (deltaHurtTime >= 2.0f) {
+				deltaHurtTime = 0.0f;
+				attack(AttackType.LIGHTNING);
+			}
 
 			updateMovement(delta);
 
@@ -80,5 +109,10 @@ public class Mage extends Lifeform {
 
 		// Draw the lifeform's animation
 		animationManager.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
+
+		// Draw projectiles
+		for (Projectile projectile : projectiles) {
+			projectile.draw(spriteBatch);
+		}
 	}
 }

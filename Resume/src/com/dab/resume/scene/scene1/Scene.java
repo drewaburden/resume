@@ -31,6 +31,7 @@ import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
 import com.dab.resume.lifeform.enemies.mage.MageSoundFactory;
 import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
+import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.*;
 
@@ -266,6 +267,28 @@ public class Scene implements Observer {
 	 * TODO: Move to own class
 	 ***********/
 	public void checkCollision() {
+		int numProjectiles = mage.getActiveProjectiles().size();
+		for (int projectileIndex = 0; projectileIndex < numProjectiles; ++projectileIndex) {
+			Projectile projectile = mage.getActiveProjectiles().get(projectileIndex);
+			// If the projectile is out of bounds, destroy it
+			if (projectile.getBoundingBox().getRight() < playerBounds.getLeft()) {
+				mage.destroyProjectile(projectile);
+				numProjectiles--;
+				projectileIndex--;
+				continue;
+			}
+			// If the projectile hit the player, hurt the player and destroy the projectile
+			if (player.getBoundingBox().overlaps(projectile.getBoundingBox())) {
+				Direction damagedSide = Direction.RIGHT;
+				if (player.getBoundingBox().getX() > projectile.getBoundingBox().getX()) {
+					damagedSide = Direction.LEFT;
+				}
+				player.hurt(projectile.getAttackPower(), damagedSide);
+				mage.destroyProjectile(projectile);
+				numProjectiles--;
+			}
+		}
+		// If the player ran into the mage, hurt the player
 		if (player.getBoundingBox().overlaps(mage.getBoundingBox()) && mage.isAlive()) {
 			Direction damagedSide = Direction.RIGHT;
 			if (player.getBoundingBox().getX() > mage.getBoundingBox().getX()) {
@@ -273,6 +296,7 @@ public class Scene implements Observer {
 			}
 			player.hurt(mage.getAttackPower(), damagedSide);
 		}
+		// If the player's attack hit the mage, hurt the mage
 		if (player.isAttacking() && player.getAttackBoundingBox().overlaps(mage.getBoundingBox()) && mage.isAlive()) {
 			Direction damagedSide = Direction.RIGHT;
 			if (mage.getBoundingBox().getX() > player.getBoundingBox().getX()) {
@@ -301,6 +325,12 @@ public class Scene implements Observer {
 			rect = mage.getBoundingBox();
 			shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
+			// Projectiles
+			for (Projectile projectile : mage.getActiveProjectiles()) {
+				rect = projectile.getBoundingBox();
+				shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+			}
+
 			// Player attack collision
 			if (player.isAttacking()) {
 				rect = player.getAttackBoundingBox();
@@ -320,21 +350,5 @@ public class Scene implements Observer {
 	}
 
 	@Override
-	public void eventTriggered(Object data) {
-		if (data instanceof InputEvent) {
-			if (data == InputEvent.PRESS_DEBUG_OPTIONS) {
-				if (!dialog1.isShowing()) {
-					dialog1.show();
-				}
-				else {
-					dialog1.hide();
-				}
-			}
-			else if (data == InputEvent.PRESS_ACCEPT) {
-				if (dialog1.isShowing()) {
-					dialog1.accept();
-				}
-			}
-		}
-	}
+	public void eventTriggered(Object data) {}
 }

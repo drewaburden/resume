@@ -29,6 +29,8 @@ import com.dab.resume.hud.Dialog;
 import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
+import com.dab.resume.lifeform.enemies.mage.MageSoundFactory;
+import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.*;
 
@@ -44,6 +46,7 @@ public class Scene implements Observer {
 	private CameraPanner cameraPanner;
 	private Player player;
 	private Mage mage;
+	private MageStateMachine mageAI;
 	private TilingFloor floor, back_grass, back_grass2;
 	private ParallaxBackground background;
 	private Dialog dialog1;
@@ -207,6 +210,8 @@ public class Scene implements Observer {
 		floor.setPosition(camera.position.x - floor.getTileWidth()*2.55f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
 
 		rain.initAssets();
+
+		mageAI = new MageStateMachine(mage, player);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
@@ -253,6 +258,8 @@ public class Scene implements Observer {
 		dialog1.draw(spriteBatch);
 
 		checkCollision();
+
+		mageAI.update(Gdx.graphics.getDeltaTime());
 	}
 
 	/***********

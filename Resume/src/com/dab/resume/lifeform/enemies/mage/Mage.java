@@ -68,11 +68,6 @@ public class Mage extends Lifeform {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 
-			if (deltaHurtTime >= 6.0f) {
-				deltaHurtTime = 0.0f;
-				attack();
-			}
-
 			updateMovement(delta);
 
 			if (isAttacking() && animationManager.isCurrentAnimationDone()) {

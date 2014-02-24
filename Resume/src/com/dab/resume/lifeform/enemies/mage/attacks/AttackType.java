@@ -1,17 +1,17 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        State.java
+ * File:        AttackType.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:
- *      Defines possible states for a Lifeform
+ *
  ********************************************************************************************************/
 
-package com.dab.resume.lifeform;
+package com.dab.resume.lifeform.enemies.mage.attacks;
 
-public enum State {
-	IDLE, MOVING, ATTACKING, BLOCKING, DEAD
+public enum AttackType {
+	SWORDS, LIGHTNING, FIREBALL
 }

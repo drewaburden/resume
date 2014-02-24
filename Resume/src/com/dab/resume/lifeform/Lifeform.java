@@ -14,6 +14,7 @@ package com.dab.resume.lifeform;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.GameState;
+import com.dab.resume.TerminalGame;
 import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
@@ -64,6 +65,9 @@ public abstract class Lifeform extends Observable {
 	/***********
 	 * Movement
 	 ***********/
+	public boolean isOnScreen() {
+		return (Math.abs(getPosX()) < TerminalGame.VIRTUAL_WIDTH*2.0f/5.0f);
+	}
 	public void updateMovement(float delta) {
 		if (GameState.getGameState() == PLAYING) {
 			float originalX = lifeformMovement.getPosX(), originalY = lifeformMovement.getPosY();
@@ -98,6 +102,7 @@ public abstract class Lifeform extends Observable {
 			}
 			state = State.MOVING;
 			lifeformMovement.move(direction);
+			notifyObservers(MovementEvent.MOVE);
 		}
 	}
 	public void stopXMovement() {
@@ -115,6 +120,7 @@ public abstract class Lifeform extends Observable {
 	public int getMaxHealth() { return healthMax; }
 	public int getHealth() { return healthCurrent; }
 	public boolean isAlive() { return healthCurrent > 0; }
+	public boolean isHurtBouncing() { return lifeformMovement.isHurtBouncing(); }
 	public boolean canAttack() { return (deltaAttackTime >= attackDelay && canChangeStates()); }
 	public boolean isAttacking() { return state == State.ATTACKING; }
 	public int getAttackPower() { return attack_power; }

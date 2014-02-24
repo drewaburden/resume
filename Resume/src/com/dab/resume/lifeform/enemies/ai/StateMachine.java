@@ -1,17 +1,19 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        State.java
+ * File:        StateMachine.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:
- *      Defines possible states for a Lifeform
+ *
  ********************************************************************************************************/
 
-package com.dab.resume.lifeform;
+package com.dab.resume.lifeform.enemies.ai;
 
-public enum State {
-	IDLE, MOVING, ATTACKING, BLOCKING, DEAD
+import com.dab.resume.events.Observer;
+
+public interface StateMachine {
+	public void update(float delta);
 }

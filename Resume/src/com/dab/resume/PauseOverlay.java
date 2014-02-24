@@ -43,14 +43,18 @@ public class PauseOverlay {
 	}
 
 	public void show() {
-		showing = true;
-		pauseSound.stop();
-		pauseSound.play(SoundFX.VOLUME_MODIFIER*0.75f);
+		if (!showing) {
+			showing = true;
+			pauseSound.stop();
+			pauseSound.play(SoundFX.VOLUME_MODIFIER*0.75f);
+		}
 	}
 	public void hide() {
-		showing = false;
-		pauseSound.stop();
-		pauseSound.play(SoundFX.VOLUME_MODIFIER*0.75f);
+		if (showing) {
+			showing = false;
+			pauseSound.stop();
+			pauseSound.play(SoundFX.VOLUME_MODIFIER*0.75f);
+		}
 	}
 
 	public void draw(SpriteBatch spriteBatch) {

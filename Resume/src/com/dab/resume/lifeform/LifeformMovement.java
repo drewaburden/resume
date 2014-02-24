@@ -199,6 +199,7 @@ public class LifeformMovement extends Observable {
 		}
 	}
 	public boolean isOnGround() { return (posY == World.FLOOR && !y_force); }
+	public boolean isHurtBouncing() { return isHurtBouncing; }
 	private void landed() { notifyObservers(MovementEvent.LANDED); }
 	private void finishedHurtBounce() { notifyObservers(MovementEvent.DONE_HURTING); }
 	private void stepped() { notifyObservers(MovementEvent.STEPPED); }

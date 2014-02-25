@@ -121,11 +121,19 @@ header ul {
   width:270px;
 }
 
+header ul #downloads {
+  
+}
+
 header li {
   width:89px;
   float:left;
   border-right:1px solid #d2d2d2;
   height:40px;
+}
+
+header li #downloads {
+  width:135px;
 }
 
 header ul a {

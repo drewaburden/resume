@@ -122,13 +122,6 @@ header ul {
 }
 
 header ul.downloads {
-  background: #eee;
-  background: -moz-linear-gradient(top, #f8f8f8 0%, #BEE0BE 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#BEE0BE));
-  background: -webkit-linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
-  background: -o-linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
-  background: -ms-linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
-  background: linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
 }
 
 header ul.navigation {
@@ -158,6 +151,16 @@ header ul a {
   text-align:center;
   padding-top:6px;
   height:40px;
+}
+
+header ul li a:hover {
+  background: #eee;
+  background: -moz-linear-gradient(top, #f8f8f8 0%, #BEE0BE 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#BEE0BE));
+  background: -webkit-linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
+  background: -o-linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
+  background: -ms-linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
+  background: linear-gradient(top, #f8f8f8 0%,#BEE0BE 100%);
 }
 
 strong {

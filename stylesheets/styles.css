@@ -141,6 +141,7 @@ header ul.downloads li {
 }
 header ul.navigation li {
   width:270px;
+  border-right:0px;
 }
 
 header ul a {

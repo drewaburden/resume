@@ -126,7 +126,7 @@ header ul.downloads {
 }
 
 header ul.navigation {
-  width:125px;
+  width:270px;
 }
 
 header li {
@@ -137,10 +137,10 @@ header li {
 }
 
 header ul.downloads li {
-  width:125px;
+  width:134px;
 }
-header ul.downloads li {
-  width:125px;
+header ul.navigation li {
+  width:269px;
 }
 
 header ul a {

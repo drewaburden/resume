@@ -266,9 +266,9 @@ footer {
     padding:15px;
   }
   
-  header ul {
+  /*header ul {
     display:none;
-  }
+  }*/
 }
 
 @media print {

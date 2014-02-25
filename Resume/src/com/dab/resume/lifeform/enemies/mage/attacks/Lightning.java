@@ -24,8 +24,6 @@ import com.dab.resume.collision.CollisionEvent;
 
 public class Lightning extends Projectile {
 	private final float ANIM_RATE = 0.15f;
-	private final float drawDelay = 1.15f; // Time that must pass before we actually start drawing and updating the projectile
-	private float elapTime = 0.0f; // Time since the projectile was created (used to calculate if we've passed the drawDelay)
 
 	private float animTime = 0.0f; // How long an animation has been playing. Determines which frame to display.
 	private Animation lightning;
@@ -59,20 +57,15 @@ public class Lightning extends Projectile {
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
 		if (!disposing) {
-			if (elapTime >= drawDelay) {
-				if (GameState.getGameState() != GameState.State.PAUSED) {
-					float delta = Gdx.graphics.getDeltaTime();
-					animTime += delta;
-					update(delta);
-				}
+			if (GameState.getGameState() != GameState.State.PAUSED) {
+				float delta = Gdx.graphics.getDeltaTime();
+				animTime += delta;
+				update(delta);
+			}
 
-				// Determine which frame to draw and draw it
-				TextureRegion currentFrame = lightning.getKeyFrame(animTime);
-				spriteBatch.draw(currentFrame, getPosX(), getPosY());
-			}
-			else {
-				elapTime += Gdx.graphics.getDeltaTime();
-			}
+			// Determine which frame to draw and draw it
+			TextureRegion currentFrame = lightning.getKeyFrame(animTime);
+			spriteBatch.draw(currentFrame, getPosX(), getPosY());
 		}
 	}
 

@@ -37,8 +37,13 @@ public class Mage extends Lifeform {
 	private final MageAnimationFactory mageAnimationFactory = new MageAnimationFactory();
 	private final MageSoundFactory mageSoundFactory = new MageSoundFactory();
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	// Times it takes for the mage to actually attack after initiating the attack action
+	private final float powerUpTime_lightning = 1.15f;
+	private final float powerUpTime_fireball = 1.15f;
+	private AttackType poweringUpAttack = null;
+	private float elapPowerUpTime = 0.0f; // How long the mage has been powering up
 
-	public Mage() {
+	public Mage(float posX) {
 		super(LifeformType.MAGE);
 		jumpTimeLimit = 0.5f;
 		lifeformMovement.moveAccelerationX = 300.0f;
@@ -46,7 +51,7 @@ public class Mage extends Lifeform {
 		lifeformMovement.moveMaxSpeedX = 40.0f;
 		hurtDelay = 0.5f;
 		direction = Direction.LEFT;
-		lifeformMovement.setPosX(125.0f);
+		lifeformMovement.setPosX(posX);
 		boundingBox = new BoundingBox(lifeformMovement.getPosX()+16.0f, lifeformMovement.getPosY(), 24.0f, 50.0f, CollisionEvent.ENEMY);
 		healthMax = 2;
 		healthCurrent = healthMax;
@@ -69,16 +74,16 @@ public class Mage extends Lifeform {
 			Log.log();
 			state = State.ATTACKING;
 			deltaAttackTime = 0.0f;
+			poweringUpAttack = type;
 			switch (type) {
-				case LIGHTNING: attack_lightning(); break;
-				//case FIREBALL: attack_fireball(); break;
-				//case SWORDS: attack_swords(); break;
+				case LIGHTNING: animationManager.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL); break;
+				case FIREBALL: break;
 			}
 		}
 	}
 	private void attack_lightning() {
-		animationManager.playAnimation(mageAnimationFactory.getAnimation(ATTACK_LIGHTNING), NORMAL);
 		//soundManager.playLightning();
+		Log.log();
 		projectiles.add(new Lightning(getPosX()+4.0f, getPosY()+10.0f));
 	}
 	public ArrayList<Projectile> getActiveProjectiles() { return projectiles; }
@@ -92,9 +97,25 @@ public class Mage extends Lifeform {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 
-			if (deltaHurtTime >= 2.0f) {
-				deltaHurtTime = 0.0f;
-				attack(AttackType.LIGHTNING);
+			// If the mage is powering up an attack
+			if (poweringUpAttack != null) {
+				elapPowerUpTime += delta;
+				switch (poweringUpAttack) {
+					case LIGHTNING:
+						if (elapPowerUpTime >= powerUpTime_lightning) {
+							elapPowerUpTime = 0.0f;
+							poweringUpAttack = null;
+							attack_lightning();
+						}
+						break;
+					case FIREBALL:
+						if (elapPowerUpTime >= powerUpTime_fireball) {
+							elapPowerUpTime = 0.0f;
+							poweringUpAttack = null;
+							//attack_fireball();
+						}
+						break;
+				}
 			}
 
 			updateMovement(delta);

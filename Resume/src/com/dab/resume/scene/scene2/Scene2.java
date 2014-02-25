@@ -63,7 +63,7 @@ public class Scene2 implements Observer {
 		this.player = player;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
-		mage = new Mage();
+		mage = new Mage(125.0f);
 		float dialogWidth = 250.0f, dialogHeight = 176.0f;
 		//dialog1 = new Dialog(0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
 		rain = new Rain(true);

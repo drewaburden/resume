@@ -65,9 +65,6 @@ public abstract class Lifeform extends Observable {
 	/***********
 	 * Movement
 	 ***********/
-	public boolean isOnScreen() {
-		return (Math.abs(getPosX()) < TerminalGame.VIRTUAL_WIDTH*2.0f/5.0f);
-	}
 	public void updateMovement(float delta) {
 		if (GameState.getGameState() == PLAYING) {
 			float originalX = lifeformMovement.getPosX(), originalY = lifeformMovement.getPosY();

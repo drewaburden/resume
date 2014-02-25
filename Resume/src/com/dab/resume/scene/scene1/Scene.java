@@ -58,7 +58,7 @@ public class Scene implements Observer {
 		this.player = player;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
-		mage = new Mage();
+		mage = new Mage(500.0f);
 		float dialogWidth = 250.0f, dialogHeight = 145.0f;
 		dialog1 = new Dialog("Dying Man", "Please... You must defeat the foe that lies ahead of you. " +
 				"You're our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f,

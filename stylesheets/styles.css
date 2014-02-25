@@ -141,7 +141,7 @@ header ul.downloads li {
 }
 header ul.navigation li {
   width:270px;
-  border-right:0px;
+  border-right:none;
 }
 
 header ul a {
@@ -156,7 +156,7 @@ header ul a {
 
 strong {
   color:#222;
-  font-weight:700;
+  font-weight:800;
 }
 
 header ul li + li {
@@ -166,11 +166,7 @@ header ul li + li {
 header ul.downloads li + li {
   width:134px;
   border-left:1px solid #fff;
-}
-
-header ul li + li + li {
   border-right:none;
-  width:89px;
 }
 
 header ul a strong {

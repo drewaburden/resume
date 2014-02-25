@@ -136,10 +136,10 @@ header li {
   height:40px;
 }
 
-header li.downloads {
+header ul.downloads li {
   width:135px;
 }
-header li.navigation {
+header ul.downloads li {
   width:135px;
 }
 

@@ -1,5 +1,6 @@
-resume
+Résumé
 ======
+by Drew Burden
 
 [Website](http://drewaburden.github.io/resume/)
 

@@ -14,15 +14,15 @@ package com.dab.resume.lifeform;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.GameState;
-import com.dab.resume.TerminalGame;
-import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
+import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 
+import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.GameState.State.PLAYING;
-import static com.dab.resume.lifeform.AnimationFactory.*;
-import static com.dab.resume.lifeform.SoundFactory.*;
+import static com.dab.resume.lifeform.AnimationFactory.AnimationType;
+import static com.dab.resume.lifeform.SoundFactory.SoundType;
 
 public abstract class Lifeform extends Observable {
 	public static enum LifeformType {
@@ -66,7 +66,7 @@ public abstract class Lifeform extends Observable {
 	 * Movement
 	 ***********/
 	public void updateMovement(float delta) {
-		if (GameState.getGameState() == PLAYING) {
+		if (GameState.isGameStateSet(PLAYING) && !GameState.isGameStateSet(PAUSED)) {
 			float originalX = lifeformMovement.getPosX(), originalY = lifeformMovement.getPosY();
 			lifeformMovement.updateMovement(delta);
 			getBoundingBox().translate(lifeformMovement.getPosX() - originalX, lifeformMovement.getPosY() - originalY);

@@ -34,10 +34,9 @@ public class Main {
 	    LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 	    cfg.resizable = false;
 	    cfg.vSyncEnabled = true;
-	    //cfg.foregroundFPS=10;
 	    cfg.useGL20 = true;
 	    cfg.width = 720; cfg.height = 540; // 4:3 aspect ratio, because old-school. Shut up, you're not my mom.
-	    cfg.title = "Drew Burden's Terminal Game";
+	    cfg.title = "Résumé Quest by Drew Burden";
 
 	    // Instantiate LibGDX
 	    new LwjglApplication(new TerminalGame(), cfg);

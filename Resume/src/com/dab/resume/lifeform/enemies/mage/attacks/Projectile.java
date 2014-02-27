@@ -7,12 +7,12 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines an abstract projectile that can collide with other objects and damage them
+ *      and move across the screen.
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform.enemies.mage.attacks;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.dab.resume.collision.BoundingBox;

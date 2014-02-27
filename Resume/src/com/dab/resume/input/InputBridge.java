@@ -18,6 +18,7 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.hud.Dialog;
 
+import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.GameState.State.PLAYING;
 
 public class InputBridge extends Observable {
@@ -28,42 +29,57 @@ public class InputBridge extends Observable {
 	}
 	public void pauseButtonPressed() {
 		notifyObservers(InputEvent.PRESS_PAUSE);
-		if (GameState.getGameState() == PLAYING) {
+		// If we're in-game and the game isn't paused after notifying the observers,
+		// the player must've just unpaused, so we need to recheck/resend movement input.
+		if (GameState.isGameStateSet(PLAYING) && !GameState.isGameStateSet(PAUSED)) {
 			if (isMovementRightPressed()) movementRightPressed();
 			else if (isMovementLeftPressed()) movementLeftPressed();
 			else movementReleased();
 		}
 	}
 	public void movementRightPressed() {
-		if (Dialog.NUM_DIALOGS_SHOWING == 0 && GameState.getGameState() == PLAYING) {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(PLAYING)
+				&& !GameState.isGameStateSet(PAUSED)) {
 			notifyObservers(InputEvent.PRESS_MOVE_RIGHT);
 		}
 	}
 	public void movementLeftPressed() {
-		if (Dialog.NUM_DIALOGS_SHOWING == 0 && GameState.getGameState() == PLAYING) {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(PLAYING)
+				&& !GameState.isGameStateSet(PAUSED)) {
 			notifyObservers(InputEvent.PRESS_MOVE_LEFT);
 		}
 	}
 	public void movementReleased() {
-		if (Dialog.NUM_DIALOGS_SHOWING == 0 && GameState.getGameState() == PLAYING) {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(PLAYING)
+				&& !GameState.isGameStateSet(PAUSED)) {
 			notifyObservers(InputEvent.RELEASE_MOVE);
 		}
 	}
 	public void jumpPressed() {
-		if (Dialog.NUM_DIALOGS_SHOWING == 0 && GameState.getGameState() == PLAYING) {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(PLAYING)
+				&& !GameState.isGameStateSet(PAUSED)) {
 			notifyObservers(InputEvent.PRESS_JUMP);
 		}
+		// If any of the above conditions fail, the player must be looking at a menu
 		else {
 			acceptPressed();
 		}
 	}
 	public void jumpReleased() {
-		if (Dialog.NUM_DIALOGS_SHOWING == 0 && GameState.getGameState() == PLAYING) {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(PLAYING)
+				&& !GameState.isGameStateSet(PAUSED)) {
 			notifyObservers(InputEvent.RELEASE_JUMP);
 		}
 	}
 	public void attackPressed() {
-		if (Dialog.NUM_DIALOGS_SHOWING == 0 && GameState.getGameState() == PLAYING) {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(PLAYING)
+				&& !GameState.isGameStateSet(PAUSED)) {
 			notifyObservers(InputEvent.PRESS_ATTACK);
 		}
 	}

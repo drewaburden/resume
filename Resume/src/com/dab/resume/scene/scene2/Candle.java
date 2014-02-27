@@ -22,6 +22,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 
+import static com.dab.resume.GameState.State.PAUSED;
+
 public class Candle {
 	private final float ANIM_RATE = 0.15f;
 
@@ -67,7 +69,7 @@ public class Candle {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		if (GameState.getGameState() != GameState.State.PAUSED) {
+		if (!GameState.isGameStateSet(PAUSED)) {
 			float delta = Gdx.graphics.getDeltaTime();
 			animTime += delta;
 		}

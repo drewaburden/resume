@@ -20,6 +20,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 
+import static com.dab.resume.GameState.State.PAUSED;
+
 public class Rain {
 	private Sound rainSound;
 	private long rainPlayingId; // After the sound starts, we can modify its volume using the id assigned to this.
@@ -68,11 +70,11 @@ public class Rain {
 		/****************************
 		 * Fade in sound and handle pausing
          ****************************/
-		if (!paused && GameState.getGameState() == GameState.State.PAUSED) {
+		if (!paused && GameState.isGameStateSet(PAUSED)) {
 			rainSound.pause(rainPlayingId);
 			paused = true;
 		}
-		else if (paused && GameState.getGameState() != GameState.State.PAUSED) {
+		else if (paused && !GameState.isGameStateSet(PAUSED)) {
 			rainSound.resume(rainPlayingId);
 			paused = false;
 		}
@@ -88,7 +90,7 @@ public class Rain {
 	public void draw(SpriteBatch spriteBatch) {
 		float delta = Gdx.graphics.getDeltaTime();
 
-		if (GameState.getGameState() != GameState.State.PAUSED) {
+		if (!GameState.isGameStateSet(PAUSED)) {
 			// Make the background rain fall
 			rainRelativeFallingX_back += rainVelocityX_back *delta;
 			rainRelativeFallingY_back += rainVelocityY_back *delta;

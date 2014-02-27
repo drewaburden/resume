@@ -21,6 +21,8 @@ import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 
+import static com.dab.resume.GameState.State.PAUSED;
+
 public class Dialog {
 	public static int NUM_DIALOGS_SHOWING = 0;
 	private final float ANIM_RATE = 0.15f;
@@ -231,7 +233,7 @@ public class Dialog {
 			deco_bottom.draw(spriteBatch);
 
 			// If the game isn't paused and we haven't displayed all of the text yet
-			if (GameState.getGameState() != GameState.State.PAUSED
+			if (!GameState.isGameStateSet(PAUSED)
 					&& displayText.length() != text.length()) {
 				deltaCharacterDisplay += Gdx.graphics.getDeltaTime();
 

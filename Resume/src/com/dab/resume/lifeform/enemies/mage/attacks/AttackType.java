@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines the Mage's different attack types
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform.enemies.mage.attacks;

@@ -15,10 +15,10 @@ package com.dab.resume.lifeform.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.GameState;
-import com.dab.resume.debug.Log;
-import com.dab.resume.events.Observer;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
+import com.dab.resume.debug.Log;
+import com.dab.resume.events.Observer;
 import com.dab.resume.input.InputBridge;
 import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.*;
@@ -26,10 +26,9 @@ import com.dab.resume.lifeform.*;
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
 import static com.dab.resume.GameState.State.GAMEOVER;
 import static com.dab.resume.GameState.State.PAUSED;
-import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_SWORD;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
-import static com.dab.resume.lifeform.SoundFactory.*;
+import static com.dab.resume.lifeform.SoundFactory.SoundType;
 
 public class Player extends Lifeform implements Observer {
 	private final PlayerAnimationFactory playerAnimationFactory = new PlayerAnimationFactory();
@@ -87,7 +86,7 @@ public class Player extends Lifeform implements Observer {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		if (GameState.getGameState() != PAUSED) {
+		if (!GameState.isGameStateSet(PAUSED)) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 

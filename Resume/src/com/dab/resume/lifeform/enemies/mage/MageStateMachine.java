@@ -7,20 +7,22 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Mage AI. This class determines what actions the Mage should perform based on
+ *      environmental criteria and probabilistic decision-making.
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform.enemies.mage;
 
 import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
-import com.dab.resume.lifeform.enemies.ai.StateMachine;
 import com.dab.resume.lifeform.enemies.mage.attacks.AttackType;
 import com.dab.resume.lifeform.player.Player;
 
 import java.util.Random;
 
-public class MageStateMachine implements StateMachine {
+import static com.dab.resume.GameState.State.PAUSED;
+
+public class MageStateMachine {
 	private final float wakeDistance = 200.0f; // How close the player needs to be before the Mage starts making decisions
 	private boolean awake = false;
 	private final float closenessTriggerDistance = 70.0f; // Distance player must be from the mage before the closeness trigger fires
@@ -78,9 +80,8 @@ public class MageStateMachine implements StateMachine {
 		return (mage.isAlive() && mage.isHurtBouncing() && isAwake() && deltaAction >= quickActionDelay);
 	}
 
-	@Override
 	public void update(float delta) {
-		if (GameState.getGameState() != GameState.State.PAUSED) {
+		if (!GameState.isGameStateSet(PAUSED)) {
 			deltaAction += delta;
 
 			// Calculate distance using the usual distance formula

@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      This class defines the Mage's lightning projectile and handles its animation.
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform.enemies.mage.attacks;
@@ -21,6 +21,8 @@ import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
+
+import static com.dab.resume.GameState.State.PAUSED;
 
 public class Lightning extends Projectile {
 	private final float ANIM_RATE = 0.15f;
@@ -57,7 +59,7 @@ public class Lightning extends Projectile {
 	@Override
 	public void draw(SpriteBatch spriteBatch) {
 		if (!disposing) {
-			if (GameState.getGameState() != GameState.State.PAUSED) {
+			if (!GameState.isGameStateSet(PAUSED)) {
 				float delta = Gdx.graphics.getDeltaTime();
 				animTime += delta;
 				update(delta);

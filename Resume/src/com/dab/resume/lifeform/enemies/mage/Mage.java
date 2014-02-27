@@ -17,10 +17,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
-import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
-import com.dab.resume.lifeform.*;
+import com.dab.resume.debug.Log;
+import com.dab.resume.lifeform.Direction;
+import com.dab.resume.lifeform.Lifeform;
+import com.dab.resume.lifeform.LifeformAnimationManager;
+import com.dab.resume.lifeform.State;
 import com.dab.resume.lifeform.enemies.mage.attacks.AttackType;
 import com.dab.resume.lifeform.enemies.mage.attacks.Lightning;
 import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
@@ -29,7 +32,6 @@ import java.util.ArrayList;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
 import static com.dab.resume.GameState.State.PAUSED;
-import static com.dab.resume.GameState.State.PLAYING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_LIGHTNING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
 
@@ -93,7 +95,7 @@ public class Mage extends Lifeform {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		if (GameState.getGameState() != PAUSED) {
+		if (!GameState.isGameStateSet(PAUSED)) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 

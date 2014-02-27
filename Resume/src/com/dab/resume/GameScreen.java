@@ -30,25 +30,24 @@ import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.scene1.Scene;
 import com.dab.resume.scene.scene2.Scene2;
 
-import static com.dab.resume.GameState.State.PAUSED;
-import static com.dab.resume.GameState.State.PLAYING;
+import static com.dab.resume.GameState.State.*;
 
 public class GameScreen implements Screen, Observer {
 	private OrthographicCamera camera;
 	private OrthographicCamera staticCamera;
 	private SpriteBatch spriteBatch;
-	private PauseOverlay pauseOverlay;
-	private GameoverOverlay gameoverOverlay;
-
 	private InputBridge inputBridge;
 	private KeyboardInput keyboardInput;
 	private GamePadInput gamePadInput;
 	private BitmapFont commonFont;
+
+	private MainMenu mainMenu;
+	private PauseOverlay pauseOverlay;
+	private GameoverOverlay gameoverOverlay;
 	private Scene scene;
 	private Scene2 scene2;
-
-	private Music gameMusic;
-	private HUD gameHud;
+	private Music music;
+	private HUD hud;
 	private Player player;
 
 	public GameScreen() {
@@ -66,7 +65,7 @@ public class GameScreen implements Screen, Observer {
 		 * Load general textures and player
 		 **************/
 		player = new Player();
-		gameHud = new HUD(player.getMaxHealth());
+		hud = new HUD(player.getMaxHealth());
 
 		/**************
 		 * Load scene assets
@@ -77,7 +76,7 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Load general audio
 		 **************/
-		gameMusic = new Music();
+		music = new Music();
 
 		/**************
 		 * Initialize input
@@ -87,8 +86,9 @@ public class GameScreen implements Screen, Observer {
 		gamePadInput = new GamePadInput(inputBridge); // Controller input
 
 		/**************
-		 * Overlays
+		 * Menus and overlays
 		 **************/
+		mainMenu = new MainMenu(commonFont);
 		pauseOverlay = new PauseOverlay(commonFont);
 		gameoverOverlay = new GameoverOverlay(commonFont);
 	}
@@ -102,15 +102,15 @@ public class GameScreen implements Screen, Observer {
 		scene.initAssets();
 		scene2.initAssets();
 		// HUD
-		gameHud.initAssets();
+		hud.initAssets();
 		// Characters
 		player.initAssets();
 
 		/**************
 		 * Create audio
 		 ***************/
-		gameMusic.initAssets();
-		//gameMusic.playBattleMusic();
+		music.initAssets();
+		//music.playBattleMusic();
 
 		/**************
 		 * Start receiving input
@@ -124,6 +124,7 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Overlays
 		 **************/
+		mainMenu.initAssets();
 		pauseOverlay.initAssets();
 		gameoverOverlay.initAssets();
 	}
@@ -143,16 +144,19 @@ public class GameScreen implements Screen, Observer {
 		 * Static assets
 		 *************/
 		spriteBatch.setProjectionMatrix(staticCamera.combined);
-		// Overlays
-		pauseOverlay.draw(spriteBatch);
-		if (GameState.getGameState() == GameState.State.GAMEOVER) {
+		// Menus and Overlays
+		if (GameState.isGameStateSet(MAINMENU)) {
+			mainMenu.draw(spriteBatch);
+		}
+		else if (GameState.getGameState() == GameState.State.GAMEOVER) {
 			gameoverOverlay.draw(spriteBatch);
 		}
 		else {
 			// HUD
-			gameHud.setFilledHearts(player.getHealth());
-			gameHud.draw(spriteBatch);
+			hud.setFilledHearts(player.getHealth());
+			hud.draw(spriteBatch);
 		}
+		pauseOverlay.draw(spriteBatch);
 
 		spriteBatch.end();
 	}
@@ -162,8 +166,8 @@ public class GameScreen implements Screen, Observer {
 	@Override public void hide() {}
 	@Override public void pause() {
 		// Pause if the window loses focus. But only if we aren't loading assets. Loading trumps everything.
-		if (GameState.getGameState() != GameState.State.LOADING) {
-			GameState.setGameState(GameState.State.PAUSED);
+		if (!GameState.isGameStateSet(LOADING)) {
+			GameState.addGameState(PAUSED);
 			pauseOverlay.show();
 		}
 	}
@@ -176,12 +180,12 @@ public class GameScreen implements Screen, Observer {
 			switch ((InputEvent) data) {
 				// If the user pressed pause, either pause or resume and handle the pause overlay accordingly.
 				case PRESS_PAUSE:
-					if (GameState.getGameState() == PLAYING) {
-						GameState.setGameState(PAUSED);
+					if (GameState.isGameStateSet(PLAYING)) {
+						GameState.addGameState(PAUSED);
 						pauseOverlay.show();
 					}
-					else if (GameState.getGameState() == PAUSED) {
-						GameState.setGameState(PLAYING);
+					else if (GameState.isGameStateSet(PAUSED)) {
+						GameState.removeGameState(PAUSED);
 						pauseOverlay.hide();
 					}
 					break;

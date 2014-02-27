@@ -12,11 +12,16 @@
 
 package com.dab.resume;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.GameState;
+import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
+import com.dab.resume.audio.SoundFX;
 import com.dab.resume.events.Observer;
 import com.dab.resume.input.InputEvent;
 
@@ -25,6 +30,7 @@ import java.util.ArrayList;
 public class MainMenu implements Observer {
 	private BitmapFont font;
 	private Sprite overlay, title;
+	private Sound acceptSound;
 
 	private int selectedItem = 0;
 	private ArrayList<String> items;
@@ -35,6 +41,7 @@ public class MainMenu implements Observer {
 		this. font = font;
 		Assets.getInstance().load("colors/overlay.png", Texture.class);
 		Assets.getInstance().load("game/hud/title.png", Texture.class);
+		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
 
 		items = new ArrayList<String>();
 		items.add("START GAME");
@@ -53,6 +60,19 @@ public class MainMenu implements Observer {
 		texture = Assets.getInstance().get("game/hud/title.png");
 		title = new Sprite(texture);
 		title.setPosition(0.0f - title.getWidth()/2.0f, 55.0f);
+
+		acceptSound = Assets.getInstance().get("game/sounds/dialog-accept.ogg");
+	}
+
+	private void acceptPressed() {
+		acceptSound.play(SoundFX.VOLUME_MODIFIER);
+		switch (selectedItem) {
+			case 0: break;
+			case 1: break;
+			case 2: break;
+			case 3:
+				Gdx.app.exit();
+		}
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
@@ -112,6 +132,7 @@ public class MainMenu implements Observer {
 					}
 					break;
 				case PRESS_ACCEPT:
+					acceptPressed();
 					break;
 			}
 		}

@@ -20,8 +20,8 @@ import com.dab.resume.debug.Log;
 public class GameState {
 	private static State currentState = State.LOADING;
 
-	// Using ints represented as hex allows us to set multiple states at one time.
-	// (as long as the values are powers of 2)
+	// Using ints represented as hex allows us to set multiple states at one time by making
+	// use of bitwise operators (as long as the values are powers of 2).
 	public static enum State {
 		PLAYING     (0x00000001),
 		LOADING     (0x00000002),

@@ -56,6 +56,9 @@ public class KeyboardInput implements InputProcessor {
 		else if (keycode == DOWN) {
 			inputBridge.downPressed();
 		}
+		else if (keycode == ENTER) {
+			inputBridge.acceptPressed();
+		}
 		else if (keycode == X) {
 			inputBridge.attackPressed();
 		}

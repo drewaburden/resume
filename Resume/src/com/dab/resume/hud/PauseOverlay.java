@@ -10,13 +10,14 @@
  *      Handles drawing the overlay of the game screen when the GameState is set to paused
  ********************************************************************************************************/
 
-package com.dab.resume;
+package com.dab.resume.hud;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 

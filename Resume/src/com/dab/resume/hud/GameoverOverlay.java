@@ -10,7 +10,7 @@
  *      Handles drawing the overlay of the game screen when the GameState is set to paused
  ********************************************************************************************************/
 
-package com.dab.resume;
+package com.dab.resume.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 
 public class GameoverOverlay {

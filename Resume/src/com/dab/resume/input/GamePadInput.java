@@ -68,10 +68,16 @@ public class GamePadInput implements ControllerListener {
 	public boolean povMoved(Controller controller, int povCode, PovDirection dpad) {
 		// DPad down
 		if (dpad == Xbox360Pad.BUTTON_DPAD_LEFT) {
-			inputBridge.movementLeftPressed();
+			inputBridge.leftPressed();
 		}
 		else if (dpad == Xbox360Pad.BUTTON_DPAD_RIGHT) {
-			inputBridge.movementRightPressed();
+			inputBridge.rightPressed();
+		}
+		else if (dpad == Xbox360Pad.BUTTON_DPAD_UP) {
+			inputBridge.upPressed();
+		}
+		else if (dpad == Xbox360Pad.BUTTON_DPAD_DOWN) {
+			inputBridge.downPressed();
 		}
 		// Stop player's X movement if the DPad state changed and they aren't still holding left or right
 		else {

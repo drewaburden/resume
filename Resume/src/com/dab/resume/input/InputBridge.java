@@ -18,6 +18,7 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.hud.Dialog;
 
+import static com.dab.resume.GameState.State.MAINMENU;
 import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.GameState.State.PLAYING;
 
@@ -32,23 +33,35 @@ public class InputBridge extends Observable {
 		// If we're in-game and the game isn't paused after notifying the observers,
 		// the player must've just unpaused, so we need to recheck/resend movement input.
 		if (GameState.isGameStateSet(PLAYING) && !GameState.isGameStateSet(PAUSED)) {
-			if (isMovementRightPressed()) movementRightPressed();
-			else if (isMovementLeftPressed()) movementLeftPressed();
+			if (isMovementRightPressed()) rightPressed();
+			else if (isMovementLeftPressed()) leftPressed();
 			else movementReleased();
 		}
 	}
-	public void movementRightPressed() {
+	public void rightPressed() {
 		if (Dialog.NUM_DIALOGS_SHOWING == 0
 				&& GameState.isGameStateSet(PLAYING)
 				&& !GameState.isGameStateSet(PAUSED)) {
-			notifyObservers(InputEvent.PRESS_MOVE_RIGHT);
+			notifyObservers(InputEvent.PRESS_RIGHT);
 		}
 	}
-	public void movementLeftPressed() {
+	public void leftPressed() {
 		if (Dialog.NUM_DIALOGS_SHOWING == 0
 				&& GameState.isGameStateSet(PLAYING)
 				&& !GameState.isGameStateSet(PAUSED)) {
-			notifyObservers(InputEvent.PRESS_MOVE_LEFT);
+			notifyObservers(InputEvent.PRESS_LEFT);
+		}
+	}
+	public void upPressed() {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(MAINMENU)) {
+			notifyObservers(InputEvent.PRESS_UP);
+		}
+	}
+	public void downPressed() {
+		if (Dialog.NUM_DIALOGS_SHOWING == 0
+				&& GameState.isGameStateSet(MAINMENU)) {
+			notifyObservers(InputEvent.PRESS_DOWN);
 		}
 	}
 	public void movementReleased() {

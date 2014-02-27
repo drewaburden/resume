@@ -17,15 +17,30 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
+import com.dab.resume.events.Observer;
+import com.dab.resume.input.InputEvent;
 
-public class MainMenu {
+import java.util.ArrayList;
+
+public class MainMenu implements Observer {
 	private BitmapFont font;
 	private Sprite overlay, title;
+
+	private int selectedItem = 0;
+	private ArrayList<String> items;
+	private final float itemsStartY = -5.0f;
+	private final float itemsIncrementY = -20.0f;
 
 	public MainMenu(BitmapFont font) {
 		this. font = font;
 		Assets.getInstance().load("colors/overlay.png", Texture.class);
 		Assets.getInstance().load("game/hud/title.png", Texture.class);
+
+		items = new ArrayList<String>();
+		items.add("START GAME");
+		items.add("CONTROLS");
+		items.add("CREDITS");
+		items.add("EXIT GAME");
 	}
 
 	public void initAssets() {
@@ -47,32 +62,58 @@ public class MainMenu {
 		// Title/logo
 		title.draw(spriteBatch);
 
-		// Text
-		font.setColor(0.18f, 1.0f, 0.51f, 1.0f); // Selected color
-		String menuItem = "~                ~";
-		BitmapFont.TextBounds textBounds = font.getBounds(menuItem);
-		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
-				0.0f + textBounds.height / 2.0f + -5.0f);
+		// Avoid clutter by hiding the menu items if the pause overlay is showing.
+		if (!GameState.isGameStateSet(GameState.State.PAUSED)) {
+			float itemY = itemsStartY;
+			for (int item = 0; item < items.size(); ++item) {
+				font.setColor(0.15f, 0.85f, 0.4f, 1.0f); // Unselected color
+				BitmapFont.TextBounds textBounds;
 
-		menuItem = "START GAME";
-		textBounds = font.getBounds(menuItem);
-		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
-				0.0f + textBounds.height / 2.0f + -5.0f);
+				// If this is the selected item, change the color and draw the selection indicator
+				if (selectedItem == item) {
+					font.setColor(0.18f, 1.0f, 0.51f, 1.0f); // Selected color
+					String menuItem = "~                ~";
+					textBounds = font.getBounds(menuItem);
+					font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
+							0.0f + textBounds.height / 2.0f + itemY);
+				}
 
-		font.setColor(0.15f, 0.85f, 0.4f, 1.0f); // Unselected color
-		menuItem = "CONTROLS";
-		textBounds = font.getBounds(menuItem);
-		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
-				0.0f + textBounds.height / 2.0f + -25.0f);
+				// Draw the item
+				String itemText = items.get(item);
+				textBounds = font.getBounds(itemText);
+				font.draw(spriteBatch, itemText, 0.0f - textBounds.width / 2.0f,
+						0.0f + textBounds.height / 2.0f + itemY);
 
-		menuItem = "CREDITS";
-		textBounds = font.getBounds(menuItem);
-		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
-				0.0f + textBounds.height / 2.0f + -45.0f);
+				itemY += itemsIncrementY; // Update Y position
+			}
+		}
+	}
 
-		menuItem = "EXIT GAME";
-		textBounds = font.getBounds(menuItem);
-		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
-				0.0f + textBounds.height / 2.0f + -65.0f);
+	@Override
+	public void eventTriggered(Object data) {
+		// If the event was an input event and we aren't paused.
+		// Pausing in the main menu can only happen if the window loses focus, and in that
+		// case, we will want to shift input focus to the pause overlay, not the main menu.
+		if (data instanceof InputEvent
+				&& !GameState.isGameStateSet(GameState.State.PAUSED)) {
+			switch ((InputEvent) data) {
+				case PRESS_DOWN:
+					selectedItem++;
+					// If they pressed down when they were at the bottom, put them at the top
+					if (selectedItem >= items.size()) {
+						selectedItem = 0;
+					}
+					break;
+				case PRESS_UP:
+					selectedItem--;
+					// If they pressed up when they were at the top, put them at the bottom
+					if (selectedItem < 0) {
+						selectedItem = items.size()-1;
+					}
+					break;
+				case PRESS_ACCEPT:
+					break;
+			}
+		}
 	}
 }

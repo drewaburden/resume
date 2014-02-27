@@ -120,6 +120,7 @@ public class GameScreen implements Screen, Observer {
 		inputBridge.registerObserver(this);
 		inputBridge.registerObserver(player);
 		inputBridge.registerObserver(scene);
+		inputBridge.registerObserver(mainMenu);
 
 		/**************
 		 * Overlays

@@ -143,8 +143,8 @@ public class Player extends Lifeform implements Observer {
 		else if (data instanceof InputEvent) {
 			InputEvent event = (InputEvent) data;
 			switch (event) {
-				case PRESS_MOVE_RIGHT: move(Direction.RIGHT); break;
-				case PRESS_MOVE_LEFT: move(Direction.LEFT); break;
+				case PRESS_RIGHT: move(Direction.RIGHT); break;
+				case PRESS_LEFT: move(Direction.LEFT); break;
 				case RELEASE_MOVE: stopXForce(); recheckInput(); break;
 				case PRESS_JUMP: jump(); break;
 				case RELEASE_JUMP: stopYForce(); break;

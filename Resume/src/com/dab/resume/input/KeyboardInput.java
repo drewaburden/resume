@@ -45,10 +45,16 @@ public class KeyboardInput implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		if (keycode == LEFT) {
-			inputBridge.movementLeftPressed();
+			inputBridge.leftPressed();
 		}
 		else if (keycode == RIGHT) {
-			inputBridge.movementRightPressed();
+			inputBridge.rightPressed();
+		}
+		else if (keycode == UP) {
+			inputBridge.upPressed();
+		}
+		else if (keycode == DOWN) {
+			inputBridge.downPressed();
 		}
 		else if (keycode == X) {
 			inputBridge.attackPressed();

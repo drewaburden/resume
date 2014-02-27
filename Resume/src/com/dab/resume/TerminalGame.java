@@ -56,9 +56,10 @@ public class TerminalGame extends Game {
 		/**************
 		 * Load commonly used font
 		 **************/
-		commonFont = new BitmapFont(Gdx.files.internal("fonts/font.fnt"));
-		commonFont.setScale(1.0f);
+		Assets.getInstance().load("fonts/font.fnt", BitmapFont.class);
 		Assets.getInstance().finishLoading();
+		commonFont = Assets.getInstance().get("fonts/font.fnt");
+		commonFont.setScale(1.0f);
 
 		/**************
 		 * Load textures
@@ -115,17 +116,7 @@ public class TerminalGame extends Game {
 							System.out.println("Asset modified. Reloading asset.\t(" + filename + ")");
 
 							Class asset_type = Assets.getInstance().getAssetType(filename);
-							if (asset_type != Texture.class) {
-								// We can't be nearly as nice when the asset isn't a texture.
-								// We have to reinitialize everything, and it'll probably mess some things up, (like
-								// sprite positions) but reloading non-texture assets is not nearly as common of an
-								// occurrence. The init methods could probably all be made to play nicer with this
-								// feature but it's not really worth the time.
-								Assets.getInstance().unload(filename);
-								Assets.getInstance().load(filename, asset_type);
-								GameState.setGameState(GameState.State.LOADING);
-							}
-							else {
+							if (asset_type == Texture.class) {
 								asset_modification_times.remove(filename);
 								asset_modification_times.put(filename, file.lastModified());
 								// Cause all textures to be reloaded nicely and cleanly. No re-init necessary.
@@ -133,6 +124,19 @@ public class TerminalGame extends Game {
 								Assets.getInstance().finishLoading();
 								// I could probably code up something that would only reload the necessary textures,
 								// but it's really not worth the time since this feature is just a hack-ish dev tool.
+							}
+							else {
+								// We can't be nearly as nice when the asset isn't a texture.
+								// We have to reinitialize everything, and it'll probably mess some things up, (like
+								// sprite positions) but reloading non-texture assets is not nearly as common of an
+								// occurrence. The init methods could probably all be made to play nicer with this
+								// feature but it's not really worth the time.
+								Assets.getInstance().unload(filename);
+								Assets.getInstance().load(filename, asset_type);
+								asset_modification_times.remove(filename);
+								asset_modification_times.put(filename, file.lastModified());
+								GameState.setGameState(GameState.State.LOADING);
+								create();
 							}
 						}
 					}

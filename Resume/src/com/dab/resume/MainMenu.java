@@ -37,7 +37,7 @@ public class MainMenu {
 
 		texture = Assets.getInstance().get("game/hud/title.png");
 		title = new Sprite(texture);
-		title.setPosition(0.0f - title.getWidth()/2.0f, 50.0f);
+		title.setPosition(0.0f - title.getWidth()/2.0f, 55.0f);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
@@ -47,14 +47,32 @@ public class MainMenu {
 		// Title/logo
 		title.draw(spriteBatch);
 
-		/*****
-		 * TODO: Add menu items' text
-		 *****/
 		// Text
-		/*font.setColor(0.15f, 0.85f, 0.4f, 1.0f);
-		String pauseText = "PAUSED";
-		BitmapFont.TextBounds textBounds = font.getBounds(pauseText);
-		font.draw(spriteBatch, pauseText, 0.0f - textBounds.width / 2.0f,
-				0.0f + textBounds.height / 2.0f + 30.0f);*/
+		font.setColor(0.18f, 1.0f, 0.51f, 1.0f); // Selected color
+		String menuItem = "~                ~";
+		BitmapFont.TextBounds textBounds = font.getBounds(menuItem);
+		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
+				0.0f + textBounds.height / 2.0f + -5.0f);
+
+		menuItem = "START GAME";
+		textBounds = font.getBounds(menuItem);
+		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
+				0.0f + textBounds.height / 2.0f + -5.0f);
+
+		font.setColor(0.15f, 0.85f, 0.4f, 1.0f); // Unselected color
+		menuItem = "CONTROLS";
+		textBounds = font.getBounds(menuItem);
+		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
+				0.0f + textBounds.height / 2.0f + -25.0f);
+
+		menuItem = "CREDITS";
+		textBounds = font.getBounds(menuItem);
+		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
+				0.0f + textBounds.height / 2.0f + -45.0f);
+
+		menuItem = "EXIT GAME";
+		textBounds = font.getBounds(menuItem);
+		font.draw(spriteBatch, menuItem, 0.0f - textBounds.width / 2.0f,
+				0.0f + textBounds.height / 2.0f + -65.0f);
 	}
 }

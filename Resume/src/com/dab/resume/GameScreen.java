@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.audio.Music;
+import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.hud.GameoverOverlay;
 import com.dab.resume.hud.HUD;
@@ -151,7 +152,7 @@ public class GameScreen implements Screen, Observer {
 		if (GameState.isGameStateSet(MAINMENU)) {
 			mainMenu.draw(spriteBatch);
 		}
-		else if (GameState.getGameState() == GameState.State.GAMEOVER) {
+		else if (GameState.isGameStateSet(GameState.State.GAMEOVER)) {
 			gameoverOverlay.draw(spriteBatch);
 		}
 		else {
@@ -183,7 +184,7 @@ public class GameScreen implements Screen, Observer {
 			switch ((InputEvent) data) {
 				// If the user pressed pause, either pause or resume and handle the pause overlay accordingly.
 				case PRESS_PAUSE:
-					if (GameState.isGameStateSet(PLAYING)) {
+					if (GameState.isGameStateSet(PLAYING) && !GameState.isGameStateSet(PAUSED)) {
 						GameState.addGameState(PAUSED);
 						pauseOverlay.show();
 					}

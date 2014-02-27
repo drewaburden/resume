@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.DebugFlags;
+import com.dab.resume.debug.Log;
 
 import java.io.File;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public class TerminalGame extends Game {
 
 	@Override
 	public void render() {
-		if (GameState.getGameState() != GameState.State.LOADING) {
+		if (!GameState.isGameStateSet(GameState.State.LOADING)) {
 			/*********
 			 * Asset monitoring
 			 *********/
@@ -140,7 +141,7 @@ public class TerminalGame extends Game {
 							}
 						}
 					}
-					if (GameState.getGameState() == GameState.State.LOADING) {
+					if (GameState.isGameStateSet(GameState.State.LOADING)) {
 						return;
 					}
 				}

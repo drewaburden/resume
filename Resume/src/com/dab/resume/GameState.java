@@ -18,7 +18,7 @@ package com.dab.resume;
 import com.dab.resume.debug.Log;
 
 public class GameState {
-	private static State currentState = State.LOADING;
+	private static int currentState = State.LOADING.getStateCode();
 
 	// Using ints represented as hex allows us to set multiple states at one time by making
 	// use of bitwise operators (as long as the values are powers of 2).
@@ -32,31 +32,25 @@ public class GameState {
 		PAUSED      (0x00000040),
 		PRELOADING  (0x00000080);
 
-		private int stateCode;
-		private State(int stateCode) { this.stateCode = stateCode; }
+		private final int stateCode;
+		private State(final int stateCode) { this.stateCode = stateCode; }
 
 		public int getStateCode() { return stateCode; }
-
-		public void setStateCode(State state) { this.stateCode = state.getStateCode(); }
-		public void addStateCode(State state) { this.stateCode |= state.getStateCode(); } // OR
-		public void removeStateCode(State state) { this.stateCode ^= state.getStateCode(); } // Exclusive OR
 	}
 
-	public static State getGameState() { return currentState; }
 	public static boolean isGameStateSet(State state) {
-		return (state.getStateCode() & currentState.getStateCode()) > 0;
+		return (state.getStateCode() & currentState) > 0;
 	}
-
 	public static void setGameState(State state) {
 		Log.log("State set to " + state.toString());
-		currentState = state;
+		currentState = state.getStateCode();
 	}
 	public static void addGameState(State state) {
 		Log.log("Added State " + state.toString());
-		currentState.addStateCode(state);
+		currentState |= state.getStateCode();
 	}
 	public static void removeGameState(State state) {
 		Log.log("Removed State " + state.toString());
-		currentState.removeStateCode(state);
+		currentState ^= state.getStateCode();
 	}
 }

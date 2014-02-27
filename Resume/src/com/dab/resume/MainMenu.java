@@ -22,6 +22,7 @@ import com.dab.resume.GameState;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
+import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.input.InputEvent;
 
@@ -67,7 +68,19 @@ public class MainMenu implements Observer {
 	private void acceptPressed() {
 		acceptSound.play(SoundFX.VOLUME_MODIFIER);
 		switch (selectedItem) {
-			case 0: break;
+			case 0:
+				//System.out.println(GameState.getGameState().getStateCode());
+				GameState.addGameState(GameState.State.PLAYING);
+				//System.out.println(GameState.getGameState().getStateCode());
+				GameState.removeGameState(GameState.State.MAINMENU);
+				//System.out.println(GameState.getGameState().getStateCode());
+				if (GameState.isGameStateSet(GameState.State.MAINMENU)) {
+					Log.log("Uh oh 1");
+				}
+				if (!GameState.isGameStateSet(GameState.State.PLAYING)) {
+					Log.log("Uh oh 2");
+				}
+				break;
 			case 1: break;
 			case 2: break;
 			case 3:
@@ -115,6 +128,7 @@ public class MainMenu implements Observer {
 		// Pausing in the main menu can only happen if the window loses focus, and in that
 		// case, we will want to shift input focus to the pause overlay, not the main menu.
 		if (data instanceof InputEvent
+				&& GameState.isGameStateSet(GameState.State.MAINMENU)
 				&& !GameState.isGameStateSet(GameState.State.PAUSED)) {
 			switch ((InputEvent) data) {
 				case PRESS_DOWN:

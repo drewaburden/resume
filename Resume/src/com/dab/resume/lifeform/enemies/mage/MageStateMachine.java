@@ -96,7 +96,7 @@ public class MageStateMachine {
 				makeDecision();
 			}
 			if (!isAwake()) {
-				Log.log("Can't perform action");
+				Log.verboseLog("Can't perform action");
 			}
 		}
 	}

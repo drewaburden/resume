@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 import com.dab.resume.events.Observer;
+import com.dab.resume.hud.ControlsOverlay;
 import com.dab.resume.hud.CreditsOverlay;
 import com.dab.resume.input.InputEvent;
 
@@ -31,6 +32,7 @@ public class MainMenu implements Observer {
 	private Sprite overlay, title;
 	private Sound acceptSound;
 
+	private ControlsOverlay controlsOverlay;
 	private CreditsOverlay creditsOverlay;
 
 	private int selectedItem = 0;
@@ -38,8 +40,9 @@ public class MainMenu implements Observer {
 	private final float itemsStartY = -5.0f;
 	private final float itemsIncrementY = -20.0f;
 
-	public MainMenu(BitmapFont font, CreditsOverlay creditsOverlay) {
+	public MainMenu(BitmapFont font, ControlsOverlay controlsOverlay, CreditsOverlay creditsOverlay) {
 		this. font = font;
+		this.controlsOverlay = controlsOverlay;
 		this.creditsOverlay = creditsOverlay;
 		Assets.getInstance().load("colors/overlay.png", Texture.class);
 		Assets.getInstance().load("game/hud/title.png", Texture.class);
@@ -73,7 +76,11 @@ public class MainMenu implements Observer {
 				GameState.addGameState(GameState.State.PLAYING);
 				GameState.removeGameState(GameState.State.MAINMENU);
 				break;
-			case 1: break;
+			case 1:
+				controlsOverlay.show();
+				GameState.addGameState(GameState.State.CONTROLS);
+				GameState.removeGameState(GameState.State.MAINMENU);
+				break;
 			case 2:
 				creditsOverlay.show();
 				GameState.addGameState(GameState.State.CREDITS);

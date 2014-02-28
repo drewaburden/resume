@@ -22,10 +22,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.audio.Music;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
-import com.dab.resume.hud.CreditsOverlay;
-import com.dab.resume.hud.GameoverOverlay;
-import com.dab.resume.hud.HUD;
-import com.dab.resume.hud.PauseOverlay;
+import com.dab.resume.hud.*;
 import com.dab.resume.input.GamePadInput;
 import com.dab.resume.input.InputBridge;
 import com.dab.resume.input.InputEvent;
@@ -48,6 +45,7 @@ public class GameScreen implements Screen, Observer {
 	private MainMenu mainMenu;
 	private PauseOverlay pauseOverlay;
 	private GameoverOverlay gameoverOverlay;
+	private ControlsOverlay controlsOverlay;
 	private CreditsOverlay creditsOverlay;
 	private Scene scene;
 	private Scene2 scene2;
@@ -93,8 +91,9 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Menus and overlays
 		 **************/
+		controlsOverlay = new ControlsOverlay();
 		creditsOverlay = new CreditsOverlay();
-		mainMenu = new MainMenu(commonFont, creditsOverlay);
+		mainMenu = new MainMenu(commonFont, controlsOverlay, creditsOverlay);
 		pauseOverlay = new PauseOverlay(commonFont);
 		gameoverOverlay = new GameoverOverlay(commonFont);
 	}
@@ -127,15 +126,17 @@ public class GameScreen implements Screen, Observer {
 		inputBridge.registerObserver(player);
 		inputBridge.registerObserver(scene);
 		inputBridge.registerObserver(mainMenu);
+		inputBridge.registerObserver(controlsOverlay);
 		inputBridge.registerObserver(creditsOverlay);
 
 		/**************
 		 * Overlays
 		 **************/
-		mainMenu.initAssets();
+		controlsOverlay.initAssets();
+		creditsOverlay.initAssets();
 		pauseOverlay.initAssets();
 		gameoverOverlay.initAssets();
-		creditsOverlay.initAssets();
+		mainMenu.initAssets();
 	}
 
 	@Override
@@ -156,6 +157,9 @@ public class GameScreen implements Screen, Observer {
 		// Menus and Overlays
 		if (GameState.isGameStateSet(MAINMENU)) {
 			mainMenu.draw(spriteBatch);
+		}
+		else if (GameState.isGameStateSet(CONTROLS)) {
+			controlsOverlay.draw(spriteBatch);
 		}
 		else if (GameState.isGameStateSet(CREDITS)) {
 			creditsOverlay.draw(spriteBatch);

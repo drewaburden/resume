@@ -20,8 +20,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
-import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
+import com.dab.resume.hud.CreditsOverlay;
 import com.dab.resume.input.InputEvent;
 
 import java.util.ArrayList;
@@ -31,13 +31,16 @@ public class MainMenu implements Observer {
 	private Sprite overlay, title;
 	private Sound acceptSound;
 
+	private CreditsOverlay creditsOverlay;
+
 	private int selectedItem = 0;
 	private ArrayList<String> items;
 	private final float itemsStartY = -5.0f;
 	private final float itemsIncrementY = -20.0f;
 
-	public MainMenu(BitmapFont font) {
+	public MainMenu(BitmapFont font, CreditsOverlay creditsOverlay) {
 		this. font = font;
+		this.creditsOverlay = creditsOverlay;
 		Assets.getInstance().load("colors/overlay.png", Texture.class);
 		Assets.getInstance().load("game/hud/title.png", Texture.class);
 		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
@@ -71,7 +74,11 @@ public class MainMenu implements Observer {
 				GameState.removeGameState(GameState.State.MAINMENU);
 				break;
 			case 1: break;
-			case 2: break;
+			case 2:
+				creditsOverlay.show();
+				GameState.addGameState(GameState.State.CREDITS);
+				GameState.removeGameState(GameState.State.MAINMENU);
+				break;
 			case 3:
 				Gdx.app.exit();
 		}
@@ -112,7 +119,7 @@ public class MainMenu implements Observer {
 	}
 
 	@Override
-	public void eventTriggered(Object data) {
+	public boolean eventTriggered(Object data) {
 		// If the event was an input event and we aren't paused.
 		// Pausing in the main menu can only happen if the window loses focus, and in that
 		// case, we will want to shift input focus to the pause overlay, not the main menu.
@@ -126,18 +133,19 @@ public class MainMenu implements Observer {
 					if (selectedItem >= items.size()) {
 						selectedItem = 0;
 					}
-					break;
+					return true;
 				case PRESS_UP:
 					selectedItem--;
 					// If they pressed up when they were at the top, put them at the bottom
 					if (selectedItem < 0) {
 						selectedItem = items.size()-1;
 					}
-					break;
+					return true;
 				case PRESS_ACCEPT:
 					acceptPressed();
-					break;
+					return true;
 			}
 		}
+		return false;
 	}
 }

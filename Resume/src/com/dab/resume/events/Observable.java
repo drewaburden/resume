@@ -24,7 +24,8 @@ public class Observable {
 	public void registerObserver(Observer observer) { observers.add(observer); }
 	public void notifyObservers(Object data) {
 		for (Observer observer : observers) {
-			observer.eventTriggered(data);
+			boolean handled = observer.eventTriggered(data);
+			if (handled) break;
 		}
 	}
 }

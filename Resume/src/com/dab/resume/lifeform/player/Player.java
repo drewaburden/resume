@@ -122,37 +122,38 @@ public class Player extends Lifeform implements Observer {
 		}
 	}
 
-	public void eventTriggered(Object data) {
+	@Override
+	public boolean eventTriggered(Object data) {
 		if (data instanceof MovementEvent) {
 			Log.log();
 			MovementEvent event = (MovementEvent) data;
 			switch (event) {
-				case STEPPED: soundManager.playSound(playerSoundFactory.getSound(SoundType.MOVE)); break;
+				case STEPPED: soundManager.playSound(playerSoundFactory.getSound(SoundType.MOVE)); return true;
 				case LANDED:
 					soundManager.playSound(playerSoundFactory.getSound(SoundType.LANDED));
 					recheckInput();
-					break;
+					return true;
 				case DONE_HURTING:
 					if (isAlive()) {
 						recheckInput();
 					}
-					break;
-				default: assert(false);
+					return true;
 			}
 		}
 		else if (data instanceof InputEvent) {
 			InputEvent event = (InputEvent) data;
 			switch (event) {
-				case PRESS_RIGHT: move(Direction.RIGHT); break;
-				case PRESS_LEFT: move(Direction.LEFT); break;
-				case RELEASE_MOVE: stopXForce(); recheckInput(); break;
-				case PRESS_JUMP: jump(); break;
-				case RELEASE_JUMP: stopYForce(); break;
-				case PRESS_ATTACK: attack(); break;
+				case PRESS_RIGHT: move(Direction.RIGHT); return true;
+				case PRESS_LEFT: move(Direction.LEFT); return true;
+				case RELEASE_MOVE: stopXForce(); recheckInput(); return true;
+				case PRESS_JUMP: jump(); return true;
+				case RELEASE_JUMP: stopYForce(); return true;
+				case PRESS_ATTACK: attack(); return true;
 			}
 		}
 		else if (data instanceof com.dab.resume.collision.CollisionEvent) {
 
 		}
+		return false;
 	}
 }

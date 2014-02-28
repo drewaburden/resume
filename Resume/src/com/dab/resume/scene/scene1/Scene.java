@@ -350,5 +350,5 @@ public class Scene implements Observer {
 	}
 
 	@Override
-	public void eventTriggered(Object data) {}
+	public boolean eventTriggered(Object data) {return false;}
 }

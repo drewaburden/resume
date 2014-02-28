@@ -13,5 +13,9 @@
 package com.dab.resume.events;
 
 public interface Observer {
-	public void eventTriggered(Object data);
+	/********
+	 * return  true - event was handled. Don't notify any further observers.
+	 *         false - event wasn't handled. Continue notifying.
+	 */
+	public boolean eventTriggered(Object data);
 }

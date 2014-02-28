@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.audio.Music;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
+import com.dab.resume.hud.CreditsOverlay;
 import com.dab.resume.hud.GameoverOverlay;
 import com.dab.resume.hud.HUD;
 import com.dab.resume.hud.PauseOverlay;
@@ -47,6 +48,7 @@ public class GameScreen implements Screen, Observer {
 	private MainMenu mainMenu;
 	private PauseOverlay pauseOverlay;
 	private GameoverOverlay gameoverOverlay;
+	private CreditsOverlay creditsOverlay;
 	private Scene scene;
 	private Scene2 scene2;
 	private Music music;
@@ -91,7 +93,8 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Menus and overlays
 		 **************/
-		mainMenu = new MainMenu(commonFont);
+		creditsOverlay = new CreditsOverlay();
+		mainMenu = new MainMenu(commonFont, creditsOverlay);
 		pauseOverlay = new PauseOverlay(commonFont);
 		gameoverOverlay = new GameoverOverlay(commonFont);
 	}
@@ -124,6 +127,7 @@ public class GameScreen implements Screen, Observer {
 		inputBridge.registerObserver(player);
 		inputBridge.registerObserver(scene);
 		inputBridge.registerObserver(mainMenu);
+		inputBridge.registerObserver(creditsOverlay);
 
 		/**************
 		 * Overlays
@@ -131,6 +135,7 @@ public class GameScreen implements Screen, Observer {
 		mainMenu.initAssets();
 		pauseOverlay.initAssets();
 		gameoverOverlay.initAssets();
+		creditsOverlay.initAssets();
 	}
 
 	@Override
@@ -151,6 +156,9 @@ public class GameScreen implements Screen, Observer {
 		// Menus and Overlays
 		if (GameState.isGameStateSet(MAINMENU)) {
 			mainMenu.draw(spriteBatch);
+		}
+		else if (GameState.isGameStateSet(CREDITS)) {
+			creditsOverlay.draw(spriteBatch);
 		}
 		else if (GameState.isGameStateSet(GameState.State.GAMEOVER)) {
 			gameoverOverlay.draw(spriteBatch);
@@ -179,7 +187,7 @@ public class GameScreen implements Screen, Observer {
 	@Override public void dispose() {}
 
 	@Override
-	public void eventTriggered(Object data) {
+	public boolean eventTriggered(Object data) {
 		if (data instanceof InputEvent) {
 			switch ((InputEvent) data) {
 				// If the user pressed pause, either pause or resume and handle the pause overlay accordingly.
@@ -192,8 +200,9 @@ public class GameScreen implements Screen, Observer {
 						GameState.removeGameState(PAUSED);
 						pauseOverlay.hide();
 					}
-					break;
+					return true;
 			}
 		}
+		return false;
 	}
 }

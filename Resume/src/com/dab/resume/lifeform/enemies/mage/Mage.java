@@ -94,6 +94,14 @@ public class Mage extends Lifeform {
 		projectiles.remove(projectile);
 	}
 
+	@Override
+	public void die() {
+		super.die();
+		for (Projectile projectile : getActiveProjectiles()) {
+			destroyProjectile(projectile);
+		}
+	}
+
 	public void draw(SpriteBatch spriteBatch) {
 		if (!GameState.isGameStateSet(PAUSED)) {
 			final float delta = Gdx.graphics.getDeltaTime();

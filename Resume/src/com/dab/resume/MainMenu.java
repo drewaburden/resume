@@ -18,8 +18,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.dab.resume.GameState;
-import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 import com.dab.resume.debug.Log;
@@ -69,17 +67,8 @@ public class MainMenu implements Observer {
 		acceptSound.play(SoundFX.VOLUME_MODIFIER);
 		switch (selectedItem) {
 			case 0:
-				//System.out.println(GameState.getGameState().getStateCode());
 				GameState.addGameState(GameState.State.PLAYING);
-				//System.out.println(GameState.getGameState().getStateCode());
 				GameState.removeGameState(GameState.State.MAINMENU);
-				//System.out.println(GameState.getGameState().getStateCode());
-				if (GameState.isGameStateSet(GameState.State.MAINMENU)) {
-					Log.log("Uh oh 1");
-				}
-				if (!GameState.isGameStateSet(GameState.State.PLAYING)) {
-					Log.log("Uh oh 2");
-				}
 				break;
 			case 1: break;
 			case 2: break;

@@ -97,8 +97,12 @@ public class Mage extends Lifeform {
 	@Override
 	public void die() {
 		super.die();
-		for (Projectile projectile : getActiveProjectiles()) {
+		// I would do a foreach, but that would give a ConcurrentModificationException
+		int numProjectiles = getActiveProjectiles().size();
+		for (int projectileIndex = 0; projectileIndex < numProjectiles; ++projectileIndex) {
+			Projectile projectile = getActiveProjectiles().get(projectileIndex);
 			destroyProjectile(projectile);
+			numProjectiles--;
 		}
 	}
 

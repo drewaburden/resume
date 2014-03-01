@@ -26,10 +26,8 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.hud.Dialog;
-import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
-import com.dab.resume.lifeform.enemies.mage.MageSoundFactory;
 import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
 import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
 import com.dab.resume.lifeform.player.Player;
@@ -309,7 +307,7 @@ public class Scene implements Observer {
 	 * TODO: Move to own class
 	 ***********/
 	public void renderCollisionDebug(SpriteBatch spriteBatch) {
-		if (DebugFlags.DEV_SHOW_BOUNDINGBOXES) {
+		if (DebugFlags.DEV_DEBUG_VIEW) {
 			spriteBatch.end();
 			ShapeRenderer shapeRenderer = new ShapeRenderer();
 			shapeRenderer.setProjectionMatrix(camera.combined);

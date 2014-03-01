@@ -17,8 +17,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.Music;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
@@ -42,6 +44,9 @@ public class GameScreen implements Screen, Observer {
 	private GamePadInput gamePadInput;
 	private BitmapFont commonFont;
 
+	private Fadeable fadeOverlay; // Used to fade the entire terminal screen
+	private Fadeable fadeUnderlay; // Used to fade only between the menus and the scene
+
 	private MainMenu mainMenu;
 	private PauseOverlay pauseOverlay;
 	private GameoverOverlay gameoverOverlay;
@@ -53,16 +58,31 @@ public class GameScreen implements Screen, Observer {
 	private HUD hud;
 	private Player player;
 
-	public GameScreen() {
+	public GameScreen(BitmapFont commonFont) {
+		this.commonFont = commonFont;
 		camera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		staticCamera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		spriteBatch = new SpriteBatch();
 
 		/**************
-		 * Load commonly used font
+		 * Menus and overlays
 		 **************/
-		commonFont = new BitmapFont(Gdx.files.internal("fonts/font.fnt"));
-		commonFont.setScale(1.0f);
+		Assets.getInstance().load("colors/overlay.png", Texture.class);
+		Assets.getInstance().finishLoading();
+		Texture texture = Assets.getInstance().get("colors/overlay.png");
+		fadeOverlay = new Fadeable(texture);
+		fadeOverlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
+		fadeOverlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
+		fadeOverlay.setAlpha(1.0f);
+		fadeUnderlay = new Fadeable(texture);
+		fadeUnderlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
+		fadeUnderlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
+		fadeUnderlay.setAlpha(0.25f);
+		controlsOverlay = new ControlsOverlay();
+		creditsOverlay = new CreditsOverlay(fadeUnderlay);
+		mainMenu = new MainMenu(commonFont, fadeUnderlay, controlsOverlay, creditsOverlay);
+		pauseOverlay = new PauseOverlay(commonFont);
+		gameoverOverlay = new GameoverOverlay(commonFont);
 
 		/**************
 		 * Load general textures and player
@@ -87,15 +107,6 @@ public class GameScreen implements Screen, Observer {
 		inputBridge = new InputBridge();
 		keyboardInput = new KeyboardInput(inputBridge); // Mouse, keyboard, touch input
 		gamePadInput = new GamePadInput(inputBridge); // Controller input
-
-		/**************
-		 * Menus and overlays
-		 **************/
-		controlsOverlay = new ControlsOverlay();
-		creditsOverlay = new CreditsOverlay();
-		mainMenu = new MainMenu(commonFont, controlsOverlay, creditsOverlay);
-		pauseOverlay = new PauseOverlay(commonFont);
-		gameoverOverlay = new GameoverOverlay(commonFont);
 	}
 
 	// Initialization
@@ -137,16 +148,16 @@ public class GameScreen implements Screen, Observer {
 		pauseOverlay.initAssets();
 		gameoverOverlay.initAssets();
 		mainMenu.initAssets();
+		fadeOverlay.fadeToAlpha(0.0f, 0.25f); // Fade out the overlay, thereby "fading in" the game.
 	}
 
 	@Override
 	public void render(float delta) {
 		spriteBatch.begin();
 		/************
-		 * Moveable assets
+		 * Scenes
 		 ************/
 		spriteBatch.setProjectionMatrix(camera.combined);
-		// Scene
 		scene.draw(spriteBatch);
 		//scene2.draw(spriteBatch);
 
@@ -154,6 +165,7 @@ public class GameScreen implements Screen, Observer {
 		 * Static assets
 		 *************/
 		spriteBatch.setProjectionMatrix(staticCamera.combined);
+		fadeUnderlay.draw(spriteBatch);
 		// Menus and Overlays
 		if (GameState.isGameStateSet(MAINMENU)) {
 			mainMenu.draw(spriteBatch);
@@ -172,6 +184,9 @@ public class GameScreen implements Screen, Observer {
 			hud.setFilledHearts(player.getHealth());
 			hud.draw(spriteBatch);
 		}
+
+		fadeOverlay.draw(spriteBatch);
+
 		pauseOverlay.draw(spriteBatch);
 
 		spriteBatch.end();

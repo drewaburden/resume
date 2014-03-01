@@ -21,5 +21,5 @@ public class DebugFlags {
 
 	public static final boolean DEV_ASSET_MONITORING = true; // This determines whether the program should monitor changes in assets and reload the assets if they've been changed
 
-	public static boolean DEV_SHOW_BOUNDINGBOXES = false;
+	public static boolean DEV_DEBUG_VIEW = false; // Lets you view a lot of debug stuff like bounding boxes and removes the environment graphics
 }

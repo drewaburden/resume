@@ -25,7 +25,7 @@ import static com.dab.resume.GameState.State.PLAYING;
 public class InputBridge extends Observable {
 	public void debugOptionsPressed() {
 		Log.log();
-		DebugFlags.DEV_SHOW_BOUNDINGBOXES = !DebugFlags.DEV_SHOW_BOUNDINGBOXES;
+		DebugFlags.DEV_DEBUG_VIEW = !DebugFlags.DEV_DEBUG_VIEW;
 		notifyObservers(InputEvent.PRESS_DEBUG_OPTIONS);
 	}
 	public void pauseButtonPressed() {

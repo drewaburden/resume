@@ -23,13 +23,15 @@ import com.dab.resume.audio.SoundFX;
 import com.dab.resume.events.Observer;
 import com.dab.resume.hud.ControlsOverlay;
 import com.dab.resume.hud.CreditsOverlay;
+import com.dab.resume.hud.Fadeable;
 import com.dab.resume.input.InputEvent;
 
 import java.util.ArrayList;
 
 public class MainMenu implements Observer {
 	private BitmapFont font;
-	private Sprite overlay, title;
+	private Fadeable underlay;
+	private Sprite title;
 	private Sound acceptSound;
 
 	private ControlsOverlay controlsOverlay;
@@ -40,11 +42,11 @@ public class MainMenu implements Observer {
 	private final float itemsStartY = -5.0f;
 	private final float itemsIncrementY = -20.0f;
 
-	public MainMenu(BitmapFont font, ControlsOverlay controlsOverlay, CreditsOverlay creditsOverlay) {
+	public MainMenu(BitmapFont font, Fadeable underlay, ControlsOverlay controlsOverlay, CreditsOverlay creditsOverlay) {
 		this. font = font;
+		this.underlay = underlay;
 		this.controlsOverlay = controlsOverlay;
 		this.creditsOverlay = creditsOverlay;
-		Assets.getInstance().load("colors/overlay.png", Texture.class);
 		Assets.getInstance().load("game/hud/title.png", Texture.class);
 		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
 
@@ -56,13 +58,7 @@ public class MainMenu implements Observer {
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("colors/overlay.png");
-		overlay = new Sprite(texture);
-		overlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
-		overlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
-		overlay.setAlpha(0.25f);
-
-		texture = Assets.getInstance().get("game/hud/title.png");
+		Texture texture = Assets.getInstance().get("game/hud/title.png");
 		title = new Sprite(texture);
 		title.setPosition(0.0f - title.getWidth()/2.0f, 55.0f);
 
@@ -73,6 +69,7 @@ public class MainMenu implements Observer {
 		acceptSound.play(SoundFX.VOLUME_MODIFIER);
 		switch (selectedItem) {
 			case 0:
+				underlay.fadeToAlpha(0.0f, 0.025f);
 				GameState.addGameState(GameState.State.PLAYING);
 				GameState.removeGameState(GameState.State.MAINMENU);
 				break;
@@ -82,19 +79,22 @@ public class MainMenu implements Observer {
 				GameState.removeGameState(GameState.State.MAINMENU);
 				break;
 			case 2:
+				underlay.fadeToAlpha(0.75f, 0.5f);
 				creditsOverlay.show();
 				GameState.addGameState(GameState.State.CREDITS);
 				GameState.removeGameState(GameState.State.MAINMENU);
 				break;
 			case 3:
+				// Wait for a fraction of a second and then exit
+				// We wait for two reasons:
+				// 1. It gives the acceptSound time to play
+				// 2. It makes it feel less like the program is just crashing (it's not, but that's what it feels like)
+				try { Thread.sleep(400); } catch (Exception e) {}
 				Gdx.app.exit();
 		}
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		// Overlay
-		overlay.draw(spriteBatch);
-
 		// Title/logo
 		title.draw(spriteBatch);
 

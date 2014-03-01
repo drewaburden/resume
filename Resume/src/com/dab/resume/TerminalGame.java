@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.debug.DebugFlags;
-import com.dab.resume.debug.Log;
 
 import java.io.File;
 import java.util.HashMap;
@@ -49,9 +48,7 @@ public class TerminalGame extends Game {
 	@Override
 	public void create() {
 		Texture.setAssetManager(Assets.getInstance());
-
 		camera = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-
 		spriteBatch = new SpriteBatch();
 
 		/**************
@@ -69,21 +66,20 @@ public class TerminalGame extends Game {
 		environment = new Environment();
 
 		/**************
-		 * Load game
+		 * Load terminal game
 		 ***************/
-		gameScreen = new GameScreen();
+		gameScreen = new GameScreen(commonFont);
 	}
 
 	// Initialization
 	private void initialize() {
 		/**************
-		 * Create sprites
+		 * Environment
 		 ***************/
-		// Environment
 		environment.initAssets();
 
 		/**************
-		 * Initialize game
+		 * Terminal game
 		 ***************/
 		gameScreen.initialize();
 
@@ -196,8 +192,9 @@ public class TerminalGame extends Game {
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
 		// Environment
-		if (!DebugFlags.DEV_SHOW_BOUNDINGBOXES)
-		environment.drawBackground(spriteBatch);
+		if (!DebugFlags.DEV_DEBUG_VIEW) { // Hide the environment in debug mode
+			environment.drawBackground(spriteBatch);
+		}
 		// Color grading
 		environment.drawColorGrade(spriteBatch);
 

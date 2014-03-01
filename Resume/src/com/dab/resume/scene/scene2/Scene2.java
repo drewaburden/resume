@@ -223,7 +223,7 @@ public class Scene2 implements Observer {
 	 * TODO: Move to own class
 	 ***********/
 	public void renderCollisionDebug(SpriteBatch spriteBatch) {
-		if (DebugFlags.DEV_SHOW_BOUNDINGBOXES) {
+		if (DebugFlags.DEV_DEBUG_VIEW) {
 			spriteBatch.end();
 			ShapeRenderer shapeRenderer = new ShapeRenderer();
 			shapeRenderer.setProjectionMatrix(camera.combined);

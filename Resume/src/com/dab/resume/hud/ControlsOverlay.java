@@ -24,26 +24,19 @@ import com.dab.resume.events.Observer;
 import com.dab.resume.input.InputEvent;
 
 public class ControlsOverlay implements Observer {
-	private Sprite overlay, controls;
+	private Sprite controls;
 	private Sound acceptSound;
 
 	private boolean showing = false;
 
 	public ControlsOverlay() {
-		Assets.getInstance().load("colors/overlay.png", Texture.class);
 		Assets.getInstance().load("game/hud/title.png", Texture.class);
 		Assets.getInstance().load("game/hud/controls.png", Texture.class);
 		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("colors/overlay.png");
-		overlay = new Sprite(texture);
-		overlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
-		overlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
-		overlay.setAlpha(0.25f);
-
-		texture = Assets.getInstance().get("game/hud/controls.png");
+		Texture texture = Assets.getInstance().get("game/hud/controls.png");
 		controls = new Sprite(texture);
 		controls.setPosition(0.0f - controls.getWidth()/2.0f, 0.0f - controls.getHeight()/2.0f + 30.0f);
 
@@ -66,9 +59,6 @@ public class ControlsOverlay implements Observer {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		// Overlay
-		overlay.draw(spriteBatch);
-
 		if (!GameState.isGameStateSet(GameState.State.PAUSED)) {
 			// Controls
 			controls.draw(spriteBatch);

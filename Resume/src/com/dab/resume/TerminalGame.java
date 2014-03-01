@@ -92,6 +92,11 @@ public class TerminalGame extends Game {
 
 	@Override
 	public void render() {
+		// Clear the screen
+		GLCommon gl = Gdx.gl20;
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		if (!GameState.isGameStateSet(GameState.State.LOADING)) {
 			/*********
 			 * Asset monitoring
@@ -176,11 +181,6 @@ public class TerminalGame extends Game {
 	}
 
 	protected void renderAssets() {
-		// Clear the screen
-		GLCommon gl = Gdx.gl20;
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		/**************
 		 * GameScreen
 		 **************/

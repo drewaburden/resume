@@ -15,7 +15,7 @@ package com.dab.resume.assets;
 
 import com.badlogic.gdx.assets.AssetManager;
 
-public class Assets extends AssetManager {
+public final class Assets extends AssetManager {
 	private static Assets instance;
 
 	private Assets() { } // This class doesn't need initialization. It's a singleton.

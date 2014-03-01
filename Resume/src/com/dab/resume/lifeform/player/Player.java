@@ -86,6 +86,9 @@ public class Player extends Lifeform implements Observer {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
+		// Draw the lifeform's animation
+		animationManager.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
+
 		if (!GameState.isGameStateSet(PAUSED)) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
@@ -106,9 +109,6 @@ public class Player extends Lifeform implements Observer {
 				deltaAttackTime += delta;
 			}
 		}
-
-		// Draw the lifeform's animation
-		animationManager.draw(spriteBatch, lifeformMovement.getPosX(), lifeformMovement.getPosY());
 	}
 
 	public void recheckInput() {

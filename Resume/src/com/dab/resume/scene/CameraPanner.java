@@ -16,14 +16,15 @@ package com.dab.resume.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.lifeform.player.Player;
 
 public class CameraPanner {
-	private static float PAN_TRIGGER_LEFT = 0.0f - TerminalGame.VIRTUAL_WIDTH * 0.05f -  72.0f/2.0f;
-	private static float PAN_TRIGGER_RIGHT = TerminalGame.VIRTUAL_WIDTH * 0.05f;
+	private static final float PAN_TRIGGER_LEFT = TerminalGame.VIRTUAL_WIDTH/2.0f - 25.0f;
+	private static final float PAN_TRIGGER_RIGHT = TerminalGame.VIRTUAL_WIDTH/2.0f + 25.0f;
 
 	OrthographicCamera camera;
 	Player player;
@@ -42,6 +43,10 @@ public class CameraPanner {
 		float delta = Gdx.graphics.getDeltaTime();
 
 		BoundingBox playerCollision = player.getBoundingBox();
+		Vector3 panRightTrigger = new Vector3(PAN_TRIGGER_RIGHT, 0.0f, 0.0f);
+		Vector3 panLeftTrigger = new Vector3(PAN_TRIGGER_LEFT, 0.0f, 0.0f);
+		camera.unproject(panRightTrigger);
+		camera.unproject(panLeftTrigger);
 
 		// If the player has gone outside of bounds
 		if (!playerBounds.contains(player.getPosX(), player.getPosY())) {
@@ -55,14 +60,12 @@ public class CameraPanner {
 			lastTranslateAmount = 0.0f; // If we constrained the player, we didn't pan the camera
 		}
 		// If the player has entered one of the areas on the screen meant to trigger a camera pan
-		else if ((playerCollision.getX() + playerCollision.getWidth() > PAN_TRIGGER_RIGHT && player.getVelocityX() > 0.0f)
-				|| (playerCollision.getX() < PAN_TRIGGER_LEFT && player.getVelocityX() < 0.0f)) {
+		else if ((playerCollision.getRight() > panRightTrigger.x && player.getVelocityX() > 0.0f)
+				|| (playerCollision.getLeft() < panLeftTrigger.x && player.getVelocityX() < 0.0f)) {
 			// Pan the camera and update all trigger and bounding areas
 			float boundsUpdate = player.getVelocityX() * delta;
 			lastTranslateAmount = boundsUpdate;
 			camera.translate(boundsUpdate, 0.0f);
-			PAN_TRIGGER_LEFT += boundsUpdate;
-			PAN_TRIGGER_RIGHT += boundsUpdate;
 
 			// If the camera is now outside of the camera bounds
 			if (!cameraBounds.contains(camera.position.x, camera.position.y)) {
@@ -79,8 +82,6 @@ public class CameraPanner {
 					boundsUpdate = cameraBounds.getX() - camera.position.x;
 					camera.position.x = cameraBounds.getX();
 				}
-				PAN_TRIGGER_LEFT += boundsUpdate;
-				PAN_TRIGGER_RIGHT += boundsUpdate;
 				lastTranslateAmount += boundsUpdate;
 			}
 

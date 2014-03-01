@@ -58,7 +58,7 @@ public class CameraPanner {
 		else if ((playerCollision.getX() + playerCollision.getWidth() > PAN_TRIGGER_RIGHT && player.getVelocityX() > 0.0f)
 				|| (playerCollision.getX() < PAN_TRIGGER_LEFT && player.getVelocityX() < 0.0f)) {
 			// Pan the camera and update all trigger and bounding areas
-			float boundsUpdate = Math.round(player.getVelocityX() * delta);
+			float boundsUpdate = player.getVelocityX() * delta;
 			lastTranslateAmount = boundsUpdate;
 			camera.translate(boundsUpdate, 0.0f);
 			PAN_TRIGGER_LEFT += boundsUpdate;
@@ -76,7 +76,7 @@ public class CameraPanner {
 				// If we translated to the left, we must've hit the left bound
 				else if (boundsUpdate < 0.0f) {
 					// Clamp the camera and calculate the updated translation for the trigger and bounding areas
-					boundsUpdate = Math.round(cameraBounds.getX() - camera.position.x);
+					boundsUpdate = cameraBounds.getX() - camera.position.x;
 					camera.position.x = cameraBounds.getX();
 				}
 				PAN_TRIGGER_LEFT += boundsUpdate;

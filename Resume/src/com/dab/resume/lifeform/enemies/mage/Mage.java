@@ -112,7 +112,7 @@ public class Mage extends Lifeform {
 			deltaHurtTime += delta;
 
 			// If the mage is powering up an attack
-			if (poweringUpAttack != null) {
+			if (poweringUpAttack != null && isAlive()) {
 				elapPowerUpTime += delta;
 				switch (poweringUpAttack) {
 					case LIGHTNING:

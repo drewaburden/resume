@@ -45,7 +45,7 @@ public class Scene2 extends Observable {
 	private BoundingBox playerBounds = new BoundingBox(-500.0f, -1000.0f, 3000.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
 	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2675.0f, 2000.0f, BLOCKING);
-	private float prevSceneTransitionX = -200.0f;
+	private float prevSceneTransitionX = -175.0f;
 
 	private boolean showing = false;
 

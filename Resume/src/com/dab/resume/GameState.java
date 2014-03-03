@@ -23,14 +23,15 @@ public class GameState {
 	// Using ints represented as hex allows us to set multiple states at one time by making
 	// use of bitwise operators (as long as the values are powers of 2).
 	public static enum State {
-		PLAYING     (0x00000001),
-		LOADING     (0x00000002),
-		MAINMENU    (0x00000004),
-		GAMEOVER    (0x00000008),
-		CREDITS     (0x00000010),
-		CONTROLS     (0x00000020),
-		PAUSED      (0x00000040),
-		PRELOADING  (0x00000080);
+		PLAYING         (0x00000001),
+		LOADING         (0x00000002),
+		MAINMENU        (0x00000004),
+		GAMEOVER        (0x00000008),
+		CREDITS         (0x00000010),
+		CONTROLS        (0x00000020),
+		PAUSED          (0x00000040),
+		PRELOADING      (0x00000080),
+		TRANSITIONING   (0x00000100);
 
 		private final int stateCode;
 		private State(final int stateCode) { this.stateCode = stateCode; }
@@ -40,6 +41,22 @@ public class GameState {
 
 	public static boolean isGameStateSet(State state) {
 		return (state.getStateCode() & currentState) > 0;
+	}
+	// Returns true if all given game states are set
+	// Functions as (State & State)
+	public static boolean areAllGameStatesSet(State... states) {
+		for (State state : states) {
+			if (!isGameStateSet(state)) return false;
+		}
+		return true;
+	}
+	// Returns true if any of the given game states are set
+	// Functions as (State | State)
+	public static boolean areAnyGameStatesSet(State... states) {
+		for (State state : states) {
+			if (isGameStateSet(state)) return true;
+		}
+		return false;
 	}
 	public static void setGameState(State state) {
 		Log.log("State set to " + state.toString());

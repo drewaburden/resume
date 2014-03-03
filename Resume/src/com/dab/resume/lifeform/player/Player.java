@@ -125,7 +125,7 @@ public class Player extends Lifeform implements Observer {
 	@Override
 	public boolean eventTriggered(Object data) {
 		if (data instanceof MovementEvent) {
-			Log.log();
+			Log.verboseLog();
 			MovementEvent event = (MovementEvent) data;
 			switch (event) {
 				case STEPPED: soundManager.playSound(playerSoundFactory.getSound(SoundType.MOVE)); return true;

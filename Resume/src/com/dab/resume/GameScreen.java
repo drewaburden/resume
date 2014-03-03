@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.Music;
-import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
 import com.dab.resume.hud.*;
 import com.dab.resume.input.GamePadInput;
@@ -30,7 +29,8 @@ import com.dab.resume.input.InputBridge;
 import com.dab.resume.input.InputEvent;
 import com.dab.resume.input.KeyboardInput;
 import com.dab.resume.lifeform.player.Player;
-import com.dab.resume.scene.scene1.Scene;
+import com.dab.resume.scene.SceneEvent;
+import com.dab.resume.scene.scene1.Scene1;
 import com.dab.resume.scene.scene2.Scene2;
 
 import static com.dab.resume.GameState.State.*;
@@ -52,7 +52,7 @@ public class GameScreen implements Screen, Observer {
 	private GameoverOverlay gameoverOverlay;
 	private ControlsOverlay controlsOverlay;
 	private CreditsOverlay creditsOverlay;
-	private Scene scene;
+	private Scene1 scene1;
 	private Scene2 scene2;
 	private Music music;
 	private HUD hud;
@@ -93,8 +93,8 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Load scene assets
 		 **************/
-		scene = new Scene(camera, player);
-		scene2 = new Scene2(camera, player);
+		scene1 = new Scene1(camera, player, fadeUnderlay);
+		scene1.registerObserver(this);
 
 		/**************
 		 * Load general audio
@@ -114,13 +114,17 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Create sprites
 		 ***************/
-		// Scene
-		scene.initAssets();
-		scene2.initAssets();
 		// HUD
 		hud.initAssets();
 		// Characters
 		player.initAssets();
+		// Scene1
+		scene1.initAssets();
+		scene1.show();
+		// Start preloading the next scene
+		GameState.addGameState(PRELOADING);
+		scene2 = new Scene2(camera, player, fadeUnderlay);
+		scene2.registerObserver(this);
 
 		/**************
 		 * Create audio
@@ -135,7 +139,6 @@ public class GameScreen implements Screen, Observer {
 		Controllers.addListener(gamePadInput);
 		inputBridge.registerObserver(this);
 		inputBridge.registerObserver(player);
-		inputBridge.registerObserver(scene);
 		inputBridge.registerObserver(mainMenu);
 		inputBridge.registerObserver(controlsOverlay);
 		inputBridge.registerObserver(creditsOverlay);
@@ -158,8 +161,8 @@ public class GameScreen implements Screen, Observer {
 		 * Scenes
 		 ************/
 		spriteBatch.setProjectionMatrix(camera.combined);
-		scene.draw(spriteBatch);
-		//scene2.draw(spriteBatch);
+		scene1.draw(spriteBatch);
+		scene2.draw(spriteBatch);
 
 		/*************
 		 * Static assets
@@ -219,6 +222,25 @@ public class GameScreen implements Screen, Observer {
 						GameState.removeGameState(PAUSED);
 						pauseOverlay.hide();
 					}
+					return true;
+			}
+		}
+		else if (data instanceof SceneEvent) {
+			switch ((SceneEvent) data) {
+				case TRANSITION_TO_SCENE2:
+					scene1.hide();
+					if (GameState.isGameStateSet(PRELOADING)) {
+						GameState.removeGameState(PRELOADING);
+						GameState.addGameState(LOADING);
+						Assets.getInstance().finishLoading();
+					}
+					scene2.show(true);
+					GameState.removeGameState(TRANSITIONING);
+					return true;
+				case TRANSITION_TO_SCENE1:
+					scene2.hide();
+					scene1.show(true);
+					GameState.removeGameState(TRANSITIONING);
 					return true;
 			}
 		}

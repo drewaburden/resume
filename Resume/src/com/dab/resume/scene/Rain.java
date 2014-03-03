@@ -26,8 +26,8 @@ public class Rain {
 	private Sound rainSound;
 	private long rainPlayingId; // After the sound starts, we can modify its volume using the id assigned to this.
 	private float rainTargetVolume = 0.75f, fadeInTime = 4.0f;
-	private float deltaVolumeChange = 0.0f; // Time passed since we started fading in the volume
-	private boolean paused = false;
+	private float deltaVolumeChange; // Time passed since we started fading in the volume
+	private boolean paused = false; // Used to determine if we've actually handled the pause yet
 
 	private Texture rainBackground, rainForeground;
 	private final int numRainTileRows = 3;
@@ -59,6 +59,7 @@ public class Rain {
 			rainTargetVolume = 0.65f;
 			fadeInTime = 2.5f;
 		}
+		deltaVolumeChange = 0.0f;
 	}
 
 	public void translate(float amountX, float amountY) {
@@ -85,6 +86,9 @@ public class Rain {
 			deltaVolumeChange += delta;
 			rainSound.setVolume(rainPlayingId, rainTargetVolume * deltaVolumeChange / fadeInTime);
 		}
+	}
+	public void stopSound() {
+		rainSound.stop();
 	}
 
 	public void draw(SpriteBatch spriteBatch) {

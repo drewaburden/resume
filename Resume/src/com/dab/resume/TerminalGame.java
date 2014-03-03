@@ -44,6 +44,7 @@ public class TerminalGame extends Game {
 	private GameScreen gameScreen;
 
 	private boolean windowHasFocus = true;
+	private boolean initialized = false;
 
 	@Override
 	public void create() {
@@ -86,6 +87,7 @@ public class TerminalGame extends Game {
 		/**************
 		 * Begin first render
 		 ***************/
+		initialized = true;
 		this.setScreen(gameScreen);
 		renderAssets();
 	}
@@ -96,6 +98,17 @@ public class TerminalGame extends Game {
 		GLCommon gl = Gdx.gl20;
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		if (GameState.isGameStateSet(GameState.State.PRELOADING)) {
+			// If the assets aren't loaded yet, keep preloading
+			if (Assets.getInstance().getProgress() < 1) {
+				Assets.getInstance().update();
+			}
+			// We finished preloading
+			else {
+				GameState.removeGameState(GameState.State.PRELOADING);
+			}
+		}
 
 		if (!GameState.isGameStateSet(GameState.State.LOADING)) {
 			/*********
@@ -113,6 +126,10 @@ public class TerminalGame extends Game {
 				else {
 					for (String filename : Assets.getInstance().getAssetNames()) {
 						File file = new File(filename);
+						// If the asset hasn't been put into the map yet, put it in (might happen with preloading)
+						if (!asset_modification_times.containsKey(filename)) {
+							asset_modification_times.put(filename, file.lastModified());
+						}
 						// If the file has been modified
 						if (asset_modification_times.get(filename) < file.lastModified()) {
 							System.out.println("Asset modified. Reloading asset.\t(" + filename + ")");
@@ -169,9 +186,13 @@ public class TerminalGame extends Game {
 			}
 			// If the assets have finally loaded, initialize the assets, and eventually start rendering.
 			else {
-				initialize();
+				GameState.removeGameState(GameState.State.LOADING);
 
-				GameState.setGameState(GameState.State.MAINMENU);
+				if (!initialized) {
+					initialize();
+					GameState.addGameState(GameState.State.MAINMENU);
+				}
+
 				if (!windowHasFocus) {
 					GameState.addGameState(GameState.State.PAUSED);
 					gameScreen.pause();

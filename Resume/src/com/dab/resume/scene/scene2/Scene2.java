@@ -19,31 +19,36 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.dab.resume.GameState;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
+import com.dab.resume.events.Observable;
 import com.dab.resume.events.Observer;
 import com.dab.resume.hud.Dialog;
+import com.dab.resume.hud.Fadeable;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
 import com.dab.resume.lifeform.player.Player;
-import com.dab.resume.scene.CameraPanner;
-import com.dab.resume.scene.ParallaxBackground;
-import com.dab.resume.scene.Rain;
-import com.dab.resume.scene.TilingFloor;
+import com.dab.resume.scene.*;
 
 import java.util.LinkedList;
 
+import static com.dab.resume.GameState.State.TRANSITIONING;
 import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
-public class Scene2 implements Observer {
+public class Scene2 extends Observable {
 	// The ultimate boundaries of the scene where the player cannot walk beyond
-	private BoundingBox playerBounds = new BoundingBox(-200.0f, -1000.0f, 3000.0f, 2000.0f, BLOCKING);
+	private BoundingBox playerBounds = new BoundingBox(-500.0f, -1000.0f, 3000.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
 	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2675.0f, 2000.0f, BLOCKING);
+	private float prevSceneTransitionX = -200.0f;
 
+	private boolean showing = false;
+
+	private Fadeable sceneTransitionFade;
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
 	private Player player;
@@ -58,14 +63,15 @@ public class Scene2 implements Observer {
 	private LinkedList<Sprite> crates;
 	private LinkedList<Sprite> logs;
 
-	public Scene2(OrthographicCamera camera, Player player) {
+	public Scene2(OrthographicCamera camera, Player player, Fadeable sceneFadeOut) {
 		this.camera = camera;
 		this.player = player;
+		this.sceneTransitionFade = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		mage = new Mage(125.0f);
 		float dialogWidth = 250.0f, dialogHeight = 176.0f;
-		//dialog1 = new Dialog(0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
+		dialog1 = new Dialog("INJURED OLD WOMAN", "PLEASE... HELP ME...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
 		rain = new Rain(true);
 		wall = new LinkedList<Sprite>();
 		candles = new LinkedList<Candle>();
@@ -143,61 +149,96 @@ public class Scene2 implements Observer {
 		dirt.setAlpha(0.75f);
 
 		rain.initAssets();
+		dialog1.initAssets();
+	}
+
+	public void show() { show(false); }
+	public void show(boolean fadeIn) {
+		if (fadeIn) {
+			sceneTransitionFade.fadeToAlpha(0.0f, 1.0f);
+		}
+		player.stopXMovement();
+		player.stopYForce();
+		showing = true;
+		player.setPosX(-150.0f);
+		player.setPosY(World.FLOOR);
+		camera.position.set(0.0f, 0.0f, 0.0f);
+		initAssets();
+	}
+	public void hide() {
+		showing = false;
+		stopSounds();
+	}
+
+	public void stopSounds() {
+		rain.stopSound();
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		/************
-		 * Foreground camera
-		 ************/
-		spriteBatch.setProjectionMatrix(camera.combined);
-		// Rain
-		rain.draw(spriteBatch);
-		// Wall
-		for (Sprite sprite : wall) {
-			sprite.draw(spriteBatch);
+		if (showing) {
+			// If the player hit the scene transition, set the transition state and start fading out.
+			if (player.getBoundingBox().getLeft() <= prevSceneTransitionX && !GameState.isGameStateSet(TRANSITIONING)) {
+				GameState.addGameState(GameState.State.TRANSITIONING);
+				sceneTransitionFade.fadeToAlpha(1.0f, 1.0f);
+			}
+			// If we're done fading out, notify the observers to actually switch scenes now
+			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFade.isFading()) {
+				notifyObservers(SceneEvent.TRANSITION_TO_SCENE1);
+			}
+
+			/************
+			 * Foreground camera
+			 ************/
+			spriteBatch.setProjectionMatrix(camera.combined);
+			// Rain
+			rain.draw(spriteBatch);
+			// Wall
+			for (Sprite sprite : wall) {
+				sprite.draw(spriteBatch);
+			}
+			// Floor
+			floor.draw(spriteBatch);
+			// Candles
+			for (Candle candle : candles) {
+				candle.draw(spriteBatch);
+			}
+			// Corner dirt
+			dirt.draw(spriteBatch);
+			// Logs
+			for (Sprite sprite : logs) {
+				sprite.draw(spriteBatch);
+			}
+			// Crates
+			for (Sprite sprite : crates) {
+				sprite.draw(spriteBatch);
+			}
+			// Player
+			player.draw(spriteBatch);
+
+			cameraPanner.update();
+
+			// Update parallax
+			float lastTranslateAmount = cameraPanner.getLastTranslateAmount();
+			floor.addOffset(lastTranslateAmount); // Don't move the floor, but tell it how far the foreground camera has panned
+			floor.update();
+			dirt.addOffset(lastTranslateAmount);
+			dirt.update();
+
+			rain.translate(lastTranslateAmount, 0.0f);
+			rain.updateSound(Gdx.graphics.getDeltaTime());
+
+			// Debug
+			renderCollisionDebug(spriteBatch);
+
+			/************
+			 * Static camera
+			 ************/
+			spriteBatch.setProjectionMatrix(staticCamera.combined);
+			fog.draw(spriteBatch);
+			//dialog1.draw(spriteBatch);
+
+			//checkCollision();
 		}
-		// Floor
-		floor.draw(spriteBatch);
-		// Candles
-		for (Candle candle : candles) {
-			candle.draw(spriteBatch);
-		}
-		// Corner dirt
-		dirt.draw(spriteBatch);
-		// Logs
-		for (Sprite sprite : logs) {
-			sprite.draw(spriteBatch);
-		}
-		// Crates
-		for (Sprite sprite : crates) {
-			sprite.draw(spriteBatch);
-		}
-		// Player
-		player.draw(spriteBatch);
-
-		cameraPanner.update();
-
-		// Update parallax
-		float lastTranslateAmount = cameraPanner.getLastTranslateAmount();
-		floor.addOffset(lastTranslateAmount); // Don't move the floor, but tell it how far the foreground camera has panned
-		floor.update();
-		dirt.addOffset(lastTranslateAmount);
-		dirt.update();
-
-		rain.translate(lastTranslateAmount, 0.0f);
-		rain.updateSound(Gdx.graphics.getDeltaTime());
-
-		// Debug
-		renderCollisionDebug(spriteBatch);
-
-		/************
-		 * Static camera
-		 ************/
-		spriteBatch.setProjectionMatrix(staticCamera.combined);
-		fog.draw(spriteBatch);
-		dialog1.draw(spriteBatch);
-
-		//checkCollision();
 	}
 
 	/***********
@@ -256,7 +297,4 @@ public class Scene2 implements Observer {
 			spriteBatch.begin();
 		}
 	}
-
-	@Override
-	public boolean eventTriggered(Object data) {return false;}
 }

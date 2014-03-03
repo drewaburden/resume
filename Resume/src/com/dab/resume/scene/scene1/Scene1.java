@@ -7,7 +7,8 @@
  * All rights reserved.
  *
  * Description:
- *      Needs refactoring. Will update description later.
+ *      Defines all of Scene1
+ *      TODO: This probably needs a bit of refactoring and abstraction
  ********************************************************************************************************/
 
 package com.dab.resume.scene.scene1;

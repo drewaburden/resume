@@ -118,13 +118,13 @@ public class GameScreen implements Screen, Observer {
 		hud.initAssets();
 		// Characters
 		player.initAssets();
-		// Scene1
-		scene1.initAssets();
-		scene1.show();
 		// Start preloading the next scene
 		GameState.addGameState(PRELOADING);
 		scene2 = new Scene2(camera, player, fadeUnderlay);
 		scene2.registerObserver(this);
+		// Show Scene1
+		scene1.initAssets();
+		scene1.show();
 
 		/**************
 		 * Create audio

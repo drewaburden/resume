@@ -26,7 +26,7 @@ import static com.dab.resume.lifeform.SoundFactory.SoundType;
 
 public abstract class Lifeform extends Observable {
 	public static enum LifeformType {
-		PLAYER, MAGE
+		PLAYER, MAGE, OLDWOMAN
 	}
 
 	protected LifeformType lifeformType;

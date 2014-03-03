@@ -84,6 +84,7 @@ public class CameraPanner {
 				}
 				lastTranslateAmount += boundsUpdate;
 			}
+			camera.update(true);
 		}
 		else {
 			lastTranslateAmount = 0.0f; // Didn't translate

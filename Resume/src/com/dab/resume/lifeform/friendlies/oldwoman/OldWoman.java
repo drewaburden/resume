@@ -18,21 +18,25 @@ import com.dab.resume.lifeform.*;
 import com.dab.resume.lifeform.enemies.mage.MageAnimationFactory;
 
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
+import static com.dab.resume.lifeform.AnimationFactory.AnimationType.TALKING;
 
 public class OldWoman extends Lifeform {
 	private final OldWomanAnimationFactory oldWomanAnimationFactory = new OldWomanAnimationFactory();
+	private final OldWomanSoundFactory oldWomanSoundFactory = new OldWomanSoundFactory();
 
 	public OldWoman(float posX) {
 		super(LifeformType.OLDWOMAN);
 		direction = Direction.LEFT;
 		lifeformMovement.setPosX(posX);
 		animationFactory.setOldWomanAnimationFactory(oldWomanAnimationFactory);
+		soundFactory.setOldWomanSoundFactory(oldWomanSoundFactory);
 	}
 
 	public void initAssets() {
 		Log.log();
 		oldWomanAnimationFactory.initAssets();
-		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, IDLE));
+		oldWomanSoundFactory.initAssets();
+		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, TALKING));
 	}
 
 	@Override public void hurt(int damage, Direction damagedSide) { /* OldWoman can't be hurt */ }

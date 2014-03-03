@@ -22,17 +22,17 @@ import static com.dab.resume.lifeform.AnimationFactory.AnimationType;
 
 public class OldWomanAnimationFactory {
 	private final float ANIM_RATE = 0.15f;
-	private LifeformAnimation animIdle, animDeath;
+	private LifeformAnimation animTalking, animDeath;
 
 	public OldWomanAnimationFactory() {
-		Assets.getInstance().load("game/chars/oldwoman-idle.png", Texture.class);
+		Assets.getInstance().load("game/chars/oldwoman-talking.png", Texture.class);
 		Assets.getInstance().load("game/chars/oldwoman-death.png", Texture.class);
 	}
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/chars/oldwoman-idle.png");
+		Texture texture = Assets.getInstance().get("game/chars/oldwoman-talking.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[4];
+		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 2, texture.getHeight());
+		TextureRegion[] frames = new TextureRegion[2];
 		int index = 0;
 		for (TextureRegion[] rows : tmp) {
 			for (TextureRegion cols : rows) {
@@ -40,7 +40,7 @@ public class OldWomanAnimationFactory {
 				index++;
 			}
 		}
-		animIdle = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
+		animTalking = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
 
 		texture = Assets.getInstance().get("game/chars/oldwoman-death.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -58,9 +58,9 @@ public class OldWomanAnimationFactory {
 
 	public LifeformAnimation getAnimation(AnimationType animation) {
 		switch (animation) {
-			case IDLE: return animIdle;
+			case TALKING: return animTalking;
 			case DEATH: return animDeath;
-			default: return animIdle;
+			default: throw new IllegalArgumentException("That animation does not exist");
 		}
 	}
 }

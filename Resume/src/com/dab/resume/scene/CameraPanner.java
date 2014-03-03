@@ -18,8 +18,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.dab.resume.TerminalGame;
-import com.dab.resume.debug.Log;
 import com.dab.resume.collision.BoundingBox;
+import com.dab.resume.debug.Log;
 import com.dab.resume.lifeform.player.Player;
 
 public class CameraPanner {
@@ -63,7 +63,7 @@ public class CameraPanner {
 		else if ((playerCollision.getRight() > panRightTrigger.x && player.getVelocityX() > 0.0f)
 				|| (playerCollision.getLeft() < panLeftTrigger.x && player.getVelocityX() < 0.0f)) {
 			// Pan the camera and update all trigger and bounding areas
-			float boundsUpdate = player.getVelocityX() * delta;
+			float boundsUpdate = delta * (player.getVelocityX() + delta*player.getAccelerationX()/2.0f); // Velocity Verlet method
 			lastTranslateAmount = boundsUpdate;
 			camera.translate(boundsUpdate, 0.0f);
 
@@ -73,7 +73,7 @@ public class CameraPanner {
 				// If we translated to the right, we must've hit the right bound
 				if (boundsUpdate > 0.0f) {
 					// Clamp the camera and calculate the updated translation for the trigger and bounding areas
-					boundsUpdate = Math.round(0.0f - camera.position.x - cameraBounds.getX()+cameraBounds.getWidth());
+					boundsUpdate = 0.0f - camera.position.x - cameraBounds.getX()+cameraBounds.getWidth();
 					camera.position.x = cameraBounds.getX()+cameraBounds.getWidth();
 				}
 				// If we translated to the left, we must've hit the left bound
@@ -84,8 +84,6 @@ public class CameraPanner {
 				}
 				lastTranslateAmount += boundsUpdate;
 			}
-
-			camera.update(true);
 		}
 		else {
 			lastTranslateAmount = 0.0f; // Didn't translate

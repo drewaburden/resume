@@ -89,6 +89,7 @@ public abstract class Lifeform extends Observable {
 	public float getPosX() { return lifeformMovement.getPosX(); }
 	public float getPosY() { return lifeformMovement.getPosY(); }
 	public float getVelocityX() { return lifeformMovement.getVelocityX(); }
+	public float getAccelerationX() { return lifeformMovement.getAccelerationX(); }
 	public BoundingBox getBoundingBox() { return boundingBox; }
 	public void move(Direction direction) {
 		if (canChangeStates()) {

@@ -25,7 +25,7 @@ public class LifeformMovement extends Observable {
 	public Direction direction = Direction.RIGHT;
 	public float stepDelay = 0.324324f; // Time between step sounds (~185 bpm)
 
-	protected float deltaStepTime; // Time since last step
+	protected float deltaFootstepTime; // Time since last footstep
 	private boolean y_movement = false, x_movement = false;
 	private boolean y_force = false, x_force = false;
 	private float accelerationY;
@@ -49,10 +49,10 @@ public class LifeformMovement extends Observable {
 	private void updateXMovement(final float delta) {
 		if (x_movement) {
 			if (isOnGround()) {
-				deltaStepTime += delta;
-				if (deltaStepTime >= stepDelay) {
+				deltaFootstepTime += delta;
+				if (deltaFootstepTime >= stepDelay) {
 					stepped();
-					deltaStepTime = 0.0f;
+					deltaFootstepTime = 0.0f;
 				}
 			}
 
@@ -62,11 +62,12 @@ public class LifeformMovement extends Observable {
 				x_movement = false;
 				x_force = false;
 			}
-			posX += velocityX * delta;
+			//posX += velocityX * delta;
+			posX += delta * (velocityX + delta*accelerationX/2.0f); // Velocity Verlet method
 		}
 	}
 	public void move(Direction direction) {
-		deltaStepTime += 0.0f;
+		deltaFootstepTime += 0.0f;
 		accelerationX = moveAccelerationX;
 		decelerationX = moveDecelerationX;
 		maxSpeedX = moveMaxSpeedX;
@@ -105,6 +106,7 @@ public class LifeformMovement extends Observable {
 	public float getPosX() { return posX; }
 	public void setVelocityX(float velocityX) { this.velocityX = velocityX; }
 	public float getVelocityX() { return velocityX; }
+	public float getAccelerationX() { return accelerationX; }
 	public void applyXForce() { x_force = true; x_movement = true; }
 	public void stopXForce() {
 		// Stop applying the X movement force, and allow the deceleration to bring the lifeform to a stop
@@ -190,7 +192,7 @@ public class LifeformMovement extends Observable {
 	}
 	public void jump() {
 		if (!y_movement) {
-			deltaStepTime += 0.0f;
+			deltaFootstepTime += 0.0f;
 			accelerationY = jumpAccelerationY;
 			velocityY = jumpInitialVelocityY;
 			elapAirTime = 0.0f;

@@ -33,7 +33,8 @@ public class AnimationFactory {
 		switch (type) {
 			case PLAYER: return playerAnimationFactory.getAnimation(animation);
 			case MAGE: return mageAnimationFactory.getAnimation(animation);
-			default: assert(false); return null;
+			case OLDWOMAN: return oldWomanAnimationFactory.getAnimation(animation);
+			default: throw new IllegalArgumentException("That lifeform type does not exist");
 		}
 	}
 }

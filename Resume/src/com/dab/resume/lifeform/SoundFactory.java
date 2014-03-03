@@ -13,6 +13,7 @@
 package com.dab.resume.lifeform;
 
 import com.dab.resume.lifeform.enemies.mage.MageSoundFactory;
+import com.dab.resume.lifeform.friendlies.oldwoman.OldWomanSoundFactory;
 import com.dab.resume.lifeform.player.PlayerSoundFactory;
 
 public class SoundFactory {
@@ -22,15 +23,17 @@ public class SoundFactory {
 
 	MageSoundFactory mageSoundFactory = new MageSoundFactory();
 	PlayerSoundFactory playerSoundFactory = new PlayerSoundFactory();
+	OldWomanSoundFactory oldWomanSoundFactory = new OldWomanSoundFactory();
+	public void setMageSoundFactory(MageSoundFactory factory) { mageSoundFactory = factory; }
+	public void setPlayerSoundFactory(PlayerSoundFactory factory) { playerSoundFactory = factory; }
+	public void setOldWomanSoundFactory(OldWomanSoundFactory factory) { oldWomanSoundFactory = factory; }
 
 	public LifeformSound getSound(Lifeform.LifeformType type, SoundType sound) {
 		switch (type) {
 			case PLAYER: return playerSoundFactory.getSound(sound);
 			case MAGE: return mageSoundFactory.getSound(sound);
-			default: assert(false); return null;
+			case OLDWOMAN: return oldWomanSoundFactory.getSound(sound);
+			default: throw new IllegalArgumentException("That lifeform type does not exist");
 		}
 	}
-
-	public void setMageSoundFactory(MageSoundFactory factory) { mageSoundFactory = factory; }
-	public void setPlayerSoundFactory(PlayerSoundFactory factory) { playerSoundFactory = factory; }
 }

@@ -13,11 +13,15 @@
 
 package com.dab.resume.lifeform;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class LifeformAnimation extends com.badlogic.gdx.graphics.g2d.Animation {
+public class LifeformAnimation extends Animation {
 	Direction facing = Direction.RIGHT;
 
+	public LifeformAnimation(Animation animation, Direction facing) {
+		this(animation.frameDuration, animation.getKeyFrames(), facing);
+	}
 	public LifeformAnimation(float frameDuration, TextureRegion[] keyFrames, Direction facing) {
 		super(frameDuration, keyFrames);
 

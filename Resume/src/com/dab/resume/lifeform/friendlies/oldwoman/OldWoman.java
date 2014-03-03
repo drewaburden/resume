@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.debug.Log;
 import com.dab.resume.lifeform.*;
 import com.dab.resume.lifeform.enemies.mage.MageAnimationFactory;
+import com.dab.resume.scene.World;
 
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.TALKING;
@@ -28,6 +29,7 @@ public class OldWoman extends Lifeform {
 		super(LifeformType.OLDWOMAN);
 		direction = Direction.LEFT;
 		lifeformMovement.setPosX(posX);
+		lifeformMovement.setPosY(World.FLOOR - 10.0f); // Compensation for the cane
 		animationFactory.setOldWomanAnimationFactory(oldWomanAnimationFactory);
 		soundFactory.setOldWomanSoundFactory(oldWomanSoundFactory);
 	}

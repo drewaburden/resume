@@ -39,19 +39,7 @@ public class Candle {
 	public void initAssets() {
 		Texture texture = Assets.getInstance().get("game/environments/castle/candle.png");
 		holder = new Sprite(texture);
-
-		texture = Assets.getInstance().get("game/environments/castle/candle-flame.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[4];
-		int index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		flame = new Animation(ANIM_RATE*1.5f, frames);
+		flame = Assets.getInstance().getAnimation("game/environmenets/castle/candle-flame.png", 4, ANIM_RATE*1.5f);
 		flame.setPlayMode(Animation.LOOP);
 
 		setPosition(posX, posY);

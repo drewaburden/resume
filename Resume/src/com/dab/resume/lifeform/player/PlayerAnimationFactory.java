@@ -30,42 +30,12 @@ public class PlayerAnimationFactory {
 		Assets.getInstance().load("game/chars/player-attack.png", Texture.class);
 	}
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/chars/player-idle.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 3, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[3];
-		int index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animIdle = new LifeformAnimation(ANIM_RATE, frames, Direction.RIGHT);
-		texture = Assets.getInstance().get("game/chars/player-move.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		tmp = TextureRegion.split(texture, texture.getWidth() / 12, texture.getHeight());
-		frames = new TextureRegion[12];
-		index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animMove = new LifeformAnimation(ANIM_RATE, frames, Direction.RIGHT);
-		texture = Assets.getInstance().get("game/chars/player-attack.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		tmp = TextureRegion.split(texture, texture.getWidth() / 5, texture.getHeight());
-		frames = new TextureRegion[5];
-		index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animAttack = new LifeformAnimation(ANIM_RATE*0.4f, frames, Direction.RIGHT);
+		animIdle = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/player-idle.png", 3, ANIM_RATE), Direction.RIGHT);
+		animMove = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/player-move.png", 12, ANIM_RATE), Direction.RIGHT);
+		animAttack = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/player-attack.png", 5, ANIM_RATE*0.4f), Direction.RIGHT);
 	}
 
 	public LifeformAnimation getAnimation(AnimationType animation) {

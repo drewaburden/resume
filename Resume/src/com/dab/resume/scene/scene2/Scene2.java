@@ -26,11 +26,12 @@ import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
-import com.dab.resume.events.Observer;
 import com.dab.resume.hud.Dialog;
 import com.dab.resume.hud.Fadeable;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
+import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
+import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.*;
 
@@ -53,6 +54,7 @@ public class Scene2 extends Observable {
 	private CameraPanner cameraPanner;
 	private Player player;
 	private Mage mage;
+	private MageStateMachine mageAI;
 	private TilingFloor floor, dirt;
 	private ParallaxBackground background;
 	private Dialog dialog1;
@@ -69,9 +71,11 @@ public class Scene2 extends Observable {
 		this.sceneTransitionFade = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
-		mage = new Mage(125.0f);
-		float dialogWidth = 250.0f, dialogHeight = 176.0f;
-		dialog1 = new Dialog("INJURED OLD WOMAN", "PLEASE... HELP ME...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
+		mage = new Mage(500.0f);
+		float dialogWidth = 250.0f, dialogHeight = 145.0f;
+		dialog1 = new Dialog("Injured old woman", "Please... You must defeat the foe that lies ahead of you. " +
+				"You're our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f,
+				dialogWidth, dialogHeight);
 		rain = new Rain(true);
 		wall = new LinkedList<Sprite>();
 		candles = new LinkedList<Candle>();
@@ -93,6 +97,9 @@ public class Scene2 extends Observable {
 
 	public void initAssets() {
 		Log.log();
+
+		mage.initAssets();
+
 		Texture texture = Assets.getInstance().get("game/environments/castle/fog-top.png");
 		fog = new Sprite(texture);
 		fog.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, camera.position.y - fog.getHeight()/2.0f + 135.0f);
@@ -150,6 +157,8 @@ public class Scene2 extends Observable {
 
 		rain.initAssets();
 		dialog1.initAssets();
+
+		mageAI = new MageStateMachine(mage, player);
 	}
 
 	public void show() { show(false); }
@@ -186,6 +195,8 @@ public class Scene2 extends Observable {
 				notifyObservers(SceneEvent.TRANSITION_TO_SCENE1);
 			}
 
+			mageAI.update(Gdx.graphics.getDeltaTime());
+
 			/************
 			 * Foreground camera
 			 ************/
@@ -212,6 +223,8 @@ public class Scene2 extends Observable {
 			for (Sprite sprite : crates) {
 				sprite.draw(spriteBatch);
 			}
+			// Enemies
+			mage.draw(spriteBatch);
 			// Player
 			player.draw(spriteBatch);
 
@@ -235,9 +248,9 @@ public class Scene2 extends Observable {
 			 ************/
 			spriteBatch.setProjectionMatrix(staticCamera.combined);
 			fog.draw(spriteBatch);
-			//dialog1.draw(spriteBatch);
+			dialog1.draw(spriteBatch);
 
-			//checkCollision();
+			checkCollision();
 		}
 	}
 
@@ -245,6 +258,28 @@ public class Scene2 extends Observable {
 	 * TODO: Move to own class
 	 ***********/
 	public void checkCollision() {
+		int numProjectiles = mage.getActiveProjectiles().size();
+		for (int projectileIndex = 0; projectileIndex < numProjectiles; ++projectileIndex) {
+			Projectile projectile = mage.getActiveProjectiles().get(projectileIndex);
+			// If the projectile is out of bounds, destroy it
+			if (projectile.getBoundingBox().getRight() < playerBounds.getLeft()) {
+				mage.destroyProjectile(projectile);
+				numProjectiles--;
+				projectileIndex--;
+				continue;
+			}
+			// If the projectile hit the player, hurt the player and destroy the projectile
+			if (player.getBoundingBox().overlaps(projectile.getBoundingBox())) {
+				Direction damagedSide = Direction.RIGHT;
+				if (player.getBoundingBox().getX() > projectile.getBoundingBox().getX()) {
+					damagedSide = Direction.LEFT;
+				}
+				player.hurt(projectile.getAttackPower(), damagedSide);
+				mage.destroyProjectile(projectile);
+				numProjectiles--;
+			}
+		}
+		// If the player ran into the mage, hurt the player
 		if (player.getBoundingBox().overlaps(mage.getBoundingBox()) && mage.isAlive()) {
 			Direction damagedSide = Direction.RIGHT;
 			if (player.getBoundingBox().getX() > mage.getBoundingBox().getX()) {
@@ -252,6 +287,7 @@ public class Scene2 extends Observable {
 			}
 			player.hurt(mage.getAttackPower(), damagedSide);
 		}
+		// If the player's attack hit the mage, hurt the mage
 		if (player.isAttacking() && player.getAttackBoundingBox().overlaps(mage.getBoundingBox()) && mage.isAlive()) {
 			Direction damagedSide = Direction.RIGHT;
 			if (mage.getBoundingBox().getX() > player.getBoundingBox().getX()) {
@@ -279,6 +315,12 @@ public class Scene2 extends Observable {
 			shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 			rect = mage.getBoundingBox();
 			shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+
+			// Projectiles
+			for (Projectile projectile : mage.getActiveProjectiles()) {
+				rect = projectile.getBoundingBox();
+				shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+			}
 
 			// Player attack collision
 			if (player.isAttacking()) {

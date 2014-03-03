@@ -52,11 +52,8 @@ public class Scene1 extends Observable {
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
 	private Player player;
-	private Mage mage;
-	private MageStateMachine mageAI;
 	private TilingFloor floor, back_grass, back_grass2;
 	private ParallaxBackground background;
-	private Dialog dialog1;
 	private Rain rain;
 
 	public Scene1(OrthographicCamera camera, Player player, Fadeable sceneFadeOut) {
@@ -65,11 +62,6 @@ public class Scene1 extends Observable {
 		this.sceneTransitionFade = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
-		mage = new Mage(500.0f);
-		float dialogWidth = 250.0f, dialogHeight = 145.0f;
-		dialog1 = new Dialog("Dying Man", "Please... You must defeat the foe that lies ahead of you. " +
-				"You're our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f,
-				dialogWidth, dialogHeight);
 		rain = new Rain();
 		TextureLoader.TextureParameter params = new TextureLoader.TextureParameter();
 		params.genMipMaps = true;
@@ -90,9 +82,6 @@ public class Scene1 extends Observable {
 
 	public void initAssets() {
 		Log.log();
-		dialog1.initAssets();
-
-		mage.initAssets();
 
 		background = new ParallaxBackground();
 
@@ -238,8 +227,6 @@ public class Scene1 extends Observable {
 		floor.setPosition(camera.position.x - floor.getTileWidth()*2.55f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
 
 		rain.initAssets();
-
-		mageAI = new MageStateMachine(mage, player);
 	}
 
 	public void show() { show(false); }
@@ -281,6 +268,7 @@ public class Scene1 extends Observable {
 			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFade.isFading()) {
 				notifyObservers(SceneEvent.TRANSITION_TO_SCENE2);
 			}
+
 			/************
 			 * Static camera
 			 ************/
@@ -296,16 +284,11 @@ public class Scene1 extends Observable {
 			rain.draw(spriteBatch);
 			// Foreground floor
 			floor.draw(spriteBatch);
-			// Enemies
-			mage.draw(spriteBatch);
 			// Player
 			camera.update();
 			player.draw(spriteBatch);
 
 			cameraPanner.update();
-
-			//camera.translate(150.0f*Gdx.graphics.getDeltaTime(), 0.0f);
-			//camera.update();
 
 			// Update parallax
 			float lastTranslateAmount = cameraPanner.getLastTranslateAmount();
@@ -320,61 +303,9 @@ public class Scene1 extends Observable {
 
 			// Debug
 			renderCollisionDebug(spriteBatch);
-
-			/************
-			 * Static camera
-			 ************/
-			spriteBatch.setProjectionMatrix(staticCamera.combined);
-			dialog1.draw(spriteBatch);
-
-			//checkCollision();
-
-			mageAI.update(Gdx.graphics.getDeltaTime());
 		}
 	}
 
-	/***********
-	 * TODO: Move to own class
-	 ***********/
-	public void checkCollision() {
-		int numProjectiles = mage.getActiveProjectiles().size();
-		for (int projectileIndex = 0; projectileIndex < numProjectiles; ++projectileIndex) {
-			Projectile projectile = mage.getActiveProjectiles().get(projectileIndex);
-			// If the projectile is out of bounds, destroy it
-			if (projectile.getBoundingBox().getRight() < playerBounds.getLeft()) {
-				mage.destroyProjectile(projectile);
-				numProjectiles--;
-				projectileIndex--;
-				continue;
-			}
-			// If the projectile hit the player, hurt the player and destroy the projectile
-			if (player.getBoundingBox().overlaps(projectile.getBoundingBox())) {
-				Direction damagedSide = Direction.RIGHT;
-				if (player.getBoundingBox().getX() > projectile.getBoundingBox().getX()) {
-					damagedSide = Direction.LEFT;
-				}
-				player.hurt(projectile.getAttackPower(), damagedSide);
-				mage.destroyProjectile(projectile);
-				numProjectiles--;
-			}
-		}
-		// If the player ran into the mage, hurt the player
-		if (player.getBoundingBox().overlaps(mage.getBoundingBox()) && mage.isAlive()) {
-			Direction damagedSide = Direction.RIGHT;
-			if (player.getBoundingBox().getX() > mage.getBoundingBox().getX()) {
-				damagedSide = Direction.LEFT;
-			}
-			player.hurt(mage.getAttackPower(), damagedSide);
-		}
-		// If the player's attack hit the mage, hurt the mage
-		if (player.isAttacking() && player.getAttackBoundingBox().overlaps(mage.getBoundingBox()) && mage.isAlive()) {
-			Direction damagedSide = Direction.RIGHT;
-			if (mage.getBoundingBox().getX() > player.getBoundingBox().getX()) {
-				damagedSide = Direction.LEFT;
-			}
-			mage.hurt(player.getAttackPower(), damagedSide);
-		}
-	}
 	/***********
 	 * TODO: Move to own class
 	 ***********/
@@ -392,14 +323,6 @@ public class Scene1 extends Observable {
 			// Hurt collision
 			Rectangle rect = player.getBoundingBox();
 			shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-			rect = mage.getBoundingBox();
-			shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-
-			// Projectiles
-			for (Projectile projectile : mage.getActiveProjectiles()) {
-				rect = projectile.getBoundingBox();
-				shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-			}
 
 			// Player attack collision
 			if (player.isAttacking()) {

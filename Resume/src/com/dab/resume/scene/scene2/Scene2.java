@@ -29,6 +29,7 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.hud.Dialog;
 import com.dab.resume.hud.Fadeable;
+import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
 import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
@@ -41,7 +42,7 @@ import java.util.LinkedList;
 import static com.dab.resume.GameState.State.TRANSITIONING;
 import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
-public class Scene2 extends Observable {
+public class Scene2 extends Observable implements Observer {
 	// The ultimate boundaries of the scene where the player cannot walk beyond
 	private BoundingBox playerBounds = new BoundingBox(-500.0f, -1000.0f, 2300.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
@@ -57,6 +58,7 @@ public class Scene2 extends Observable {
 	private Player player;
 	private Mage mage;
 	private MageStateMachine mageAI;
+	private OldWoman oldWoman;
 	private TilingFloor floor, dirt;
 	private Dialog dialog1;
 	private Rain rain;
@@ -73,9 +75,10 @@ public class Scene2 extends Observable {
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		mage = new Mage(1250.0f);
-		float dialogWidth = 250.0f, dialogHeight = 145.0f;
-		dialog1 = new Dialog("Injured old woman", "Please... You must defeat the foe that lies ahead of you. " +
-				"You're our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f,
+		oldWoman = new OldWoman(150.0f);
+		float dialogWidth = 340.0f, dialogHeight = 120.0f;
+		dialog1 = new Dialog("Dying old woman", "Please... You must defeat the foe that lies ahead of you. " +
+				"You are our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 50.0f - dialogHeight/2.0f,
 				dialogWidth, dialogHeight);
 		rain = new Rain(true);
 		wall = new LinkedList<Sprite>();
@@ -104,6 +107,7 @@ public class Scene2 extends Observable {
 		Log.log();
 
 		mage.initAssets();
+		oldWoman.initAssets();
 
 		Texture texture = Assets.getInstance().get("game/environments/castle/fog-top.png");
 		fog = new Sprite(texture);
@@ -257,6 +261,14 @@ public class Scene2 extends Observable {
 
 			mageAI.update(Gdx.graphics.getDeltaTime());
 
+			// If the player triggered the dialogue with the OldWoman, stop the player and show the dialog.
+			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-100.0f
+					&& !dialog1.isShowing() && !dialog1.hasBeenDisplayed()) {
+				player.stopXForce();
+				player.stopYForce();
+				dialog1.show();
+			}
+
 			/************
 			 * Foreground camera
 			 ************/
@@ -283,6 +295,8 @@ public class Scene2 extends Observable {
 			for (Sprite sprite : crates) {
 				sprite.draw(spriteBatch);
 			}
+			// Old woman
+			oldWoman.draw(spriteBatch);
 			// In front Crate Logs
 			for (Sprite sprite : logs_foreground) {
 				sprite.draw(spriteBatch);
@@ -402,5 +416,25 @@ public class Scene2 extends Observable {
 			shapeRenderer.end();
 			spriteBatch.begin();
 		}
+	}
+
+	@Override
+	public boolean eventTriggered(Object data) {
+		if (data instanceof InputEvent) {
+			switch ((InputEvent) data) {
+				case PRESS_ACCEPT:
+					if (dialog1.isShowing()) {
+						dialog1.accept();
+
+						// If the player didn't just skip the text (the player actually
+						// accepted and closed the dialog box)
+						if (!dialog1.isShowing()) {
+							oldWoman.die();
+						}
+						return true;
+					}
+			}
+		}
+		return false;
 	}
 }

@@ -9,6 +9,10 @@
  * Description:
  *      Defines a class responsible for loading and displaying the graphics required to
  *      create a variably sized dialog with variable text.
+ *      A lot of the calculations get weird because I rotated a lot of Sprites. So in some
+ *      cases you'll see a getWidth(), but it'll actually be returning the perceived
+ *      getHeight() and vice versa because rotating the sprite doesn't actually interchange
+ *      those values.
  ********************************************************************************************************/
 
 package com.dab.resume.hud;
@@ -40,6 +44,7 @@ public class Dialog {
 	private BitmapFont font;
 	private String text, speaker, displayText;
 	private boolean showing = false;
+	private boolean hasBeenDisplayed = false;
 
 	public Dialog(String speaker, String text, float posX, float posY, float width, float height) {
 		if (width < 150.0f || height < 100.0f) {
@@ -192,14 +197,16 @@ public class Dialog {
 	public void show() {
 		NUM_DIALOGS_SHOWING++;
 		showing = true;
+		hasBeenDisplayed = true;
 	}
-	public void hide() {
+	private void hide() {
 		NUM_DIALOGS_SHOWING = Math.max(0, NUM_DIALOGS_SHOWING-1);
 		showing = false;
 		displayText = speaker + ":\n\n";
 		deltaCharacterDisplay = 0.0f;
 	}
 	public boolean isShowing() { return showing; }
+	public boolean hasBeenDisplayed() { return hasBeenDisplayed; }
 
 	public void accept() {
 		// If we displayed all the characters, the dialog should close
@@ -265,7 +272,7 @@ public class Dialog {
 
 			font.setColor(0.15f, 0.85f, 0.4f, 1.0f);
 			font.drawWrapped(spriteBatch, displayText, posX + edgeLeft.getWidth()*2.0f,
-					posY+height - edgeTop.getWidth()*2.0f - deco_top.getHeight(), width - edgeLeft.getWidth()*4.0f);
+					posY+height - edgeTop.getWidth()*2.0f - deco_top.getHeight()/2.0f, width - edgeLeft.getWidth()*4.0f);
 		}
 	}
 }

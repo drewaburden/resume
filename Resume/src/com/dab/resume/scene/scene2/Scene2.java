@@ -29,8 +29,10 @@ import com.dab.resume.events.Observable;
 import com.dab.resume.events.Observer;
 import com.dab.resume.hud.Dialog;
 import com.dab.resume.hud.Fadeable;
+import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
+import com.dab.resume.lifeform.friendlies.oldwoman.OldWoman;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.*;
 
@@ -39,7 +41,7 @@ import java.util.LinkedList;
 import static com.dab.resume.GameState.State.TRANSITIONING;
 import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
-public class Scene2 extends Observable {
+public class Scene2 extends Observable implements Observer {
 	// The ultimate boundaries of the scene where the player cannot walk beyond
 	private BoundingBox playerBounds = new BoundingBox(-500.0f, -1000.0f, 3000.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
@@ -53,6 +55,7 @@ public class Scene2 extends Observable {
 	private CameraPanner cameraPanner;
 	private Player player;
 	private Mage mage;
+	private OldWoman oldWoman;
 	private TilingFloor floor, dirt;
 	private ParallaxBackground background;
 	private Dialog dialog1;
@@ -69,9 +72,12 @@ public class Scene2 extends Observable {
 		this.sceneTransitionFade = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
-		mage = new Mage(125.0f);
-		float dialogWidth = 250.0f, dialogHeight = 176.0f;
-		dialog1 = new Dialog("INJURED OLD WOMAN", "PLEASE... HELP ME...", 0.0f - dialogWidth/2.0f, 25.0f - dialogHeight/2.0f, dialogWidth, dialogHeight);
+		mage = new Mage(425.0f);
+		oldWoman = new OldWoman(150.0f);
+		float dialogWidth = 340.0f, dialogHeight = 120.0f;
+		dialog1 = new Dialog("Dying old woman", "Please... You must defeat the foe that lies ahead of you. " +
+				"You are our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 50.0f - dialogHeight/2.0f,
+				dialogWidth, dialogHeight);
 		rain = new Rain(true);
 		wall = new LinkedList<Sprite>();
 		candles = new LinkedList<Candle>();
@@ -93,6 +99,10 @@ public class Scene2 extends Observable {
 
 	public void initAssets() {
 		Log.log();
+
+		mage.initAssets();
+		oldWoman.initAssets();
+
 		Texture texture = Assets.getInstance().get("game/environments/castle/fog-top.png");
 		fog = new Sprite(texture);
 		fog.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, camera.position.y - fog.getHeight()/2.0f + 135.0f);
@@ -186,6 +196,14 @@ public class Scene2 extends Observable {
 				notifyObservers(SceneEvent.TRANSITION_TO_SCENE1);
 			}
 
+			// If the player triggered the dialogue with the OldWoman, stop the player and show the dialog.
+			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-100.0f
+					&& !dialog1.isShowing() && !dialog1.hasBeenDisplayed()) {
+				player.stopXForce();
+				player.stopYForce();
+				dialog1.show();
+			}
+
 			/************
 			 * Foreground camera
 			 ************/
@@ -212,6 +230,8 @@ public class Scene2 extends Observable {
 			for (Sprite sprite : crates) {
 				sprite.draw(spriteBatch);
 			}
+			// Old woman
+			oldWoman.draw(spriteBatch);
 			// Player
 			player.draw(spriteBatch);
 
@@ -235,7 +255,7 @@ public class Scene2 extends Observable {
 			 ************/
 			spriteBatch.setProjectionMatrix(staticCamera.combined);
 			fog.draw(spriteBatch);
-			//dialog1.draw(spriteBatch);
+			dialog1.draw(spriteBatch);
 
 			//checkCollision();
 		}
@@ -296,5 +316,25 @@ public class Scene2 extends Observable {
 			shapeRenderer.end();
 			spriteBatch.begin();
 		}
+	}
+
+	@Override
+	public boolean eventTriggered(Object data) {
+		if (data instanceof InputEvent) {
+			switch ((InputEvent) data) {
+				case PRESS_ACCEPT:
+					if (dialog1.isShowing()) {
+						dialog1.accept();
+
+						// If the player didn't just skip the text (the player actually
+						// accepted and closed the dialog box)
+						if (!dialog1.isShowing()) {
+							oldWoman.die();
+						}
+						return true;
+					}
+			}
+		}
+		return false;
 	}
 }

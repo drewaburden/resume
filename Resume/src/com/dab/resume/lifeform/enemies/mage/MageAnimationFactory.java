@@ -31,57 +31,14 @@ public class MageAnimationFactory {
 		Assets.getInstance().load("game/chars/mage-death.png", Texture.class);
 	}
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/chars/mage-idle.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[4];
-		int index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animIdle = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
-
-		texture = Assets.getInstance().get("game/chars/mage-move.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-		frames = new TextureRegion[4];
-		index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animMove = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
-
-		texture = Assets.getInstance().get("game/chars/mage-attack-lightning.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		tmp = TextureRegion.split(texture, texture.getWidth() / 12, texture.getHeight());
-		frames = new TextureRegion[12];
-		index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animAttack_lightning = new LifeformAnimation(ANIM_RATE*1.0f, frames, Direction.LEFT);
-
-		texture = Assets.getInstance().get("game/chars/mage-death.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		tmp = TextureRegion.split(texture, texture.getWidth() / 5, texture.getHeight());
-		frames = new TextureRegion[5];
-		index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animDeath = new LifeformAnimation(ANIM_RATE*1.0f, frames, Direction.LEFT);
+		animIdle = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/mage-idle.png", 4, ANIM_RATE*1.25f), Direction.LEFT);
+		animMove = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/mage-move.png", 4, ANIM_RATE*1.25f), Direction.LEFT);
+		animAttack_lightning = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/mage-attack-lightning.png", 12, ANIM_RATE), Direction.LEFT);
+		animDeath = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/mage-death.png", 5, ANIM_RATE), Direction.LEFT);
 	}
 
 	public LifeformAnimation getAnimation(AnimationType animation) {

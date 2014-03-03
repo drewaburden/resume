@@ -39,7 +39,7 @@ public class Candle {
 	public void initAssets() {
 		Texture texture = Assets.getInstance().get("game/environments/castle/candle.png");
 		holder = new Sprite(texture);
-		flame = Assets.getInstance().getAnimation("game/environmenets/castle/candle-flame.png", 4, ANIM_RATE*1.5f);
+		flame = Assets.getInstance().getAnimation("game/environments/castle/candle-flame.png", 4, ANIM_RATE*1.5f);
 		flame.setPlayMode(Animation.LOOP);
 
 		setPosition(posX, posY);

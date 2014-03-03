@@ -46,7 +46,7 @@ public class PlayerAnimationFactory {
 			case BLOCK: return animIdle;
 			case ATTACK_SWORD: return animAttack;
 			case DEATH: return animIdle;
-			default: return animIdle;
+			default: throw new IllegalArgumentException("That animtion does not exist");
 		}
 	}
 }

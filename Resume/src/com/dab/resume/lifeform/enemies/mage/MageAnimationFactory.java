@@ -48,7 +48,7 @@ public class MageAnimationFactory {
 			case BLOCK: return animIdle;
 			case ATTACK_LIGHTNING: return animAttack_lightning;
 			case DEATH: return animDeath;
-			default: return animIdle;
+			default: throw new IllegalArgumentException("That animation does not exist");
 		}
 	}
 }

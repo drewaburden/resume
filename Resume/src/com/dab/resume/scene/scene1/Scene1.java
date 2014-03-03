@@ -63,21 +63,19 @@ public class Scene1 extends Observable {
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		rain = new Rain();
-		TextureLoader.TextureParameter params = new TextureLoader.TextureParameter();
-		params.genMipMaps = true;
-		Assets.getInstance().load("game/environments/scene1-floor.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-backgrass.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-backgrass2.png", Texture.class, params);
+		Assets.getInstance().load("game/environments/scene1-floor.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-backgrass.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-backgrass2.png", Texture.class);
 		Assets.getInstance().load("game/environments/scene1-fog.png", Texture.class);
-		Assets.getInstance().load("game/environments/scene1-trees-distant.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-tree1.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-tree2.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-trunk1.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-trunk2.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-forest-fog.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-mountain-back.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-mountain-mid.png", Texture.class, params);
-		Assets.getInstance().load("game/environments/scene1-mountain-front.png", Texture.class, params);
+		Assets.getInstance().load("game/environments/scene1-trees-distant.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-tree1.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-tree2.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-trunk1.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-trunk2.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-forest-fog.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-mountain-back.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-mountain-mid.png", Texture.class);
+		Assets.getInstance().load("game/environments/scene1-mountain-front.png", Texture.class);
 	}
 
 	public void initAssets() {
@@ -89,21 +87,21 @@ public class Scene1 extends Observable {
 		 * Mountains
 		 ***************/
 		Texture texture = Assets.getInstance().get("game/environments/scene1-mountain-back.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		Sprite sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 242.0f, camera.position.y - sprite.getHeight()/2.0f + 40.0f);
 		ParallaxLayer layer = new ParallaxLayer(-10.0f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-mountain-mid.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 346.5f, camera.position.y - sprite.getHeight()/2.0f + 30.0f);
 		layer = new ParallaxLayer(-7.5f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-mountain-front.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f - 50.0f, camera.position.y - sprite.getHeight()/2.0f - 25.0f);
 		layer = new ParallaxLayer(-5.75f);
@@ -121,57 +119,56 @@ public class Scene1 extends Observable {
 		 * Trees
 		 ***************/
 		texture = Assets.getInstance().get("game/environments/scene1-trees-distant.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 575.0f, camera.position.y - sprite.getHeight()/2.0f + -8.0f);
 		layer = new ParallaxLayer(-4.75f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-tree1.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 650.0f, camera.position.y - sprite.getHeight()/2.0f + 25.0f);
 		layer = new ParallaxLayer(-4.5f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-tree1.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 550.0f, camera.position.y - sprite.getHeight()/2.0f + 40.0f);
 		layer = new ParallaxLayer(-4.0f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-tree2.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 700.0f, camera.position.y - sprite.getHeight()/2.0f + 55.0f);
 		layer = new ParallaxLayer(-3.5f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-tree2.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 600.0f, camera.position.y - sprite.getHeight()/2.0f + 65.0f);
 		layer = new ParallaxLayer(-3.0f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-trunk2.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 800.0f, camera.position.y - sprite.getHeight()/2.0f + 60.0f);
 		layer = new ParallaxLayer(-2.75f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-tree1.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 550.0f, camera.position.y - sprite.getHeight()/2.0f + 50.0f);
 		layer = new ParallaxLayer(-2.5f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-trunk1.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 1000.0f, camera.position.y - sprite.getHeight()/2.0f + 75.0f);
 		layer = new ParallaxLayer(-2.5f);
@@ -179,7 +176,7 @@ public class Scene1 extends Observable {
 		background.addLayer(layer);
 
 		texture = Assets.getInstance().get("game/environments/scene1-forest-fog.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 1000.0f, camera.position.y - sprite.getHeight()/2.0f + 65.0f);
 		layer = new ParallaxLayer(-2.0f);
@@ -190,7 +187,7 @@ public class Scene1 extends Observable {
 		 * Grass
 		 ***************/
 		texture = Assets.getInstance().get("game/environments/scene1-backgrass2.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		back_grass2 = new TilingFloor(texture, 3);
 		back_grass2.setPosition(camera.position.x - back_grass2.getTileWidth()*2.5f, camera.position.y - back_grass2.getTileHeight()/2.0f - 42.0f);
 		layer = new ParallaxLayer(-2.25f);
@@ -198,7 +195,7 @@ public class Scene1 extends Observable {
 		background.addLayer(layer);
 
 		texture = Assets.getInstance().get("game/environments/scene1-trunk2.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 700.0f, camera.position.y - sprite.getHeight()/2.0f + 110.0f);
 		layer = new ParallaxLayer(-2.4f);
@@ -206,7 +203,7 @@ public class Scene1 extends Observable {
 		background.addLayer(layer);
 
 		texture = Assets.getInstance().get("game/environments/scene1-trunk1.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 700.0f, camera.position.y - sprite.getHeight()/2.0f + 50.0f);
 		layer = new ParallaxLayer(-2.0f);
@@ -215,14 +212,14 @@ public class Scene1 extends Observable {
 
 
 		texture = Assets.getInstance().get("game/environments/scene1-backgrass.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		back_grass = new TilingFloor(texture, 3);
 		back_grass.setPosition(camera.position.x - back_grass.getTileWidth()*2.5f, camera.position.y - back_grass.getTileHeight()/2.0f - 34.0f);
 		layer = new ParallaxLayer(-1.5f);
 		layer.addSprite(back_grass);
 		background.addLayer(layer);
 		texture = Assets.getInstance().get("game/environments/scene1-floor.png");
-		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
+		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		floor = new TilingFloor(texture, 3);
 		floor.setPosition(camera.position.x - floor.getTileWidth()*2.55f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
 

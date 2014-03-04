@@ -27,6 +27,7 @@ import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
+import com.dab.resume.events.Observer;
 import com.dab.resume.hud.Dialog;
 import com.dab.resume.hud.Fadeable;
 import com.dab.resume.input.InputEvent;
@@ -34,6 +35,7 @@ import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
 import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
 import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
+import com.dab.resume.lifeform.friendlies.oldwoman.OldWoman;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.*;
 

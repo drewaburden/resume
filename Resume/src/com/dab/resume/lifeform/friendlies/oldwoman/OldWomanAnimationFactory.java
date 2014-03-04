@@ -29,31 +29,10 @@ public class OldWomanAnimationFactory {
 		Assets.getInstance().load("game/chars/oldwoman-death.png", Texture.class);
 	}
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/chars/oldwoman-talking.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 2, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[2];
-		int index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animTalking = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
-
-		texture = Assets.getInstance().get("game/chars/oldwoman-death.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-		frames = new TextureRegion[4];
-		index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		animDeath = new LifeformAnimation(ANIM_RATE*1.25f, frames, Direction.LEFT);
+		animTalking = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/oldwoman-talking.png", 2, ANIM_RATE*1.25f), Direction.LEFT);
+		animDeath = new LifeformAnimation(
+				Assets.getInstance().getAnimation("game/chars/oldwoman-death.png", 5, ANIM_RATE*1.5f), Direction.LEFT);
 	}
 
 	public LifeformAnimation getAnimation(AnimationType animation) {

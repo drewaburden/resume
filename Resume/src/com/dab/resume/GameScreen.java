@@ -243,6 +243,13 @@ public class GameScreen implements Screen, Observer {
 					scene1.show(true);
 					GameState.removeGameState(TRANSITIONING);
 					return true;
+				case TRANSITION_TO_CREDITS:
+					scene2.hide();
+					creditsOverlay.show();
+					GameState.removeGameState(PLAYING);
+					GameState.removeGameState(TRANSITIONING);
+					GameState.addGameState(CREDITS);
+					return true;
 			}
 		}
 		return false;

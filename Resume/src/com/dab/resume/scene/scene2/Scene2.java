@@ -51,6 +51,7 @@ public class Scene2 extends Observable implements Observer {
 	//private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2675.0f, 2000.0f, BLOCKING);
 	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 1500.0f, 2000.0f, BLOCKING);
 	private float prevSceneTransitionX = -175.0f;
+	private float nextSceneTransitionX = 1625.0f;
 
 	private boolean showing = false;
 
@@ -251,14 +252,20 @@ public class Scene2 extends Observable implements Observer {
 
 	public void draw(SpriteBatch spriteBatch) {
 		if (showing) {
-			// If the player hit the scene transition, set the transition state and start fading out.
-			if (player.getBoundingBox().getLeft() <= prevSceneTransitionX && !GameState.isGameStateSet(TRANSITIONING)) {
+			// If the player hit a scene transition, set the transition state and start fading out.
+			if ((player.getBoundingBox().getLeft() <= prevSceneTransitionX || player.getBoundingBox().getRight() >= nextSceneTransitionX)
+				&& !GameState.isGameStateSet(TRANSITIONING)) {
 				GameState.addGameState(GameState.State.TRANSITIONING);
 				sceneTransitionFade.fadeToAlpha(1.0f, 1.0f);
 			}
 			// If we're done fading out, notify the observers to actually switch scenes now
 			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFade.isFading()) {
-				notifyObservers(SceneEvent.TRANSITION_TO_SCENE1);
+				if (player.getBoundingBox().getLeft() <= prevSceneTransitionX) {
+					notifyObservers(SceneEvent.TRANSITION_TO_SCENE1);
+				}
+				else if (player.getBoundingBox().getRight() >= nextSceneTransitionX) {
+					notifyObservers(SceneEvent.TRANSITION_TO_CREDITS);
+				}
 			}
 
 			mageAI.update(Gdx.graphics.getDeltaTime());

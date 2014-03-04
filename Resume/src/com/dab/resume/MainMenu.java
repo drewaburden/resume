@@ -89,7 +89,7 @@ public class MainMenu implements Observer {
 				// We wait for two reasons:
 				// 1. It gives the acceptSound time to play
 				// 2. It makes it feel less like the program is just crashing (it's not, but that's what it feels like)
-				try { Thread.sleep(400); } catch (Exception e) {}
+				try { Thread.sleep(200); } catch (Exception e) {}
 				Gdx.app.exit();
 		}
 	}

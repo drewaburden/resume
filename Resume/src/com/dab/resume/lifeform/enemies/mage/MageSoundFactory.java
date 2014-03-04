@@ -18,7 +18,7 @@ import com.dab.resume.lifeform.LifeformSound;
 import com.dab.resume.lifeform.SoundFactory;
 
 public class MageSoundFactory {
-	Sound death;
+	private Sound death;
 
 	public MageSoundFactory() {
 		Assets.getInstance().load("game/sounds/mage-death.ogg", Sound.class);

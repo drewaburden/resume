@@ -51,10 +51,11 @@ public class Environment {
 		monitor_glow = new Sprite(texture);
 
 		// Set sprite sizes and positions
-		environment.setBounds(SCENE_X, SCENE_Y, SCENE_WIDTH, SCENE_HEIGHT);
+		environment.setSize(environment.getWidth()*SCENE_HEIGHT/environment.getHeight(), SCENE_HEIGHT);
+		environment.setPosition(0.0f - environment.getWidth()/2.0f, 0.0f - environment.getHeight()/2.0f);
 		colorgrade.setBounds(SCENE_X, SCENE_Y, SCENE_WIDTH, SCENE_HEIGHT);
-		monitor_glow.setBounds(SCENE_X, SCENE_Y, SCENE_WIDTH, SCENE_HEIGHT);
-		monitor_glare.setBounds(SCENE_X, SCENE_Y, SCENE_WIDTH, SCENE_HEIGHT);
+		monitor_glow.setBounds(environment.getX(), environment.getY(), environment.getWidth(), environment.getHeight());
+		monitor_glare.setBounds(environment.getX(), environment.getY(), environment.getWidth(), environment.getHeight());
 
 		// Set sprite alphas
 		colorgrade.setAlpha(0.1f);

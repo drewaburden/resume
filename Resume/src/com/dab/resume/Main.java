@@ -28,6 +28,8 @@ package com.dab.resume;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
+import javax.swing.*;
+
 public class Main {
 	public static void main(String[] args) {
 	    // Configure LibGDX desktop application
@@ -40,5 +42,11 @@ public class Main {
 
 	    // Instantiate LibGDX
 	    new LwjglApplication(new TerminalGame(), cfg);
+		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 	}
 }

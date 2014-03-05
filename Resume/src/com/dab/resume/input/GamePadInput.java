@@ -20,10 +20,11 @@ import com.badlogic.gdx.math.Vector3;
 
 public class GamePadInput implements ControllerListener {
 	private InputBridge inputBridge;
-	static private Controller controller = Controllers.getControllers().first();
+	private static Controller controller; // Controller #1, or null if no controller connected
 
 	public GamePadInput(InputBridge inputBridge) {
 		this.inputBridge = inputBridge;
+		controller = Controllers.getControllers().first(); // Controller #1, or null if no controller connected
 	}
 
 	@Override public void connected(Controller controller) { }

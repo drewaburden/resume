@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *      Defines the possible directions that an entity can be facing
+ *      Defines the possible horizontal directions
  ********************************************************************************************************/
 
 package com.dab.resume.lifeform;

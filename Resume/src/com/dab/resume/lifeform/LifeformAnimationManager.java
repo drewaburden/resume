@@ -62,10 +62,12 @@ public class LifeformAnimationManager {
 	public void draw(SpriteBatch spriteBatch, float posX, float posY) {
 		if (!GameState.isGameStateSet(PAUSED)) {
 			float delta = Gdx.graphics.getDeltaTime();
-
 			animTime += delta;
-
 			currentFrame = animCurrent.getKeyFrame(animTime);
+
+			// If the animation is flashing because the Lifeform was hurt,
+			// determine whether we need to render a lightened frame, a normal
+			// frame, or stop the flashing altogether
 			if (isFlashing) {
 				elapFlashTime += delta;
 				deltaFlashTime += delta;

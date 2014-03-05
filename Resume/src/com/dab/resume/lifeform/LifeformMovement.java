@@ -62,7 +62,6 @@ public class LifeformMovement extends Observable {
 				x_movement = false;
 				x_force = false;
 			}
-			//posX += velocityX * delta;
 			posX += delta * (velocityX + delta*accelerationX/2.0f); // Velocity Verlet method
 		}
 	}

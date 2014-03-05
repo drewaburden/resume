@@ -1,24 +1,21 @@
 /********************************************************************************************************
  * Project:     Résumé
- * File:        PauseOverlay.java
+ * File:        GameoverOverlay.java
  * Authors:     Drew Burden
  *
  * Copyright © 2014 Drew Burden
  * All rights reserved.
  *
  * Description:
- *      Handles drawing the overlay of the game screen when the GameState is set to paused
+ *      Handles drawing the overlay of the game over screen when the GameState is set to GAMEOVER
  ********************************************************************************************************/
 
-package com.dab.resume.hud;
+package com.dab.resume.overlay;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 

@@ -144,7 +144,6 @@ public abstract class Lifeform extends Observable {
 				die();
 			}
 			else {
-				//animationManager.playAnimation(animationFactory.getAnimation(lifeformType, HURT));
 				soundManager.playSound(soundFactory.getSound(lifeformType, SoundType.HURT));
 			}
 		}

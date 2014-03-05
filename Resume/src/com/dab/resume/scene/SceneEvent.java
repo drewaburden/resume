@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines possible events that control the flow of the Scenes
  ********************************************************************************************************/
 
 package com.dab.resume.scene;

@@ -12,13 +12,11 @@
 
 package com.dab.resume.scene;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dab.resume.debug.Log;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class TilingFloor extends Sprite {
@@ -43,8 +41,6 @@ public class TilingFloor extends Sprite {
 	}
 
 	public void update() {
-		Sprite centerTile = tiles.get(tiles.size()/2 + 1);
-
 		// If the camera has advanced to the right of the center tile
 		//if (camera.position.x > centerTile.getX()+centerTile.getWidth()) {
 		if (offsetSinceLastRetile > getTileWidth()) {
@@ -85,7 +81,6 @@ public class TilingFloor extends Sprite {
 	@Override
 	public void translate(float amountX, float amountY) {
 		setPosition(tiles.getFirst().getX() + amountX, tiles.getFirst().getY() + amountY);
-		//update();
 	}
 	public float getTileWidth() { return tiles.getFirst().getWidth(); }
 	public float getTileHeight() { return tiles.getFirst().getHeight(); }

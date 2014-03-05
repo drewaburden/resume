@@ -29,6 +29,7 @@ import com.dab.resume.input.InputBridge;
 import com.dab.resume.input.InputEvent;
 import com.dab.resume.input.KeyboardInput;
 import com.dab.resume.lifeform.player.Player;
+import com.dab.resume.overlay.*;
 import com.dab.resume.scene.SceneEvent;
 import com.dab.resume.scene.scene1.Scene1;
 import com.dab.resume.scene.scene2.Scene2;
@@ -42,7 +43,6 @@ public class GameScreen implements Screen, Observer {
 	private InputBridge inputBridge;
 	private KeyboardInput keyboardInput;
 	private GamePadInput gamePadInput;
-	private BitmapFont commonFont;
 
 	private Fadeable fadeOverlay; // Used to fade the entire terminal screen
 	private Fadeable fadeUnderlay; // Used to fade only between the menus and the scene
@@ -59,7 +59,6 @@ public class GameScreen implements Screen, Observer {
 	private Player player;
 
 	public GameScreen(BitmapFont commonFont) {
-		this.commonFont = commonFont;
 		camera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		staticCamera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		spriteBatch = new SpriteBatch();

@@ -21,9 +21,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 import com.dab.resume.events.Observer;
-import com.dab.resume.hud.ControlsOverlay;
-import com.dab.resume.hud.CreditsOverlay;
-import com.dab.resume.hud.Fadeable;
+import com.dab.resume.overlay.ControlsOverlay;
+import com.dab.resume.overlay.CreditsOverlay;
+import com.dab.resume.overlay.Fadeable;
 import com.dab.resume.input.InputEvent;
 
 import java.util.ArrayList;

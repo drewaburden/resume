@@ -7,14 +7,15 @@
  * All rights reserved.
  *
  * Description:
- *
+ *      Defines an observable object that can notify any registered observers
+ *      of changes by passing it some kind of data
  ********************************************************************************************************/
 
 package com.dab.resume.events;
 
 import java.util.ArrayList;
 
-public class Observable {
+public abstract class Observable {
 	ArrayList<Observer> observers;
 
 	public Observable() {

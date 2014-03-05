@@ -14,7 +14,6 @@
 package com.dab.resume.scene.scene1;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,12 +27,7 @@ import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.collision.BoundingBox;
-import com.dab.resume.hud.Dialog;
-import com.dab.resume.hud.Fadeable;
-import com.dab.resume.lifeform.Direction;
-import com.dab.resume.lifeform.enemies.mage.Mage;
-import com.dab.resume.lifeform.enemies.mage.MageStateMachine;
-import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
+import com.dab.resume.overlay.Fadeable;
 import com.dab.resume.lifeform.player.Player;
 import com.dab.resume.scene.*;
 
@@ -45,11 +39,12 @@ public class Scene1 extends Observable {
 	private BoundingBox playerBounds = new BoundingBox(-200.0f, -1000.0f, 3200.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
 	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2675.0f, 2000.0f, BLOCKING);
+	// The trigger positions of the Scene transitions
 	private float nextSceneTransitionX = 2800.0f;
 
 	private boolean showing = false;
 
-	private Fadeable sceneTransitionFade;
+	private Fadeable sceneTransitionFader;
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
 	private Player player;
@@ -60,7 +55,7 @@ public class Scene1 extends Observable {
 	public Scene1(OrthographicCamera camera, Player player, Fadeable sceneFadeOut) {
 		this.camera = camera;
 		this.player = player;
-		this.sceneTransitionFade = sceneFadeOut;
+		this.sceneTransitionFader = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		rain = new Rain();
@@ -84,9 +79,7 @@ public class Scene1 extends Observable {
 
 		background = new ParallaxBackground();
 
-		/***************
-		 * Mountains
-		 ***************/
+		// Mountains
 		Texture texture = Assets.getInstance().get("game/environments/scene1-mountain-back.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		Sprite sprite = new Sprite(texture);
@@ -108,6 +101,8 @@ public class Scene1 extends Observable {
 		layer = new ParallaxLayer(-5.75f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
+
+		// Mountain fog
 		texture = Assets.getInstance().get("game/environments/scene1-fog.png");
 		Sprite fog = new Sprite(texture);
 		fog.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, camera.position.y - fog.getHeight()/2.0f - 15.0f);
@@ -116,9 +111,7 @@ public class Scene1 extends Observable {
 		layer.addSprite(fog);
 		background.addLayer(layer);
 
-		/***************
-		 * Trees
-		 ***************/
+		// Trees and tree trunks
 		texture = Assets.getInstance().get("game/environments/scene1-trees-distant.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
@@ -176,6 +169,7 @@ public class Scene1 extends Observable {
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 
+		// Tree fog
 		texture = Assets.getInstance().get("game/environments/scene1-forest-fog.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
@@ -184,9 +178,7 @@ public class Scene1 extends Observable {
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 
-		/***************
-		 * Grass
-		 ***************/
+		// Grass
 		texture = Assets.getInstance().get("game/environments/scene1-backgrass2.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		back_grass2 = new TilingFloor(texture, 3);
@@ -195,23 +187,23 @@ public class Scene1 extends Observable {
 		layer.addSprite(back_grass2);
 		background.addLayer(layer);
 
+		// Tree trunks in between grass
 		texture = Assets.getInstance().get("game/environments/scene1-trunk2.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
-		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 700.0f, camera.position.y - sprite.getHeight()/2.0f + 110.0f);
+		sprite.setPosition(camera.position.x - sprite.getWidth() / 2.0f + 700.0f, camera.position.y - sprite.getHeight() / 2.0f + 110.0f);
 		layer = new ParallaxLayer(-2.4f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
-
 		texture = Assets.getInstance().get("game/environments/scene1-trunk1.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		sprite = new Sprite(texture);
-		sprite.setPosition(camera.position.x - sprite.getWidth()/2.0f + 700.0f, camera.position.y - sprite.getHeight()/2.0f + 50.0f);
+		sprite.setPosition(camera.position.x - sprite.getWidth() / 2.0f + 700.0f, camera.position.y - sprite.getHeight() / 2.0f + 50.0f);
 		layer = new ParallaxLayer(-2.0f);
 		layer.addSprite(sprite);
 		background.addLayer(layer);
 
-
+		// More grass
 		texture = Assets.getInstance().get("game/environments/scene1-backgrass.png");
 		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 		back_grass = new TilingFloor(texture, 3);
@@ -224,6 +216,7 @@ public class Scene1 extends Observable {
 		floor = new TilingFloor(texture, 3);
 		floor.setPosition(camera.position.x - floor.getTileWidth()*2.55f, camera.position.y - floor.getTileHeight()/2.0f - 90.0f);
 
+		// Rain
 		rain.initAssets();
 	}
 
@@ -239,7 +232,7 @@ public class Scene1 extends Observable {
 		// Must be coming in from the right, so we need different positions
 		// TODO: Have a separate argument for the entrance side
 		if (fadeIn) {
-			sceneTransitionFade.fadeToAlpha(0.0f, 1.0f);
+			sceneTransitionFader.fadeToAlpha(0.0f, 1.0f);
 			player.setPosX(nextSceneTransitionX-player.getBoundingBox().getWidth()*3.0f);
 			player.setPosY(World.FLOOR);
 			camera.position.set(cameraBounds.getRight(), 0.0f, 0.0f);
@@ -260,10 +253,10 @@ public class Scene1 extends Observable {
 			// If the player hit the scene transition, set the transition state and start fading out.
 			if (player.getBoundingBox().getRight() >= nextSceneTransitionX && !GameState.isGameStateSet(TRANSITIONING)) {
 				GameState.addGameState(GameState.State.TRANSITIONING);
-				sceneTransitionFade.fadeToAlpha(1.0f, 1.0f);
+				sceneTransitionFader.fadeToAlpha(1.0f, 1.0f);
 			}
 			// If we're done fading out, notify the observers to actually switch scenes now
-			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFade.isFading()) {
+			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFader.isFading()) {
 				notifyObservers(SceneEvent.TRANSITION_TO_SCENE2);
 			}
 
@@ -271,7 +264,7 @@ public class Scene1 extends Observable {
 			 * Static camera
 			 ************/
 			spriteBatch.setProjectionMatrix(staticCamera.combined);
-			// Background mountains and grass
+			// Background mountains, trees, and grass
 			background.draw(spriteBatch);
 
 			/************

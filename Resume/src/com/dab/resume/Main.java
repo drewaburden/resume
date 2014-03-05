@@ -7,13 +7,22 @@
  * All rights reserved.
  *
  * Description:
- *      This application is a fun little all-in-one resume/cover letter/references info/demonstration
- *      intended to reduce some of the blandness associated with looking through resumes and cover
- *      letters.
+ *      This project is meant to be a quick and simple demonstration of some of my abilities in the
+ *      form of a game, with the added bonus that it's not super boring to read (like a normal résumé).
+ *      The game is in the style of old, 2D DOS-era games. I really love old games, and I always wanted
+ *      to make something that could serve as a tribute to the games from that era, and I knew I wanted
+ *      to make a less-than-conventional résumé. So, this is my fusion of those two concepts.
+ *
+ *      Doing this project was also somewhat of an exercise for me. I wanted to understand more about
+ *      the other aspects of game creation besides programming. In order to better communicate and
+ *      ultimately work much better as a team, I think it's important to understand what it's like to be
+ *      in a coworker's position. I believe that this project demonstrates this understanding; therefore,
+ *      I think this makes me an excellent candidate for a programming position.
+ *
  *      Note: Just about everything in this application (strings, sprites, animations, settings, etc.)
- *      is hard-coded, just for the sake of time. In a real world situation and for work I've done in
- *      the past, I would have coded a subsystem for dynamically loading all of this information from
- *      files, typically XML.
+ *      is hard-coded, just for the sake of saving time. In a real world situation and for work I've done
+ *      in the past, I would have coded a subsystem for dynamically loading all of this information from
+ *      files (typically XML).
  *      Also, I've given myself a deadline on this project, so some things are going to be a bit rushed.
  *      As a side effect, some things may not be implemented in the best way. While I could've sat
  *      around for days or even weeks and thought through every aspect of the implementation in order to
@@ -42,6 +51,8 @@ public class Main {
 
 	    // Instantiate LibGDX
 	    new LwjglApplication(new TerminalGame(), cfg);
+
+		// Creates an error dialog if an unhandled exception is encountered
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {

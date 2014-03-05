@@ -22,9 +22,11 @@ import static com.dab.resume.GameState.State.*;
 
 public class InputBridge extends Observable {
 	public void debugOptionsPressed() {
-		Log.log();
-		DebugFlags.DEV_DEBUG_VIEW = !DebugFlags.DEV_DEBUG_VIEW;
-		notifyObservers(InputEvent.PRESS_DEBUG_OPTIONS);
+		if (DebugFlags.DEV_ALLOW_DEBUG_VIEW) {
+			Log.log();
+			DebugFlags.DEV_DEBUG_VIEW = !DebugFlags.DEV_DEBUG_VIEW;
+			notifyObservers(InputEvent.PRESS_DEBUG_OPTIONS);
+		}
 	}
 	public void pauseButtonPressed() {
 		Log.log();

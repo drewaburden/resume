@@ -84,8 +84,8 @@ public class Mage extends Lifeform {
 		}
 	}
 	private void attack_lightning() {
-		//soundManager.playLightning();
 		Log.log();
+		//soundManager.playLightning();
 		projectiles.add(new Lightning(getPosX()+4.0f, getPosY()+10.0f));
 	}
 	public ArrayList<Projectile> getActiveProjectiles() { return projectiles; }

@@ -7,7 +7,7 @@
  * All rights reserved.
  *
  * Description:
- *      Handles graphics and sounds of Scene1's rain
+ *      Handles graphics and sounds of a Scene's rain
  ********************************************************************************************************/
 
 package com.dab.resume.scene;

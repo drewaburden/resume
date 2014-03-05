@@ -11,7 +11,7 @@
  *      in and out to a given alpha at a given speed.
  ********************************************************************************************************/
 
-package com.dab.resume.hud;
+package com.dab.resume.overlay;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

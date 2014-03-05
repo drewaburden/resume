@@ -8,7 +8,7 @@
  *
  * Description:
  *      Handles the panning of the camera by detecting when the player has reached
- *      a particular point in the frustrum, and also constrains the player and camera
+ *      a particular point in the frustum, and also constrains the player and camera
  *      locations to pre-defined bounding boxes.
  ********************************************************************************************************/
 

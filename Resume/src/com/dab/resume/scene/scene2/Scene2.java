@@ -29,7 +29,7 @@ import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observable;
 import com.dab.resume.events.Observer;
 import com.dab.resume.hud.Dialog;
-import com.dab.resume.hud.Fadeable;
+import com.dab.resume.overlay.Fadeable;
 import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.enemies.mage.Mage;
@@ -48,14 +48,14 @@ public class Scene2 extends Observable implements Observer {
 	// The ultimate boundaries of the scene where the player cannot walk beyond
 	private BoundingBox playerBounds = new BoundingBox(-500.0f, -1000.0f, 2300.0f, 2000.0f, BLOCKING);
 	// The bounds that the camera cannot pan beyond.
-	//private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 2675.0f, 2000.0f, BLOCKING);
 	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 1500.0f, 2000.0f, BLOCKING);
+	// The trigger positions of the Scene transitions
 	private float prevSceneTransitionX = -175.0f;
 	private float nextSceneTransitionX = 1625.0f;
 
 	private boolean showing = false;
 
-	private Fadeable sceneTransitionFade;
+	private Fadeable sceneTransitionFader;
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
 	private Player player;
@@ -74,10 +74,11 @@ public class Scene2 extends Observable implements Observer {
 	public Scene2(OrthographicCamera camera, Player player, Fadeable sceneFadeOut) {
 		this.camera = camera;
 		this.player = player;
-		this.sceneTransitionFade = sceneFadeOut;
+		this.sceneTransitionFader = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
 		mage = new Mage(1250.0f);
+		mageAI = new MageStateMachine(mage, player);
 		oldWoman = new OldWoman(150.0f);
 		float dialogWidth = 340.0f, dialogHeight = 120.0f;
 		dialog1 = new Dialog("Dying old woman", "Please... You must defeat the foe that lies ahead of you. " +
@@ -109,14 +110,17 @@ public class Scene2 extends Observable implements Observer {
 	public void initAssets() {
 		Log.log();
 
+		// NPCS
 		mage.initAssets();
 		oldWoman.initAssets();
 
+		// Ceiling fog
 		Texture texture = Assets.getInstance().get("game/environments/castle/fog-top.png");
 		fog = new Sprite(texture);
 		fog.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH / 2.0f, camera.position.y - fog.getHeight() / 2.0f + 135.0f);
 		fog.setSize(TerminalGame.VIRTUAL_WIDTH, fog.getHeight());
 
+		// Walls and windows
 		texture = Assets.getInstance().get("game/environments/castle/wall.png");
 		Sprite sprite = new Sprite(texture);
 		sprite.setPosition(camera.position.x - sprite.getWidth() * 1.5f, camera.position.y - sprite.getHeight() / 2.0f + 70.0f);
@@ -158,6 +162,7 @@ public class Scene2 extends Observable implements Observer {
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 15.0f, wall.getLast().getY());
 		wall.add(sprite);
 
+		// Candles
 		for (Candle candle : candles) {
 			candle.initAssets();
 		}
@@ -168,6 +173,7 @@ public class Scene2 extends Observable implements Observer {
 		candles.get(4).setPosition(845.0f, 30.0f);
 		candles.get(5).setPosition(1400.0f, 30.0f);
 
+		// Logs
 		texture = Assets.getInstance().get("game/environments/castle/log-short.png");
 		sprite = new Sprite(texture);
 		sprite.setPosition(0.0f - sprite.getWidth(), -40.0f);
@@ -196,6 +202,7 @@ public class Scene2 extends Observable implements Observer {
 		sprite.setColor(0.95f, 0.95f, 0.95f, 1.0f);
 		logs_foreground.add(sprite);
 
+		// Crates
 		texture = Assets.getInstance().get("game/environments/castle/crate-stacked.png");
 		sprite = new Sprite(texture);
 		sprite.setPosition(0.0f - sprite.getWidth() - 65.0f, -55.0f);
@@ -213,25 +220,28 @@ public class Scene2 extends Observable implements Observer {
 		sprite.setPosition(1500.0f, -55.0f);
 		crates.add(sprite);
 
+		// Floor
 		texture = Assets.getInstance().get("game/environments/castle/floor.png");
 		floor = new TilingFloor(texture, 6);
 		floor.setPosition(camera.position.x - floor.getTileWidth()*4.0f, camera.position.y - floor.getTileHeight()/2.0f - 70.0f);
 
+		// Corner dirt
 		texture = Assets.getInstance().get("game/environments/castle/dirt-corner.png");
 		dirt = new TilingFloor(texture, 4);
 		dirt.setPosition(camera.position.x - dirt.getTileWidth() * 3.0f, camera.position.y - dirt.getTileHeight() / 2.0f - 28.0f);
 		dirt.setAlpha(0.75f);
 
+		// Rain
 		rain.initAssets();
-		dialog1.initAssets();
 
-		mageAI = new MageStateMachine(mage, player);
+		// Dialog
+		dialog1.initAssets();
 	}
 
 	public void show() { show(false); }
 	public void show(boolean fadeIn) {
 		if (fadeIn) {
-			sceneTransitionFade.fadeToAlpha(0.0f, 1.0f);
+			sceneTransitionFader.fadeToAlpha(0.0f, 1.0f);
 		}
 		player.stopXMovement();
 		player.stopYForce();
@@ -256,10 +266,10 @@ public class Scene2 extends Observable implements Observer {
 			if ((player.getBoundingBox().getLeft() <= prevSceneTransitionX || player.getBoundingBox().getRight() >= nextSceneTransitionX)
 				&& !GameState.isGameStateSet(TRANSITIONING)) {
 				GameState.addGameState(GameState.State.TRANSITIONING);
-				sceneTransitionFade.fadeToAlpha(1.0f, 1.0f);
+				sceneTransitionFader.fadeToAlpha(1.0f, 1.0f);
 			}
 			// If we're done fading out, notify the observers to actually switch scenes now
-			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFade.isFading()) {
+			else if (GameState.isGameStateSet(TRANSITIONING) && !sceneTransitionFader.isFading()) {
 				if (player.getBoundingBox().getLeft() <= prevSceneTransitionX) {
 					notifyObservers(SceneEvent.TRANSITION_TO_SCENE1);
 				}
@@ -304,12 +314,12 @@ public class Scene2 extends Observable implements Observer {
 			for (Sprite sprite : crates) {
 				sprite.draw(spriteBatch);
 			}
-			// Old woman
-			oldWoman.draw(spriteBatch);
 			// In front Crate Logs
 			for (Sprite sprite : logs_foreground) {
 				sprite.draw(spriteBatch);
 			}
+			// Old woman
+			oldWoman.draw(spriteBatch);
 			// Enemies
 			mage.draw(spriteBatch);
 			// Player

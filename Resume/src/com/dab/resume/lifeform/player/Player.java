@@ -19,6 +19,7 @@ import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.collision.CollisionEvent;
 import com.dab.resume.debug.Log;
 import com.dab.resume.events.Observer;
+import com.dab.resume.hud.Dialog;
 import com.dab.resume.input.InputBridge;
 import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.*;
@@ -115,7 +116,7 @@ public class Player extends Lifeform implements Observer {
 		// Check if the user is still holding a direction after an action finishes.
 		// We have to do this because no new key events would be fired if the user
 		// is holding a key that they had pressed before the the action finished.
-		if (canChangeStates()) {
+		if (canChangeStates() && Dialog.NUM_DIALOGS_SHOWING == 0) {
 			if (InputBridge.isMovementLeftPressed()) { move(Direction.LEFT); }
 			else if (InputBridge.isMovementRightPressed()) { move(Direction.RIGHT); }
 			else { idle(); }

@@ -294,8 +294,8 @@ public class Scene2 extends Observable implements Observer {
 			// If the player triggered the dialogue with the OldWoman, stop the player and show the dialog.
 			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-100.0f
 					&& !dialog1.isShowing() && !dialog1.hasBeenDisplayed()) {
-				player.stopXForce();
 				player.stopYForce();
+				player.stopXForce();
 				dialog1.show();
 			}
 

@@ -65,10 +65,12 @@ public class Mage extends Lifeform {
 	}
 
 	public void initAssets() {
-		Log.log();
-		mageAnimationFactory.initAssets();
-		mageSoundFactory.initAssets();
-		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, IDLE));
+		if (isAlive()) {
+			Log.log();
+			mageAnimationFactory.initAssets();
+			mageSoundFactory.initAssets();
+			animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, IDLE));
+		}
 	}
 
 	public void attack(AttackType type) {

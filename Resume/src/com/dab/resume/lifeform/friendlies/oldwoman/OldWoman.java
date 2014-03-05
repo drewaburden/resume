@@ -35,10 +35,12 @@ public class OldWoman extends Lifeform {
 	}
 
 	public void initAssets() {
-		Log.log();
-		oldWomanAnimationFactory.initAssets();
-		oldWomanSoundFactory.initAssets();
-		animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, TALKING));
+		if (isAlive()) {
+			Log.log();
+			oldWomanAnimationFactory.initAssets();
+			oldWomanSoundFactory.initAssets();
+			animationManager = new LifeformAnimationManager(animationFactory.getAnimation(this.lifeformType, TALKING));
+		}
 	}
 
 	@Override public void hurt(int damage, Direction damagedSide) { /* OldWoman can't be hurt */ }

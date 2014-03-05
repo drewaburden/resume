@@ -15,11 +15,13 @@ package com.dab.resume.audio;
 import com.dab.resume.assets.Assets;
 
 public class Music {
-	public static float VOLUME_MODIFIER = 0.5f;
+	public static float VOLUME_MODIFIER = 0.35f;
 
-	private com.badlogic.gdx.audio.Music battle_intro, battle_loop;
+	private com.badlogic.gdx.audio.Music battle_intro, battle_loop, dialog_intro, dialog_loop;
 
 	public Music() {
+		Assets.getInstance().load("game/music/dialog-intro.ogg", com.badlogic.gdx.audio.Music.class);
+		Assets.getInstance().load("game/music/dialog-loop.ogg", com.badlogic.gdx.audio.Music.class);
 		Assets.getInstance().load("game/music/battle-intro.ogg", com.badlogic.gdx.audio.Music.class);
 		Assets.getInstance().load("game/music/battle-loop.ogg", com.badlogic.gdx.audio.Music.class);
 	}
@@ -29,9 +31,28 @@ public class Music {
 		battle_loop = Assets.getInstance().get("game/music/battle-loop.ogg");
 		battle_intro.setVolume(VOLUME_MODIFIER);
 		battle_loop.setVolume(VOLUME_MODIFIER);
+		dialog_intro = Assets.getInstance().get("game/music/dialog-intro.ogg");
+		dialog_loop = Assets.getInstance().get("game/music/dialog-loop.ogg");
+		dialog_intro.setVolume(VOLUME_MODIFIER);
+		dialog_loop.setVolume(VOLUME_MODIFIER);
 	}
 
-	void playBattleMusic() {
+	public void playDialogMusic() {
+		dialog_intro.play();
+		dialog_intro.setOnCompletionListener(new com.badlogic.gdx.audio.Music.OnCompletionListener() {
+			@Override
+			public void onCompletion(com.badlogic.gdx.audio.Music music) {
+				dialog_loop.play();
+				dialog_loop.setLooping(true);
+			}
+		});
+	}
+	public void stopDialogMusic() {
+		dialog_intro.stop();
+		dialog_loop.stop();
+	}
+
+	public void playBattleMusic() {
 		battle_intro.play();
 		battle_intro.setOnCompletionListener(new com.badlogic.gdx.audio.Music.OnCompletionListener() {
 			@Override
@@ -41,8 +62,13 @@ public class Music {
 			}
 		});
 	}
-	void stopBattleMusic() {
+	public void stopBattleMusic() {
 		battle_intro.stop();
 		battle_loop.stop();
+	}
+
+	public boolean isMusicPlaying() {
+		return (dialog_intro.isPlaying() || dialog_loop.isPlaying()
+				|| battle_intro.isPlaying() || battle_loop.isPlaying());
 	}
 }

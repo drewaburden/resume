@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.dab.resume.GameState;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
+import com.dab.resume.audio.Music;
 import com.dab.resume.collision.BoundingBox;
 import com.dab.resume.debug.DebugFlags;
 import com.dab.resume.debug.Log;
@@ -50,14 +51,15 @@ public class Scene2 extends Observable implements Observer {
 	// The bounds that the camera cannot pan beyond.
 	private BoundingBox cameraBounds = new BoundingBox(0.0f, -1000.0f, 1500.0f, 2000.0f, BLOCKING);
 	// The trigger positions of the Scene transitions
-	private float prevSceneTransitionX = -175.0f;
-	private float nextSceneTransitionX = 1625.0f;
+	private final float prevSceneTransitionX = -175.0f;
+	private final float nextSceneTransitionX = 1625.0f;
 
 	private boolean showing = false;
 
 	private Fadeable sceneTransitionFader;
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
+	private Music music;
 	private Player player;
 	private Mage mage;
 	private MageStateMachine mageAI;
@@ -77,6 +79,7 @@ public class Scene2 extends Observable implements Observer {
 		this.sceneTransitionFader = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
+		music = new Music();
 		mage = new Mage(1250.0f);
 		mageAI = new MageStateMachine(mage, player);
 		oldWoman = new OldWoman(150.0f);
@@ -109,6 +112,9 @@ public class Scene2 extends Observable implements Observer {
 
 	public void initAssets() {
 		Log.log();
+
+		// Music
+		music.initAssets();
 
 		// NPCS
 		mage.initAssets();
@@ -280,6 +286,11 @@ public class Scene2 extends Observable implements Observer {
 
 			mageAI.update(Gdx.graphics.getDeltaTime());
 
+			// If the player triggered the dialogue music, play the music.
+			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-200.0f
+					&& !music.isMusicPlaying()) {
+				music.playDialogMusic();
+			}
 			// If the player triggered the dialogue with the OldWoman, stop the player and show the dialog.
 			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-100.0f
 					&& !dialog1.isShowing() && !dialog1.hasBeenDisplayed()) {
@@ -449,6 +460,8 @@ public class Scene2 extends Observable implements Observer {
 						// accepted and closed the dialog box)
 						if (!dialog1.isShowing()) {
 							oldWoman.die();
+							music.stopDialogMusic();
+							music.playBattleMusic();
 						}
 						return true;
 					}

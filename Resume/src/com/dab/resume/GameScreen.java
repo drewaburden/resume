@@ -54,7 +54,7 @@ public class GameScreen implements Screen, Observer {
 	private CreditsOverlay creditsOverlay;
 	private Scene1 scene1;
 	private Scene2 scene2;
-	private Music music;
+
 	private HUD hud;
 	private Player player;
 
@@ -96,11 +96,6 @@ public class GameScreen implements Screen, Observer {
 		scene1.registerObserver(this);
 
 		/**************
-		 * Load general audio
-		 **************/
-		music = new Music();
-
-		/**************
 		 * Initialize input
 		 **************/
 		inputBridge = new InputBridge();
@@ -124,12 +119,6 @@ public class GameScreen implements Screen, Observer {
 		// Show Scene1
 		scene1.initAssets();
 		scene1.show();
-
-		/**************
-		 * Create audio
-		 ***************/
-		music.initAssets();
-		//music.playBattleMusic();
 
 		/**************
 		 * Start receiving input

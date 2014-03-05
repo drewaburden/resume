@@ -52,13 +52,13 @@ public class Log {
 		if (DebugFlags.DEV_LOG_CALLER_CLASS) System.out.print(getCallingClassInfo(stackTraceElements[4]) + " ");
 	}
 
-	private static String getTime() {
+	public static String getTime() {
 		return "[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime()) + "]";
 	}
-	private static String getCallingFileInfo(StackTraceElement stackTraceElement) {
+	public static String getCallingFileInfo(StackTraceElement stackTraceElement) {
 		return "<" + stackTraceElement.getFileName() + ":" + stackTraceElement.getLineNumber() + ">";
 	}
-	private static String getCallingClassInfo(StackTraceElement stackTraceElement) {
+	public static String getCallingClassInfo(StackTraceElement stackTraceElement) {
 		String className = stackTraceElement.getClassName();
 		// Strip off the first few packages from the class name to save some space
 		for (int numPackagesStripped = 0; numPackagesStripped < 3; ++numPackagesStripped) {

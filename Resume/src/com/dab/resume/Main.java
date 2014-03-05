@@ -36,6 +36,7 @@ package com.dab.resume;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.dab.resume.debug.Log;
 
 import javax.swing.*;
 
@@ -56,7 +57,10 @@ public class Main {
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
-				JOptionPane.showMessageDialog(null, e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				StackTraceElement[] stackTrack = e.getStackTrace();
+				String message = "Error: " + e.toString() + "\n\nin file: " + Log.getCallingFileInfo(stackTrack[1])
+						+ "\nin class: " + Log.getCallingClassInfo(stackTrack[1]) + "\n\nMessage: " + e.getLocalizedMessage();
+				JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 	}

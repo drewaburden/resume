@@ -44,6 +44,7 @@ public class GameScreen implements Screen, Observer {
 	private KeyboardInput keyboardInput;
 	private GamePadInput gamePadInput;
 
+
 	private Fadeable fadeOverlay; // Used to fade the entire terminal screen
 	private Fadeable fadeUnderlay; // Used to fade only between the menus and the scene
 
@@ -57,11 +58,19 @@ public class GameScreen implements Screen, Observer {
 
 	private HUD hud;
 	private Player player;
+	private Music music;
 
 	public GameScreen(BitmapFont commonFont) {
 		camera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		staticCamera = new OrthographicCamera(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		spriteBatch = new SpriteBatch();
+
+		/**************
+		 * Load general assets
+		 **************/
+		player = new Player();
+		hud = new HUD(player.getMaxHealth());
+		music = new Music();
 
 		/**************
 		 * Menus and overlays
@@ -81,13 +90,7 @@ public class GameScreen implements Screen, Observer {
 		creditsOverlay = new CreditsOverlay(fadeUnderlay);
 		mainMenu = new MainMenu(commonFont, fadeUnderlay, controlsOverlay, creditsOverlay);
 		pauseOverlay = new PauseOverlay(commonFont);
-		gameoverOverlay = new GameoverOverlay(commonFont);
-
-		/**************
-		 * Load general textures and player
-		 **************/
-		player = new Player();
-		hud = new HUD(player.getMaxHealth());
+		gameoverOverlay = new GameoverOverlay(commonFont, music);
 
 		/**************
 		 * Load scene assets
@@ -106,7 +109,7 @@ public class GameScreen implements Screen, Observer {
 	// Initialization
 	public void initialize() {
 		/**************
-		 * Create sprites
+		 * Init assets
 		 ***************/
 		// HUD
 		hud.initAssets();
@@ -114,11 +117,13 @@ public class GameScreen implements Screen, Observer {
 		player.initAssets();
 		// Start preloading the next scene
 		GameState.addGameState(PRELOADING);
-		scene2 = new Scene2(camera, player, fadeUnderlay);
+		scene2 = new Scene2(camera, player, fadeUnderlay, music);
 		scene2.registerObserver(this);
 		// Show Scene1
 		scene1.initAssets();
 		scene1.show();
+		// Music
+		music.initAssets();
 
 		/**************
 		 * Start receiving input
@@ -168,8 +173,8 @@ public class GameScreen implements Screen, Observer {
 		else if (GameState.isGameStateSet(CREDITS)) {
 			creditsOverlay.draw(spriteBatch);
 		}
-		else if (GameState.isGameStateSet(GameState.State.GAMEOVER)) {
-			gameoverOverlay.draw(spriteBatch);
+		else if (GameState.isGameStateSet(GameState.State.GAMEOVER) && !gameoverOverlay.isShowing()) {
+			gameoverOverlay.show();
 		}
 		else {
 			// HUD
@@ -179,6 +184,7 @@ public class GameScreen implements Screen, Observer {
 
 		fadeOverlay.draw(spriteBatch);
 
+		gameoverOverlay.draw(spriteBatch);
 		pauseOverlay.draw(spriteBatch);
 
 		spriteBatch.end();

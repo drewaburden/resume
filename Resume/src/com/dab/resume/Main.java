@@ -57,6 +57,7 @@ public class Main {
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
+				e.printStackTrace();
 				StackTraceElement[] stackTrack = e.getStackTrace();
 				String message = "Error: " + e.toString() + "\n\nin file: " + Log.getCallingFileInfo(stackTrack[1])
 						+ "\nin class: " + Log.getCallingClassInfo(stackTrack[1]) + "\n\nMessage: " + e.getLocalizedMessage();

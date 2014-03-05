@@ -73,13 +73,13 @@ public class Scene2 extends Observable implements Observer {
 	private LinkedList<Sprite> crates;
 	private LinkedList<Sprite> logs_background, logs_foreground;
 
-	public Scene2(OrthographicCamera camera, Player player, Fadeable sceneFadeOut) {
+	public Scene2(OrthographicCamera camera, Player player, Fadeable sceneFadeOut, Music music) {
 		this.camera = camera;
 		this.player = player;
 		this.sceneTransitionFader = sceneFadeOut;
 		staticCamera = new OrthographicCamera(camera.viewportWidth, camera.viewportHeight);
 		cameraPanner = new CameraPanner(camera, player, playerBounds, cameraBounds);
-		music = new Music();
+		this.music = music;
 		mage = new Mage(1250.0f);
 		mageAI = new MageStateMachine(mage, player);
 		oldWoman = new OldWoman(150.0f);
@@ -288,7 +288,7 @@ public class Scene2 extends Observable implements Observer {
 
 			// If the player triggered the dialogue music, play the music.
 			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-200.0f
-					&& !music.isMusicPlaying()) {
+					&& !music.isMusicPlaying() && player.isAlive()) {
 				music.playDialogMusic();
 			}
 			// If the player triggered the dialogue with the OldWoman, stop the player and show the dialog.

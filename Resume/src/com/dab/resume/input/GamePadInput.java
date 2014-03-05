@@ -17,13 +17,18 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
 public class GamePadInput implements ControllerListener {
 	private InputBridge inputBridge;
-	static private Controller controller = Controllers.getControllers().first();
+	private static Controller controller = null; // Controller #1, or null if no controller connected
 
 	public GamePadInput(InputBridge inputBridge) {
 		this.inputBridge = inputBridge;
+		Array<Controller> controllers = Controllers.getControllers();
+		if (controllers != null && controllers.size > 0) {
+			controller = Controllers.getControllers().first(); // Controller #1
+		}
 	}
 
 	@Override public void connected(Controller controller) { }

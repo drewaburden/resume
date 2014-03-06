@@ -16,6 +16,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.GameState;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
@@ -30,17 +31,15 @@ public class ControlsOverlay implements Observer {
 	private boolean showing = false;
 
 	public ControlsOverlay() {
-		Assets.getInstance().load("game/hud/title.png", Texture.class);
-		Assets.getInstance().load("game/hud/controls.png", Texture.class);
-		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
+		Assets.getInstance().load("sounds/dialog-accept.ogg", Sound.class);
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/hud/controls.png");
-		controls = new Sprite(texture);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/menus.pack");
+		controls = atlas.createSprite("controls");
 		controls.setPosition(0.0f - controls.getWidth()/2.0f, 0.0f - controls.getHeight()/2.0f + 30.0f);
 
-		acceptSound = Assets.getInstance().get("game/sounds/dialog-accept.ogg");
+		acceptSound = Assets.getInstance().get("sounds/dialog-accept.ogg");
 	}
 
 	private void acceptPressed() {

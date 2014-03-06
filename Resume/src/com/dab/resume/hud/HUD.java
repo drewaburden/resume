@@ -16,6 +16,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 
@@ -23,27 +25,24 @@ public class HUD {
 	private static final float SPACE_BETWEEN_HEARTS = 18.0f;
 	private static final float INIT_X = -165.0f, INIT_Y = 130.0f;
 
-	private Texture heart_empty, heart_filled;
+	private TextureRegion heart_empty, heart_filled;
 	private Sound heartsLowWarningSound;
 	private boolean warningSoundPlayed = false;
 	private int heartsMax = 5, heartsFilled = heartsMax;
 
 	public HUD(int heartsMax) {
-		Assets.getInstance().load("game/hud/heart-empty.png", Texture.class);
-		Assets.getInstance().load("game/hud/heart-filled.png", Texture.class);
-		Assets.getInstance().load("game/sounds/heart-warning.ogg", Sound.class);
+		Assets.getInstance().load("sounds/heart-warning.ogg", Sound.class);
 
 		this.heartsMax = heartsMax;
 		heartsFilled = heartsMax;
 	}
 
 	public void initAssets() {
-		heart_empty = Assets.getInstance().get("game/hud/heart-empty.png");
-		heart_empty.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		heart_filled = Assets.getInstance().get("game/hud/heart-filled.png");
-		heart_filled.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/common.pack");
+		heart_empty = atlas.findRegion("heart-empty");
+		heart_filled = atlas.findRegion("heart-filled");
 
-		heartsLowWarningSound = Assets.getInstance().get("game/sounds/heart-warning.ogg");
+		heartsLowWarningSound = Assets.getInstance().get("sounds/heart-warning.ogg");
 	}
 
 	public void setFilledHearts(int numFilledHearts) {

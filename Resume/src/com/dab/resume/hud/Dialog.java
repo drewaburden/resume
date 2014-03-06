@@ -56,15 +56,9 @@ public class Dialog {
 		this.width = width;
 		this.height = height;
 
-		Assets.getInstance().load("game/hud/dialog/background.png", Texture.class);
-		Assets.getInstance().load("game/hud/dialog/corner.png", Texture.class);
-		Assets.getInstance().load("game/hud/dialog/deco_bottom.png", Texture.class);
-		Assets.getInstance().load("game/hud/dialog/deco_top.png", Texture.class);
-		Assets.getInstance().load("game/hud/dialog/edge.png", Texture.class);
-		Assets.getInstance().load("game/hud/dialog/advance-arrow.png", Texture.class);
-		Assets.getInstance().load("game/sounds/dialog-display-character.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
-		Assets.getInstance().load("game/sounds/dialog-skip.ogg", Sound.class);
+		Assets.getInstance().load("sounds/dialog-display-character.ogg", Sound.class);
+		Assets.getInstance().load("sounds/dialog-accept.ogg", Sound.class);
+		Assets.getInstance().load("sounds/dialog-skip.ogg", Sound.class);
 
 		// Set text
 		this.speaker = speaker.toUpperCase();
@@ -78,40 +72,32 @@ public class Dialog {
 	}
 
 	public void initAssets() {
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/scene2.pack");
+
 		/**************
 		 * Background
 		 **************/
-		Texture texture = Assets.getInstance().get("game/hud/dialog/background.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		background = new Sprite(texture);
+		background = atlas.createSprite("dialog-background");
 		background.setPosition(posX+2.0f, posY+2.0f); // We add and subtract here because the corners have a transparent section
 		background.setSize(width-4.0f, height-4.0f);
 
 		/**************
 		 * Corners
 		 **************/
-		texture = Assets.getInstance().get("game/hud/dialog/corner.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		cornerBottomLeft = new Sprite(texture);
+		cornerBottomLeft = atlas.createSprite("corner");
 		cornerBottomLeft.setPosition(posX, posY);
 
-		texture = Assets.getInstance().get("game/hud/dialog/corner.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		cornerTopLeft = new Sprite(texture);
+		cornerTopLeft = atlas.createSprite("corner");
 		cornerTopLeft.setOrigin(0.0f, 0.0f);
 		cornerTopLeft.rotate(-90.0f);
 		cornerTopLeft.setPosition(posX, posY+height);
 
-		texture = Assets.getInstance().get("game/hud/dialog/corner.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		cornerTopRight = new Sprite(texture);
+		cornerTopRight = atlas.createSprite("corner");
 		cornerTopRight.setOrigin(0.0f, 0.0f);
 		cornerTopRight.rotate(-180.0f);
 		cornerTopRight.setPosition(posX+width, posY+height);
 
-		texture = Assets.getInstance().get("game/hud/dialog/corner.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		cornerBottomRight = new Sprite(texture);
+		cornerBottomRight = atlas.createSprite("corner");
 		cornerBottomRight.setOrigin(0.0f, 0.0f);
 		cornerBottomRight.rotate(90.0f);
 		cornerBottomRight.setPosition(posX+width, posY);
@@ -120,31 +106,23 @@ public class Dialog {
 		/**************
 		 * Edges
 		 **************/
-		texture = Assets.getInstance().get("game/hud/dialog/edge.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		edgeLeft = new Sprite(texture);
+		edgeLeft = atlas.createSprite("edge");
 		edgeLeft.setPosition(posX, posY+cornerBottomLeft.getHeight());
 		edgeLeft.setSize(edgeLeft.getWidth(), height-cornerBottomLeft.getHeight()*2.0f);
 
-		texture = Assets.getInstance().get("game/hud/dialog/edge.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		edgeTop = new Sprite(texture);
+		edgeTop = atlas.createSprite("edge");
 		edgeTop.setPosition(posX+cornerTopLeft.getWidth(), posY+height);
 		edgeTop.setSize(edgeTop.getWidth(), width-cornerTopLeft.getWidth()*2.0f);
 		edgeTop.setOrigin(0.0f, 0.0f);
 		edgeTop.rotate(-90.0f);
 
-		texture = Assets.getInstance().get("game/hud/dialog/edge.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		edgeRight = new Sprite(texture);
+		edgeRight = atlas.createSprite("edge");
 		edgeRight.setPosition(posX+width, posY+height-cornerTopRight.getHeight());
 		edgeRight.setSize(edgeLeft.getWidth(), height-cornerTopRight.getHeight() * 2.0f);
 		edgeRight.setOrigin(0.0f, 0.0f);
 		edgeRight.rotate(-180.0f);
-		
-		texture = Assets.getInstance().get("game/hud/dialog/edge.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		edgeBottom = new Sprite(texture);
+
+		edgeBottom = atlas.createSprite("edge");
 		edgeBottom.setPosition(posX+width-cornerBottomRight.getWidth(), posY);
 		edgeBottom.setSize(edgeTop.getWidth(), width-cornerBottomRight.getWidth()*2.0f);
 		edgeBottom.setOrigin(0.0f, 0.0f);
@@ -153,31 +131,16 @@ public class Dialog {
 		/**************
 		 * Deco
 		 **************/
-		texture = Assets.getInstance().get("game/hud/dialog/deco_top.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		deco_top = new Sprite(texture);
+		deco_top = atlas.createSprite("deco-top");
 		deco_top.setPosition(posX + width/2.0f - deco_top.getWidth()/2.0f, posY+height - deco_top.getHeight() - edgeTop.getWidth()); // Edgetop's width because it's relative to the texture, not the sprite, and the sprite has been rotated 90 degrees.
 
-		texture = Assets.getInstance().get("game/hud/dialog/deco_bottom.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		deco_bottom = new Sprite(texture);
+		deco_bottom = atlas.createSprite("deco-bottom");
 		deco_bottom.setPosition(posX + width/2.0f - deco_bottom.getWidth()/2.0f, posY + edgeBottom.getWidth()); // Edgebottom's width because it's relative to the texture, not the sprite, and the sprite has been rotated 90 degrees.
 
 		/**************
 		 * Advance arrow animation
 		 **************/
-		texture = Assets.getInstance().get("game/hud/dialog/advance-arrow.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[4];
-		int index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		advanceArrow = new Animation(ANIM_RATE, frames);
+		advanceArrow = Assets.getInstance().getAnimation(atlas.findRegion("advance-arrow"), 4, ANIM_RATE);
 		advanceArrow.setPlayMode(Animation.LOOP_PINGPONG);
 
 		/**************
@@ -189,9 +152,9 @@ public class Dialog {
 		/**************
 		 * Sounds
 		 **************/
-		displayCharacterSound = Assets.getInstance().get("game/sounds/dialog-display-character.ogg");
-		acceptSound = Assets.getInstance().get("game/sounds/dialog-accept.ogg");
-		skipSound = Assets.getInstance().get("game/sounds/dialog-skip.ogg");
+		displayCharacterSound = Assets.getInstance().get("sounds/dialog-display-character.ogg");
+		acceptSound = Assets.getInstance().get("sounds/dialog-accept.ogg");
+		skipSound = Assets.getInstance().get("sounds/dialog-skip.ogg");
 	}
 
 	public void show() {

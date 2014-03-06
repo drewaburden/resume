@@ -12,8 +12,7 @@
 
 package com.dab.resume.lifeform.friendlies.oldwoman;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.lifeform.Direction;
 import com.dab.resume.lifeform.LifeformAnimation;
@@ -24,15 +23,13 @@ public class OldWomanAnimationFactory {
 	private final float ANIM_RATE = 0.15f;
 	private LifeformAnimation animTalking, animDeath;
 
-	public OldWomanAnimationFactory() {
-		Assets.getInstance().load("game/chars/oldwoman-talking.png", Texture.class);
-		Assets.getInstance().load("game/chars/oldwoman-death.png", Texture.class);
-	}
+	public OldWomanAnimationFactory() { }
 	public void initAssets() {
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/scene2.pack");
 		animTalking = new LifeformAnimation(
-				Assets.getInstance().getAnimation("game/chars/oldwoman-talking.png", 2, ANIM_RATE*1.25f), Direction.LEFT);
+				Assets.getInstance().getAnimation(atlas.findRegion("oldwoman-talking"), 2, ANIM_RATE*1.25f), Direction.LEFT);
 		animDeath = new LifeformAnimation(
-				Assets.getInstance().getAnimation("game/chars/oldwoman-death.png", 5, ANIM_RATE*1.5f), Direction.LEFT);
+				Assets.getInstance().getAnimation(atlas.findRegion("oldwoman-death"), 5, ANIM_RATE*0.75f), Direction.LEFT);
 	}
 
 	public LifeformAnimation getAnimation(AnimationType animation) {

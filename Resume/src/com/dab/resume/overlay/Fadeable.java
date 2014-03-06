@@ -17,6 +17,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.GameState;
 import com.dab.resume.debug.Log;
 
@@ -25,7 +26,7 @@ public class Fadeable extends Sprite {
 	private float alphaInitial, alphaTarget, fadeSpeed;
 	private float currentAlpha; // Keep track of the current alpha on our own, because the Sprite class does some rounding
 
-	public Fadeable(Texture texture) {
+	public Fadeable(TextureRegion texture) {
 		super(texture);
 	}
 

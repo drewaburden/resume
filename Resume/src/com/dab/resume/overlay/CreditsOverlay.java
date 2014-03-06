@@ -17,6 +17,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
@@ -34,21 +35,17 @@ public class CreditsOverlay implements Observer {
 
 	public CreditsOverlay(Fadeable underlay) {
 		this.underlay = underlay;
-		Assets.getInstance().load("game/hud/title.png", Texture.class);
-		Assets.getInstance().load("game/hud/credits.png", Texture.class);
-		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
+		Assets.getInstance().load("sounds/dialog-accept.ogg", Sound.class);
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/hud/credits.png");
-		credits = new Sprite(texture);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/menus.pack");
+		credits = atlas.createSprite("credits");
 		credits.setPosition(0.0f - credits.getWidth()/2.0f, 0.0f - credits.getHeight()*1.35f);
-
-		texture = Assets.getInstance().get("game/hud/title.png");
-		title = new Sprite(texture);
+		title = atlas.createSprite("title");
 		title.setPosition(0.0f - title.getWidth()/2.0f, credits.getY() - title.getHeight() - 55.0f);
 
-		acceptSound = Assets.getInstance().get("game/sounds/dialog-accept.ogg");
+		acceptSound = Assets.getInstance().get("sounds/dialog-accept.ogg");
 	}
 
 	private void acceptPressed() {

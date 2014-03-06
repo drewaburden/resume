@@ -21,11 +21,11 @@ public class MageSoundFactory {
 	private Sound death;
 
 	public MageSoundFactory() {
-		Assets.getInstance().load("game/sounds/mage-death.ogg", Sound.class);
+		Assets.getInstance().load("sounds/mage-death.ogg", Sound.class);
 	}
 
 	public void initAssets() {
-		death = Assets.getInstance().get("game/sounds/mage-death.ogg");
+		death = Assets.getInstance().get("sounds/mage-death.ogg");
 	}
 
 	public LifeformSound getSound(SoundFactory.SoundType sound) {

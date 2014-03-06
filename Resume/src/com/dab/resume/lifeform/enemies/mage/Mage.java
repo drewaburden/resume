@@ -60,9 +60,6 @@ public class Mage extends Lifeform {
 		healthCurrent = healthMax;
 		animationFactory.setMageAnimationFactory(mageAnimationFactory);
 		soundFactory.setMageSoundFactory(mageSoundFactory);
-
-		// Load assets for attacks
-		Assets.getInstance().load("game/chars/mage-lightning.png", Texture.class);
 	}
 
 	public void initAssets() {

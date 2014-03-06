@@ -1,0 +1,68 @@
+
+common.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+player-move
+  rotate: false
+  xy: 1, 347
+  size: 864, 72
+  orig: 864, 72
+  offset: 0, 0
+  index: -1
+scene1-rain-background
+  rotate: false
+  xy: 1, 89
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+scene1-rain-foreground
+  rotate: false
+  xy: 259, 89
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+player-attack
+  rotate: false
+  xy: 1, 15
+  size: 360, 72
+  orig: 360, 72
+  offset: 0, 0
+  index: -1
+player-idle
+  rotate: false
+  xy: 517, 273
+  size: 216, 72
+  orig: 216, 72
+  offset: 0, 0
+  index: -1
+heart-empty
+  rotate: false
+  xy: 867, 407
+  size: 14, 12
+  orig: 14, 12
+  offset: 0, 0
+  index: -1
+heart-filled
+  rotate: false
+  xy: 1, 1
+  size: 14, 12
+  orig: 14, 12
+  offset: 0, 0
+  index: -1
+colorgrade
+  rotate: false
+  xy: 363, 86
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+overlay
+  rotate: false
+  xy: 517, 270
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1

@@ -21,11 +21,11 @@ public class OldWomanSoundFactory {
 	Sound death;
 
 	public OldWomanSoundFactory() {
-		Assets.getInstance().load("game/sounds/oldwoman-death.ogg", Sound.class);
+		Assets.getInstance().load("sounds/oldwoman-death.ogg", Sound.class);
 	}
 
 	public void initAssets() {
-		death = Assets.getInstance().get("game/sounds/oldwoman-death.ogg");
+		death = Assets.getInstance().get("sounds/oldwoman-death.ogg");
 	}
 
 	public LifeformSound getSound(SoundFactory.SoundType sound) {

@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.dab.resume.GameState;
@@ -57,6 +58,7 @@ public class Scene2 extends Observable implements Observer {
 
 	private boolean showing = false;
 
+	private TextureAtlas commonAtlas, scene2Atlas;
 	private Fadeable sceneTransitionFader;
 	private OrthographicCamera camera, staticCamera; // Static camera is not for panning
 	private CameraPanner cameraPanner;
@@ -102,21 +104,14 @@ public class Scene2 extends Observable implements Observer {
 		for(int candleNum = 0; candleNum < 6; ++candleNum) {
 			candles.add(new Candle());
 		}
-		Assets.getInstance().load("game/environments/castle/floor.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/wall.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/dirt-corner.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/crate.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/crate-stacked.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/candle.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/candle-flame.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/log-short.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/log-long.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/window-three.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/fog-top.png", Texture.class);
+		Assets.getInstance().load("spritesheets/scene2.pack", TextureAtlas.class);
 	}
 
 	public void initAssets() {
 		Log.log();
+
+		scene2Atlas = Assets.getInstance().get("spritesheets/scene2.pack");
+		commonAtlas = Assets.getInstance().get("spritesheets/common.pack");
 
 		// Music
 		music.initAssets();
@@ -126,50 +121,39 @@ public class Scene2 extends Observable implements Observer {
 		oldWoman.initAssets();
 
 		// Ceiling fog
-		Texture texture = Assets.getInstance().get("game/environments/castle/fog-top.png");
-		fog = new Sprite(texture);
+		fog = scene2Atlas.createSprite("fog-top");
 		fog.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH / 2.0f, camera.position.y - fog.getHeight() / 2.0f + 135.0f);
 		fog.setSize(TerminalGame.VIRTUAL_WIDTH, fog.getHeight());
 
 		// Walls and windows
-		texture = Assets.getInstance().get("game/environments/castle/wall.png");
-		Sprite sprite = new Sprite(texture);
+		Sprite sprite = scene2Atlas.createSprite("wall");
 		sprite.setPosition(camera.position.x - sprite.getWidth() * 1.5f, camera.position.y - sprite.getHeight() / 2.0f + 70.0f);
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/window-three.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("window-three");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 15.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/wall.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("wall");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 13.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/wall.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("wall");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 10.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/window-three.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("window-three");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 15.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/window-three.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("window-three");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 15.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/wall.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("wall");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 13.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/wall.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("wall");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 10.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/wall.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("wall");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 10.0f, wall.getLast().getY());
 		wall.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/window-three.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("window-three");
 		sprite.setPosition(wall.getLast().getX() + wall.getLast().getWidth() - 15.0f, wall.getLast().getY());
 		wall.add(sprite);
 
@@ -185,65 +169,53 @@ public class Scene2 extends Observable implements Observer {
 		candles.get(5).setPosition(1400.0f, 30.0f);
 
 		// Logs
-		texture = Assets.getInstance().get("game/environments/castle/log-short.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("log-short");
 		sprite.setPosition(0.0f - sprite.getWidth(), -40.0f);
 		logs_background.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/log-long.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("log-long");
 		sprite.setPosition(0.0f - sprite.getWidth() - 12.0f, -8.0f);
 		sprite.rotate(-60.0f);
 		logs_background.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/log-long.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("log-long");
 		sprite.setPosition(380.0f, -28.0f);
 		sprite.rotate(35.0f);
 		logs_foreground.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/log-short.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("log-short");
 		sprite.setPosition(1175, -35.0f);
 		logs_background.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/log-short.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("log-short");
 		sprite.setPosition(1185, -25.0f);
 		logs_background.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/log-long.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("log-long");
 		sprite.setPosition(1189, -37.0f);
 		sprite.setColor(0.95f, 0.95f, 0.95f, 1.0f);
 		logs_foreground.add(sprite);
 
-		// Crates
-		texture = Assets.getInstance().get("game/environments/castle/crate-stacked.png");
-		sprite = new Sprite(texture);
+		// Cratessprite = scene2Atlas.createSprite("create-stacked");
+		sprite = scene2Atlas.createSprite("crate-stacked");
 		sprite.setPosition(0.0f - sprite.getWidth() - 65.0f, -55.0f);
 		crates.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/crate.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("crate");
 		sprite.setPosition(0.0f - sprite.getWidth() + 125.0f, -55.0f);
 		crates.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/crate.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("crate");
 		sprite.setPosition(460.0f, -55.0f);
 		crates.add(sprite);
-		texture = Assets.getInstance().get("game/environments/castle/crate-stacked.png");
-		sprite = new Sprite(texture);
+		sprite = scene2Atlas.createSprite("crate-stacked");
 		sprite.setPosition(1500.0f, -55.0f);
 		crates.add(sprite);
 
 		// Floor
-		texture = Assets.getInstance().get("game/environments/castle/floor.png");
-		floor = new TilingFloor(texture, 6);
+		floor = new TilingFloor(scene2Atlas.findRegion("floor"), 6);
 		floor.setPosition(camera.position.x - floor.getTileWidth()*4.0f, camera.position.y - floor.getTileHeight()/2.0f - 70.0f);
 
 		// Corner dirt
-		texture = Assets.getInstance().get("game/environments/castle/dirt-corner.png");
-		dirt = new TilingFloor(texture, 4);
+		dirt = new TilingFloor(scene2Atlas.findRegion("dirt-corner"), 4);
 		dirt.setPosition(camera.position.x - dirt.getTileWidth() * 3.0f, camera.position.y - dirt.getTileHeight() / 2.0f - 28.0f);
 		dirt.setAlpha(0.75f);
 
 		// Rain
-		rain.initAssets();
+		rain.initAssets(commonAtlas);
 
 		// Dialogs
 		oldwomanDialog.initAssets();

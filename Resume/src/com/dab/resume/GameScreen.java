@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.Music;
 import com.dab.resume.events.Observer;
@@ -44,6 +45,7 @@ public class GameScreen implements Screen, Observer {
 	private KeyboardInput keyboardInput;
 	private GamePadInput gamePadInput;
 
+	private TextureAtlas commonAtlas;
 
 	private Fadeable fadeOverlay; // Used to fade the entire terminal screen
 	private Fadeable fadeUnderlay; // Used to fade only between the menus and the scene
@@ -76,14 +78,14 @@ public class GameScreen implements Screen, Observer {
 		/**************
 		 * Menus and overlays
 		 **************/
-		Assets.getInstance().load("colors/overlay.png", Texture.class);
-		Assets.getInstance().finishLoading();
-		Texture texture = Assets.getInstance().get("colors/overlay.png");
-		fadeOverlay = new Fadeable(texture);
+		Assets.getInstance().load("spritesheets/common.pack", TextureAtlas.class);
+		Assets.getInstance().finishLoading(); // Finish loading the common pack so we can pass the overlays around
+		commonAtlas = Assets.getInstance().get("spritesheets/common.pack");
+		fadeOverlay = new Fadeable(commonAtlas.findRegion("overlay"));
 		fadeOverlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
 		fadeOverlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		fadeOverlay.setAlpha(1.0f);
-		fadeUnderlay = new Fadeable(texture);
+		fadeUnderlay = new Fadeable(commonAtlas.findRegion("overlay"));
 		fadeUnderlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
 		fadeUnderlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		fadeUnderlay.setAlpha(0.35f);
@@ -93,6 +95,7 @@ public class GameScreen implements Screen, Observer {
 		pauseOverlay = new PauseOverlay(commonFont);
 		gameoverOverlay = new GameoverOverlay(commonFont, music, fadeUnderlay);
 		theEndOverlay = new TheEndOverlay(commonFont);
+		Assets.getInstance().load("spritesheets/menus.pack", TextureAtlas.class);
 
 		/**************
 		 * Load scene assets

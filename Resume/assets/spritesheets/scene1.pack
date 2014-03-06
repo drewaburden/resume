@@ -1,0 +1,101 @@
+
+scene1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+scene1-mountain-back
+  rotate: false
+  xy: 1, 765
+  size: 992, 162
+  orig: 992, 162
+  offset: 0, 0
+  index: -1
+scene1-mountain-mid
+  rotate: false
+  xy: 1, 649
+  size: 817, 114
+  orig: 817, 114
+  offset: 0, 0
+  index: -1
+scene1-trunk2
+  rotate: false
+  xy: 1, 341
+  size: 346, 306
+  orig: 346, 306
+  offset: 0, 0
+  index: -1
+scene1-floor
+  rotate: false
+  xy: 349, 525
+  size: 454, 122
+  orig: 454, 122
+  offset: 0, 0
+  index: -1
+scene1-mountain-front
+  rotate: false
+  xy: 1, 169
+  size: 338, 170
+  orig: 338, 170
+  offset: 0, 0
+  index: -1
+scene1-trees-distant
+  rotate: false
+  xy: 349, 471
+  size: 518, 52
+  orig: 518, 52
+  offset: 0, 0
+  index: -1
+scene1-backgrass2
+  rotate: false
+  xy: 349, 425
+  size: 454, 44
+  orig: 454, 44
+  offset: 0, 0
+  index: -1
+scene1-backgrass
+  rotate: false
+  xy: 349, 380
+  size: 454, 43
+  orig: 454, 43
+  offset: 0, 0
+  index: -1
+scene1-trunk1
+  rotate: true
+  xy: 1, 13
+  size: 154, 267
+  orig: 154, 267
+  offset: 0, 0
+  index: -1
+scene1-tree2
+  rotate: true
+  xy: 820, 634
+  size: 129, 200
+  orig: 129, 200
+  offset: 0, 0
+  index: -1
+scene1-tree1
+  rotate: false
+  xy: 270, 1
+  size: 113, 166
+  orig: 113, 166
+  offset: 0, 0
+  index: -1
+scene1-fog
+  rotate: false
+  xy: 341, 169
+  size: 4, 170
+  orig: 4, 170
+  offset: 0, 0
+  index: -1
+
+scene12.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+scene1-forest-fog
+  rotate: false
+  xy: 1, 1
+  size: 1360, 308
+  orig: 1360, 308
+  offset: 0, 0
+  index: -1

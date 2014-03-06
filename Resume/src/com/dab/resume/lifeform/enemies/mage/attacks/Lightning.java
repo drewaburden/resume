@@ -16,6 +16,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
@@ -41,18 +42,8 @@ public class Lightning extends Projectile {
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/chars/mage-lightning.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / 2, texture.getHeight());
-		TextureRegion[] frames = new TextureRegion[2];
-		int index = 0;
-		for (TextureRegion[] rows : tmp) {
-			for (TextureRegion cols : rows) {
-				frames[index] = cols;
-				index++;
-			}
-		}
-		lightning = new Animation(ANIM_RATE, frames);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/scene2.pack");
+		lightning = Assets.getInstance().getAnimation(atlas.findRegion("mage-lightning"), 2, ANIM_RATE);
 		lightning.setPlayMode(Animation.LOOP);
 	}
 

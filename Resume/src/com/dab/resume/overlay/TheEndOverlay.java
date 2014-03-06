@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.Music;
@@ -26,12 +27,11 @@ public class TheEndOverlay {
 
 	public TheEndOverlay(BitmapFont font) {
 		this. font = font;
-		Assets.getInstance().load("game/hud/title.png", Texture.class);
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/hud/title.png");
-		title = new Sprite(texture);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/menus.pack");
+		title = atlas.createSprite("title");
 		title.setPosition(0.0f - title.getWidth()/2.0f, 55.0f);
 	}
 

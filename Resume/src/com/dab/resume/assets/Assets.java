@@ -33,13 +33,11 @@ public final class Assets extends AssetManager {
 		instance = null;
 	}
 
-	public Animation getAnimation(String filename, int numFrames, float frameDuration) {
-		Texture texture = Assets.getInstance().get(filename);
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		TextureRegion[][] tmp = TextureRegion.split(texture, texture.getWidth() / numFrames, texture.getHeight());
+	public Animation getAnimation(TextureRegion textureRegion, int numFrames, float frameDuration) {
+		TextureRegion[][] splitRegion = textureRegion.split(textureRegion.getRegionWidth() / numFrames, textureRegion.getRegionHeight());;
 		TextureRegion[] frames = new TextureRegion[numFrames];
 		int index = 0;
-		for (TextureRegion[] rows : tmp) {
+		for (TextureRegion[] rows : splitRegion) {
 			for (TextureRegion cols : rows) {
 				frames[index] = cols;
 				index++;

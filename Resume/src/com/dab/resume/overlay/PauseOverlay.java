@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.TerminalGame;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
@@ -29,18 +30,17 @@ public class PauseOverlay {
 
 	public PauseOverlay(BitmapFont font) {
 		this. font = font;
-		Assets.getInstance().load("colors/overlay.png", Texture.class);
-		Assets.getInstance().load("game/sounds/pause.ogg", Sound.class);
+		Assets.getInstance().load("sounds/pause.ogg", Sound.class);
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("colors/overlay.png");
-		overlay = new Sprite(texture);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/common.pack");
+		overlay = atlas.createSprite("overlay");
 		overlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
 		overlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
 		overlay.setAlpha(0.25f);
 
-		pauseSound = Assets.getInstance().get("game/sounds/pause.ogg");
+		pauseSound = Assets.getInstance().get("sounds/pause.ogg");
 	}
 
 	public void show() {

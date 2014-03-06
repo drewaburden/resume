@@ -17,6 +17,7 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.assets.Assets;
 
 public class Environment {
@@ -30,19 +31,18 @@ public class Environment {
 		TextureLoader.TextureParameter texparams = new TextureLoader.TextureParameter();
 		texparams.genMipMaps = true;
 		Assets.getInstance().load("scene/environment.png", Texture.class, texparams);
-		Assets.getInstance().load("colors/colorgrade.png", Texture.class, texparams);
 		Assets.getInstance().load("monitor/glare.png", Texture.class, texparams);
 		Assets.getInstance().load("monitor/glow.png", Texture.class, texparams);
 	}
 
 	public void initAssets() {
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/common.pack");
+
 		// Fetch textures and create sprites
 		Texture texture = Assets.getInstance().get("scene/environment.png");
 		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
 		environment = new Sprite(texture);
-		texture = Assets.getInstance().get("colors/colorgrade.png");
-		texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-		colorgrade = new Sprite(texture);
+		colorgrade = atlas.createSprite("colorgrade");
 		texture = Assets.getInstance().get("monitor/glare.png");
 		texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.MipMapLinearNearest);
 		monitor_glare = new Sprite(texture);

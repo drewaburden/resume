@@ -1,0 +1,26 @@
+
+menus.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+credits
+  rotate: false
+  xy: 1, 195
+  size: 263, 304
+  orig: 263, 304
+  offset: 0, 0
+  index: -1
+controls
+  rotate: false
+  xy: 1, 1
+  size: 257, 192
+  orig: 257, 192
+  offset: 0, 0
+  index: -1
+title
+  rotate: false
+  xy: 266, 439
+  size: 140, 60
+  orig: 140, 60
+  offset: 0, 0
+  index: -1

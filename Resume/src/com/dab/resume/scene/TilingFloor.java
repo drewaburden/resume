@@ -15,6 +15,8 @@ package com.dab.resume.scene;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.debug.Log;
 
 import java.util.LinkedList;
@@ -22,6 +24,22 @@ import java.util.LinkedList;
 public class TilingFloor extends Sprite {
 	private LinkedList<Sprite> tiles;
 	private float offsetSinceLastRetile = 0.0f;
+
+	public TilingFloor(TextureRegion mainTile, int numTilesOnScreen) {
+		if (numTilesOnScreen < 2) {
+			throw new IllegalArgumentException("You must have at least 2 tiles");
+		}
+		// Create all the tiles
+		tiles = new LinkedList<Sprite>();
+		Sprite tile = new Sprite(mainTile);
+		tiles.add(tile);
+		for (int tileNumber = 1; tileNumber < numTilesOnScreen; ++tileNumber) {
+			tile = new Sprite(mainTile);
+			tiles.addLast(tile);
+		}
+		setPosition(tiles.getFirst().getX(), tiles.getFirst().getY()); // Initialize all the tiles positions relative to the first tile
+		offsetSinceLastRetile = 0.0f;
+	}
 
 	public TilingFloor(Texture mainTile, int numTilesOnScreen) {
 		if (numTilesOnScreen < 2) {

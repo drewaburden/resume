@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.assets.Assets;
 import com.dab.resume.audio.SoundFX;
 import com.dab.resume.events.Observer;
@@ -47,8 +48,7 @@ public class MainMenu implements Observer {
 		this.underlay = underlay;
 		this.controlsOverlay = controlsOverlay;
 		this.creditsOverlay = creditsOverlay;
-		Assets.getInstance().load("game/hud/title.png", Texture.class);
-		Assets.getInstance().load("game/sounds/dialog-accept.ogg", Sound.class);
+		Assets.getInstance().load("sounds/dialog-accept.ogg", Sound.class);
 
 		items = new ArrayList<String>();
 		items.add("START GAME");
@@ -58,11 +58,11 @@ public class MainMenu implements Observer {
 	}
 
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/hud/title.png");
-		title = new Sprite(texture);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/menus.pack");
+		title = atlas.createSprite("title");
 		title.setPosition(0.0f - title.getWidth()/2.0f, 55.0f);
 
-		acceptSound = Assets.getInstance().get("game/sounds/dialog-accept.ogg");
+		acceptSound = Assets.getInstance().get("sounds/dialog-accept.ogg");
 	}
 
 	private void acceptPressed() {

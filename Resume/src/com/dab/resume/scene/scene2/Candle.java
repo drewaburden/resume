@@ -15,10 +15,7 @@ package com.dab.resume.scene.scene2;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.dab.resume.GameState;
 import com.dab.resume.assets.Assets;
 
@@ -32,14 +29,11 @@ public class Candle {
 	private Animation flame;
 	private float posX = 0.0f, posY = 0.0f;
 
-	public Candle() {
-		Assets.getInstance().load("game/environments/castle/candle.png", Texture.class);
-		Assets.getInstance().load("game/environments/castle/candle-flame.png", Texture.class);
-	}
+	public Candle() { }
 	public void initAssets() {
-		Texture texture = Assets.getInstance().get("game/environments/castle/candle.png");
-		holder = new Sprite(texture);
-		flame = Assets.getInstance().getAnimation("game/environments/castle/candle-flame.png", 4, ANIM_RATE*1.5f);
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/scene2.pack");
+		holder = atlas.createSprite("candle");
+		flame = Assets.getInstance().getAnimation(atlas.findRegion("candle-flame"), 4, ANIM_RATE*1.5f);
 		flame.setPlayMode(Animation.LOOP);
 
 		setPosition(posX, posY);

@@ -12,11 +12,10 @@
 
 package com.dab.resume.lifeform.player;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.dab.resume.assets.Assets;
-import com.dab.resume.lifeform.LifeformAnimation;
 import com.dab.resume.lifeform.Direction;
+import com.dab.resume.lifeform.LifeformAnimation;
 
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType;
 
@@ -24,18 +23,15 @@ public class PlayerAnimationFactory {
 	private final float ANIM_RATE = 0.15f;
 	private LifeformAnimation animIdle, animMove, animAttack;
 
-	public PlayerAnimationFactory() {
-		Assets.getInstance().load("game/chars/player-idle.png", Texture.class);
-		Assets.getInstance().load("game/chars/player-move.png", Texture.class);
-		Assets.getInstance().load("game/chars/player-attack.png", Texture.class);
-	}
+	public PlayerAnimationFactory() { }
 	public void initAssets() {
+		TextureAtlas atlas = Assets.getInstance().get("spritesheets/common.pack");
 		animIdle = new LifeformAnimation(
-				Assets.getInstance().getAnimation("game/chars/player-idle.png", 3, ANIM_RATE), Direction.RIGHT);
+				Assets.getInstance().getAnimation(atlas.findRegion("player-idle"), 3, ANIM_RATE), Direction.RIGHT);
 		animMove = new LifeformAnimation(
-				Assets.getInstance().getAnimation("game/chars/player-move.png", 12, ANIM_RATE), Direction.RIGHT);
+				Assets.getInstance().getAnimation(atlas.findRegion("player-move"), 12, ANIM_RATE), Direction.RIGHT);
 		animAttack = new LifeformAnimation(
-				Assets.getInstance().getAnimation("game/chars/player-attack.png", 5, ANIM_RATE*0.4f), Direction.RIGHT);
+				Assets.getInstance().getAnimation(atlas.findRegion("player-attack"), 5, ANIM_RATE*0.4f), Direction.RIGHT);
 	}
 
 	public LifeformAnimation getAnimation(AnimationType animation) {

@@ -56,7 +56,7 @@ public class Mage extends Lifeform {
 		direction = Direction.LEFT;
 		lifeformMovement.setPosX(posX);
 		boundingBox = new BoundingBox(lifeformMovement.getPosX()+16.0f, lifeformMovement.getPosY(), 24.0f, 50.0f, CollisionEvent.ENEMY);
-		healthMax = 2;
+		healthMax = 4;
 		healthCurrent = healthMax;
 		animationFactory.setMageAnimationFactory(mageAnimationFactory);
 		soundFactory.setMageSoundFactory(mageSoundFactory);

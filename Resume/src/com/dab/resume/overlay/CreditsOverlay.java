@@ -63,8 +63,13 @@ public class CreditsOverlay implements Observer {
 	public void hide() {
 		showing = false;
 		underlay.fadeToAlpha(0.25f, 2.5f); // Fade back to the main menu's underlay alpha
-		GameState.addGameState(GameState.State.MAINMENU);
-		GameState.removeGameState(GameState.State.CREDITS);
+		if (!GameState.isGameStateSet(GameState.State.THEEND)) {
+			GameState.addGameState(GameState.State.MAINMENU);
+			GameState.removeGameState(GameState.State.CREDITS);
+		}
+		else {
+			GameState.setGameState(GameState.State.THEEND); // Get rid all states except THEEND
+		}
 	}
 
 	public void draw(SpriteBatch spriteBatch) {

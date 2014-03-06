@@ -32,7 +32,8 @@ public class GameState {
 		PAUSED          (0x00000040),
 		PRELOADING      (0x00000080),
 		TRANSITIONING   (0x00000100),
-		CINEMATIC       (0x00000200);
+		CINEMATIC       (0x00000200),
+		THEEND          (0x00000400);
 
 		private final int stateCode;
 		private State(final int stateCode) { this.stateCode = stateCode; }

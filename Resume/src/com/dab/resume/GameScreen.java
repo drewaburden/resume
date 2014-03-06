@@ -51,6 +51,7 @@ public class GameScreen implements Screen, Observer {
 	private MainMenu mainMenu;
 	private PauseOverlay pauseOverlay;
 	private GameoverOverlay gameoverOverlay;
+	private TheEndOverlay theEndOverlay;
 	private ControlsOverlay controlsOverlay;
 	private CreditsOverlay creditsOverlay;
 	private Scene1 scene1;
@@ -85,12 +86,13 @@ public class GameScreen implements Screen, Observer {
 		fadeUnderlay = new Fadeable(texture);
 		fadeUnderlay.setPosition(0.0f - TerminalGame.VIRTUAL_WIDTH/2.0f, 0.0f - TerminalGame.VIRTUAL_HEIGHT/2.0f);
 		fadeUnderlay.setSize(TerminalGame.VIRTUAL_WIDTH, TerminalGame.VIRTUAL_HEIGHT);
-		fadeUnderlay.setAlpha(0.25f);
+		fadeUnderlay.setAlpha(0.35f);
 		controlsOverlay = new ControlsOverlay();
 		creditsOverlay = new CreditsOverlay(fadeUnderlay);
 		mainMenu = new MainMenu(commonFont, fadeUnderlay, controlsOverlay, creditsOverlay);
 		pauseOverlay = new PauseOverlay(commonFont);
-		gameoverOverlay = new GameoverOverlay(commonFont, music);
+		gameoverOverlay = new GameoverOverlay(commonFont, music, fadeUnderlay);
+		theEndOverlay = new TheEndOverlay(commonFont);
 
 		/**************
 		 * Load scene assets
@@ -144,8 +146,9 @@ public class GameScreen implements Screen, Observer {
 		creditsOverlay.initAssets();
 		pauseOverlay.initAssets();
 		gameoverOverlay.initAssets();
+		theEndOverlay.initAssets();
 		mainMenu.initAssets();
-		fadeOverlay.fadeToAlpha(0.0f, 0.25f); // Fade out the overlay, thereby "fading in" the game.
+		fadeOverlay.fadeToAlpha(0.0f, 0.45f); // Fade out the overlay, thereby "fading in" the game.
 	}
 
 	@Override
@@ -175,6 +178,9 @@ public class GameScreen implements Screen, Observer {
 		}
 		else if (GameState.isGameStateSet(GameState.State.GAMEOVER) && !gameoverOverlay.isShowing()) {
 			gameoverOverlay.show();
+		}
+		else if (GameState.isGameStateSet(THEEND) && !GameState.isGameStateSet(CREDITS)) {
+			theEndOverlay.draw(spriteBatch);
 		}
 		else {
 			// HUD
@@ -242,6 +248,7 @@ public class GameScreen implements Screen, Observer {
 					creditsOverlay.show();
 					GameState.removeGameState(PLAYING);
 					GameState.removeGameState(TRANSITIONING);
+					GameState.addGameState(THEEND);
 					GameState.addGameState(CREDITS);
 					return true;
 			}

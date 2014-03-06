@@ -18,10 +18,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.dab.resume.GameState;
+import com.dab.resume.debug.Log;
 
 public class Fadeable extends Sprite {
 	private boolean fading = false;
 	private float alphaInitial, alphaTarget, fadeSpeed;
+	private float currentAlpha; // Keep track of the current alpha on our own, because the Sprite class does some rounding
 
 	public Fadeable(Texture texture) {
 		super(texture);
@@ -32,6 +34,7 @@ public class Fadeable extends Sprite {
 		alphaInitial = this.getColor().a;
 		alphaTarget = alpha;
 		fadeSpeed = speed;
+		currentAlpha = this.getColor().a;
 	}
 
 	public boolean isFading() { return fading; }
@@ -39,7 +42,6 @@ public class Fadeable extends Sprite {
 	@Override
 	public void draw(Batch batch) {
 		if (fading && !GameState.isGameStateSet(GameState.State.PAUSED)) {
-			float currentAlpha = this.getColor().a;
 			float delta = Gdx.graphics.getDeltaTime();
 
 			// Update alpha

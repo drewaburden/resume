@@ -69,7 +69,7 @@ public class MainMenu implements Observer {
 		acceptSound.play(SoundFX.VOLUME_MODIFIER);
 		switch (selectedItem) {
 			case 0:
-				underlay.fadeToAlpha(0.0f, 0.025f);
+				underlay.fadeToAlpha(0.0f, 0.25f);
 				GameState.addGameState(GameState.State.PLAYING);
 				GameState.removeGameState(GameState.State.MAINMENU);
 				break;

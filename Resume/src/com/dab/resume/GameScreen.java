@@ -237,11 +237,13 @@ public class GameScreen implements Screen, Observer {
 					}
 					scene2.show(true);
 					GameState.removeGameState(TRANSITIONING);
+					player.recheckInput();
 					return true;
 				case TRANSITION_TO_SCENE1:
 					scene2.hide();
 					scene1.show(true);
 					GameState.removeGameState(TRANSITIONING);
+					player.recheckInput();
 					return true;
 				case TRANSITION_TO_CREDITS:
 					scene2.hide();

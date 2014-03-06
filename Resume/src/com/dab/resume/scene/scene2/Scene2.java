@@ -479,6 +479,7 @@ public class Scene2 extends Observable implements Observer {
 							oldWoman.die();
 							music.stopAllMusic();
 							music.playBattleMusic();
+							player.recheckInput();
 						}
 						return true;
 					}
@@ -490,6 +491,7 @@ public class Scene2 extends Observable implements Observer {
 						if (!mageDialog.isShowing()) {
 							music.playVictoryMusic();
 							GameState.removeGameState(CINEMATIC);
+							player.recheckInput();
 						}
 						return true;
 					}

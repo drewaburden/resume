@@ -18,7 +18,7 @@ import com.badlogic.gdx.InputProcessor;
 import static com.badlogic.gdx.Input.Keys.*;
 
 public class KeyboardInput implements InputProcessor {
-	InputBridge inputBridge;
+	private InputBridge inputBridge;
 
 	public KeyboardInput(InputBridge inputBridge) {
 		this.inputBridge = inputBridge;

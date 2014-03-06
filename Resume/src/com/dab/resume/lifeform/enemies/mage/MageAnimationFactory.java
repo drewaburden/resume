@@ -38,7 +38,7 @@ public class MageAnimationFactory {
 		animAttack_lightning = new LifeformAnimation(
 				Assets.getInstance().getAnimation("game/chars/mage-attack-lightning.png", 12, ANIM_RATE), Direction.LEFT);
 		animDeath = new LifeformAnimation(
-				Assets.getInstance().getAnimation("game/chars/mage-death.png", 5, ANIM_RATE), Direction.LEFT);
+				Assets.getInstance().getAnimation("game/chars/mage-death.png", 6, ANIM_RATE), Direction.LEFT);
 	}
 
 	public LifeformAnimation getAnimation(AnimationType animation) {

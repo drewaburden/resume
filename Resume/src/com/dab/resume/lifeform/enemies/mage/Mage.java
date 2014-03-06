@@ -31,6 +31,7 @@ import com.dab.resume.lifeform.enemies.mage.attacks.Projectile;
 import java.util.ArrayList;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
+import static com.dab.resume.GameState.State.CINEMATIC;
 import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_LIGHTNING;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.IDLE;
@@ -109,7 +110,7 @@ public class Mage extends Lifeform {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		if (!GameState.isGameStateSet(PAUSED)) {
+		if (!GameState.areAnyGameStatesSet(PAUSED, CINEMATIC)) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 

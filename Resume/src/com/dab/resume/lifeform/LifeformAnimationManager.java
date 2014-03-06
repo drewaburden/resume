@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dab.resume.GameState;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.LOOP;
+import static com.dab.resume.GameState.State.CINEMATIC;
 import static com.dab.resume.GameState.State.PAUSED;
 
 public class LifeformAnimationManager {
@@ -60,7 +61,7 @@ public class LifeformAnimationManager {
 	}
 
 	public void draw(SpriteBatch spriteBatch, float posX, float posY) {
-		if (!GameState.isGameStateSet(PAUSED)) {
+		if (!GameState.areAnyGameStatesSet(PAUSED, CINEMATIC)) {
 			float delta = Gdx.graphics.getDeltaTime();
 			animTime += delta;
 			currentFrame = animCurrent.getKeyFrame(animTime);

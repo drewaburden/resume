@@ -42,6 +42,7 @@ import com.dab.resume.scene.*;
 
 import java.util.LinkedList;
 
+import static com.dab.resume.GameState.State.CINEMATIC;
 import static com.dab.resume.GameState.State.TRANSITIONING;
 import static com.dab.resume.collision.CollisionEvent.BLOCKING;
 
@@ -65,7 +66,7 @@ public class Scene2 extends Observable implements Observer {
 	private MageStateMachine mageAI;
 	private OldWoman oldWoman;
 	private TilingFloor floor, dirt;
-	private Dialog dialog1;
+	private Dialog oldwomanDialog, mageDialog;
 	private Rain rain;
 	private Sprite fog;
 	private LinkedList<Sprite> wall;
@@ -84,8 +85,12 @@ public class Scene2 extends Observable implements Observer {
 		mageAI = new MageStateMachine(mage, player);
 		oldWoman = new OldWoman(150.0f);
 		float dialogWidth = 340.0f, dialogHeight = 120.0f;
-		dialog1 = new Dialog("Dying old woman", "Please... You must defeat the foe that lies ahead of you. " +
+		oldwomanDialog = new Dialog("Dying old woman", "Please... You must defeat the foe that lies ahead of you. " +
 				"You are our only hope now. Avenge us...", 0.0f - dialogWidth/2.0f, 50.0f - dialogHeight/2.0f,
+				dialogWidth, dialogHeight);
+		dialogWidth = 300.0f;
+		dialogHeight = 120.0f;
+		mageDialog = new Dialog("Mysterious mage", "You haven't seen the last of me...", 0.0f - dialogWidth/2.0f, 50.0f - dialogHeight/2.0f,
 				dialogWidth, dialogHeight);
 		rain = new Rain(true);
 		wall = new LinkedList<Sprite>();
@@ -240,8 +245,9 @@ public class Scene2 extends Observable implements Observer {
 		// Rain
 		rain.initAssets();
 
-		// Dialog
-		dialog1.initAssets();
+		// Dialogs
+		oldwomanDialog.initAssets();
+		mageDialog.initAssets();
 	}
 
 	public void show() { show(false); }
@@ -288,15 +294,25 @@ public class Scene2 extends Observable implements Observer {
 
 			// If the player triggered the dialogue music, play the music.
 			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-200.0f
-					&& !music.isMusicPlaying() && player.isAlive()) {
+					&& !music.isMusicPlaying() && player.isAlive() && mage.isAlive()
+					&& !oldwomanDialog.hasBeenDisplayed()) {
 				music.playDialogMusic();
 			}
 			// If the player triggered the dialogue with the OldWoman, stop the player and show the dialog.
 			if (player.getBoundingBox().getRight() >= oldWoman.getPosX()-100.0f
-					&& !dialog1.isShowing() && !dialog1.hasBeenDisplayed()) {
+					&& !oldwomanDialog.isShowing() && !oldwomanDialog.hasBeenDisplayed()) {
 				player.stopYForce();
 				player.stopXForce();
-				dialog1.show();
+				oldwomanDialog.show();
+			}
+			// If the player triggered the death dialogue with the Mage, stop the music and the player and show the dialog.
+			if (!mage.isAlive()
+					&& !mageDialog.isShowing() && !mageDialog.hasBeenDisplayed()) {
+				GameState.addGameState(CINEMATIC);
+				player.stopYForce();
+				player.stopXForce();
+				music.stopAllMusic();
+				mageDialog.show();
 			}
 
 			/************
@@ -356,7 +372,8 @@ public class Scene2 extends Observable implements Observer {
 			 ************/
 			spriteBatch.setProjectionMatrix(staticCamera.combined);
 			fog.draw(spriteBatch);
-			dialog1.draw(spriteBatch);
+			oldwomanDialog.draw(spriteBatch);
+			mageDialog.draw(spriteBatch);
 
 			checkCollision();
 		}
@@ -453,15 +470,26 @@ public class Scene2 extends Observable implements Observer {
 		if (data instanceof InputEvent) {
 			switch ((InputEvent) data) {
 				case PRESS_ACCEPT:
-					if (dialog1.isShowing()) {
-						dialog1.accept();
+					if (oldwomanDialog.isShowing()) {
+						oldwomanDialog.accept();
 
 						// If the player didn't just skip the text (the player actually
 						// accepted and closed the dialog box)
-						if (!dialog1.isShowing()) {
+						if (!oldwomanDialog.isShowing()) {
 							oldWoman.die();
-							music.stopDialogMusic();
+							music.stopAllMusic();
 							music.playBattleMusic();
+						}
+						return true;
+					}
+					if (mageDialog.isShowing()) {
+						mageDialog.accept();
+
+						// If the player didn't just skip the text (the player actually
+						// accepted and closed the dialog box)
+						if (!mageDialog.isShowing()) {
+							music.playVictoryMusic();
+							GameState.removeGameState(CINEMATIC);
 						}
 						return true;
 					}

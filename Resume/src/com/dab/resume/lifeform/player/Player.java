@@ -25,6 +25,7 @@ import com.dab.resume.input.InputEvent;
 import com.dab.resume.lifeform.*;
 
 import static com.badlogic.gdx.graphics.g2d.Animation.NORMAL;
+import static com.dab.resume.GameState.State.CINEMATIC;
 import static com.dab.resume.GameState.State.GAMEOVER;
 import static com.dab.resume.GameState.State.PAUSED;
 import static com.dab.resume.lifeform.AnimationFactory.AnimationType.ATTACK_SWORD;
@@ -84,10 +85,11 @@ public class Player extends Lifeform implements Observer {
 	public void die() {
 		super.die();
 		GameState.setGameState(GAMEOVER);
+		GameState.addGameState(CINEMATIC);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
-		if (!GameState.isGameStateSet(PAUSED)) {
+		if (!GameState.areAnyGameStatesSet(PAUSED, CINEMATIC)) {
 			final float delta = Gdx.graphics.getDeltaTime();
 			deltaHurtTime += delta;
 
